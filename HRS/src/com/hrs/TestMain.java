@@ -9,7 +9,7 @@ public class TestMain {
 		
 		Calendar calendar = new Calendar();
 		Hotel hotel = new Hotel("Sunset Hotel", 10, "A");
-		Room room = new Room("A1");
+		Room room = new Room("A1", 100);
 		Reservation reservation = new Reservation("First name"+"Last name", 1, 31, room);
 		Reservation reservation1 = new Reservation("First name"+"Last name", 10, 17, room);
 		//System.out.println("Normal Calendar");

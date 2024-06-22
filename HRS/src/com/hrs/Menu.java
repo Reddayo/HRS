@@ -125,7 +125,7 @@ private void displayCreateHotelMenu() {
 			
 			do {
 				displayOptions(new String[] {"Overview Information", "Detailed Information", "View another hotel", "Exit"});
-				int chosen  = getValidNumberInRange(1, 4, false);
+				int chosen  = getValidNumberInRange(1, 4);
 				
 				if(chosen == -1) {
 					return;
@@ -133,7 +133,7 @@ private void displayCreateHotelMenu() {
 				switch (chosen) {
 					case 1: displayOverviewInfo(foundHotel); break;
 					case 2: detailedViewHotelMenu(foundHotel); break;
-					case 3: System.out.println("Viewing another hotel"); break;
+					case 3: System.out.println("Viewing another hotel"); stop = true; break;
 					case 4:	return;
 				}
 		
@@ -173,17 +173,7 @@ private void displayCreateHotelMenu() {
 		//System.out.println("4. Go back to View Hotel"); 
 	}
 	
-	private void printViewHotelMenu() {
-		for(viewHotelMenu vhm : viewHotelMenu.values()) {
-			System.out.println(vhm.ordinal() + 1 + vhm.getDescription());
-		}
-	}
-	
-	private void printDetailedViewHotelMenu() {
-		for(DetailedViewHotelMenu dvhm : DetailedViewHotelMenu.values()) {
-			System.out.println(dvhm.ordinal() + 1 + dvhm.getDescription());
-		}
-	}
+
 	
 	private void detailedViewHotelMenu(Hotel foundHotel) {
 		
@@ -191,7 +181,7 @@ private void displayCreateHotelMenu() {
 		
 		do {
 			displayOptions(new String[] { "No. of Available & Booked Rooms for a Selected Date", "Room Information", "Reservation Information", "Go back to previous menu"});
-			int chosen = getValidNumberInRange(1, 4, false);
+			int chosen = getValidNumberInRange(1, 4);
 			switch (chosen) {
 			/* this needs date */
 			case 1: dateAvailability(foundHotel); break;
@@ -207,47 +197,39 @@ private void displayCreateHotelMenu() {
 		
 	}
 	
-	private void dateAvailability(Hotel foundHotel, ) {
+	private void dateAvailability(Hotel foundHotel ) {
 		
 		int i, ctr = 0, j,date;
-		
+		boolean isAvailable = false;
 		do {	
-			date = getValidNumberInRange(1, 31, false);
+			
+			System.out.print("\tEnter a day [Number 1 to 31]: ");
+			date = getValidNumberInRange(1, 31);
 			if(date == -1) {
 				return;
 			}
 			for(i = 0; i < foundHotel.getNoOfRooms(); i++) {
 				Room room = foundHotel.getRoom(i);
-				for(j = 0; i < room.getReservationSize(); i++) {
-					Reservation reservation = room.getReservation(i);
-					if(date < reservation.getCheckIn() || date >= reservation.getCheckOut())
-						ctr++;
+				for(j = 0; j < room.getReservationSize() && !isAvailable; j++) {
+					Reservation reservation = room.getReservation(j);
+					if(date < reservation.getCheckIn() || date >= reservation.getCheckOut()) {
+						isAvailable = true;
+					}
+				}
+				if(isAvailable || j == 0) {
+					ctr++;
+					isAvailable = false;
 				}
 			}
 			
-			System.out.println("\tThe number of available rooms bv " + date + " is " + ctr);
-			System.out.println("\tThe number of booked rooms by " + date + " is " + (foundHotel.getNoOfRooms() - ctr));
+			System.out.println("\tThe number of available rooms bv Day " + date + " is " + ctr);
+			System.out.println("\tThe number of booked rooms by Day " + date + " is " + (foundHotel.getNoOfRooms() - ctr));
 			System.out.println("\n\tPress enter to continue");
+			ctr = 0;
 			scn.nextLine();
 		
 		}while(confirmation("Do you want to check other dates?"));
 	}
-	
-	private void inoutAvailability(Hotel foundHotel, int checkIn, int checkOut) {
-		
-		int i; ctr, j;
-		for(i = 0; i < foundHotel.getNoOfRooms(); i++) {
-			Room room = foundHotel.getRoom(i);
-			for(j = 0; i < room.getReservationSize(); i++) {
-				Reservation reservation = room.getReservation(i);
-				if(reservation.getCheckIn() < checkIn && reservation.getCheckOut > checkOut)
-					ctr++;
-			}
-		}
-		
-	}
-	
-	
 	
 	
 	public void displayRoomsOfHotel(Hotel hotel) {
@@ -284,23 +266,23 @@ private void displayCreateHotelMenu() {
 			
 		}while(confirmation("Do you want to check out other rooms?"));
 	}
-	public void reservationInfo(Hotel foundHotel) {
+	public void reservationInfo(Hotel hotel) {
 		Reservation reservation;
 		do {
 			do {
-				displayReservationIDOfHotel(hotel);
+				
 				String someString = scn.nextLine();
 				if(someString.isBlank())
 					return;
-				reservation = findReservation(someString, hotel);
+				reservation = hotel.rFinder(someString);
 			}while(reservation == null);
 			System.out.println("Guest name: " + reservation.getGuestName());
-			System.out.println("Room information: " + reservation.getRoomInfo());
+			System.out.println("Room information: " + reservation.getRoomName());
 			System.out.println("Check-in: " + reservation.getCheckIn());
 			System.out.println("Check-out: "+ reservation.getCheckOut());
-			System.out.println("Price per night: " + reservation.getPrice());
+			System.out.println("Price per night: " + reservation.getPricePerNight());
 			/* THIS SHOULD PRINT OUT A CALENDAR OK */
-			System.out.println("Room availability: " + room.availability());
+			System.out.println("Room availability: " + reservation.getRoom().availability());
 		}while(confirmation("Do you want to check other reservations?"));
 	}
 	
@@ -317,57 +299,102 @@ private void displayCreateHotelMenu() {
 	private void displayManageHotelMenu() {
 		boolean stop = false;
 		do {
-		int chosen = getValidInputInRange(1, 7, false);
-		if(chosen == -1) {
-			return;
-		}
+			
+			
+			displayOptions(new String[]{"Change Hotel Name", "Add Room(s)", "Remove Room(s)", 
+				       "Change Room Price", "Remove Reservation", "Remove Hotel",  "Exit"});
+			int chosen = getValidNumberInRange(1, 7);
+			if(chosen == -1) {
+				return;
+			}
+			
+			switch(chosen) {
 	
-		switch(chosen) {
-
-		case 1:   changeHotelName();
-		case 2:			addRooms();
-		case 3:      
-		case 4:   changeRoomPrice();
-		case 5: 
-		case 6:       removeHotel();
-		case 7: stop = true; break;
-		}
+			case 1:   changeHotelName(); break;
+			case 2:			addRooms(); break;
+			case 3:      removeRooms(); break;
+			case 4:   changeRoomPrice(); break;
+			case 5: 	removeReservations(); break;
+			case 6:       removeHotel(); break;
+			case 7: System.out.println("Go to previous menu"); stop = true; break;
+			}
 		}while(!stop);
 		/* However, users must be prompted to confirm a modification or else the modification would be discarded.*/
 	}
 	
 	
-	private void comments() {
-System.out.println("Manage Hotel");
+	private void removeReservations() {
+		Hotel selectedHotel;
+		do {
+			selectedHotel = selectHotel();
+			if(selectedHotel == null) {
+				return;
+			}
+			if(selectedHotel.getReservation().isEmpty()) {
+				System.out.println("Hotel has no reservations pick another one.");
+			}
+				
+		}while(selectedHotel.getReservation().isEmpty());
+		String reservationID;
+		Reservation ram;
+		do {
+			do{
+				reservationID = scn.nextLine();
+			
+			if(reservationID.isBlank()) {
+				return;
+			}
+			ram = selectedHotel.rFinder(reservationID);
+			if(ram == null) {
+				System.out.println("There are no reservation ID like that.");
+			}
+		}while(ram == null);
+			
+			
+		}while(!confirmation("Are you sure that you want to remove reservation?"));
 		
-		System.out.println("1. Change hotel name");
-		/* ask for the hotel that will be changed */
-		/* then continually ask the user for an actual name 
-		 * until it gets changed or user enters nothing
-		 */
-		System.out.println("2. Add room(s)");
-		/* add rooms continually ask for hotel until then ask how many rooms should be added */
-		System.out.println("3. Remove room(s)");
-		/* remove rooms continually ask for hotel until then ask what rooms should be removed
-		 * make sure that the rooms doesn't have a reservation
-		 */
 		
-		System.out.println("4. Change room price");
-		/* price must be >= 100, must have no reservations, (this is why it's better to just put in hotel*/
-		System.out.println("5. Remove reservation");
-		/* make a reservation id somehow and would be Room+CDate+CDate */
-		// which would be shown
+		selectedHotel.removeReservation(ram);
+		System.out.println("Removed reservation");
+		System.out.println("Press Enter to continue.");
+		scn.nextLine();
 		
-		System.out.println("6. Remove hotel");
-		//ok from the looks of it i can remove a hotel even if there is a reservation cause hotel
-		
-		
-		System.out.println("7. Exit");
-		
-		int chosenOption = getValidNumberInRange(1, ManageHotelMenuOptions.values().length, false);
-		ManageHotelMenuOptions mhmo = ManageHotelMenuOptions.values()[chosenOption - 1];
 	}
 	
+	private void removeRooms() {
+		Hotel selectedHotel;
+		do {
+			selectedHotel = selectHotel();
+			if(selectedHotel == null) {
+				return;
+			}
+			if(selectedHotel.getNoOfRooms() == 1)
+				System.out.println("Hotel is already at min rooms. Pick another one");
+		}while(selectedHotel.getNoOfRooms() == 1);
+		
+		int noOfRooms;
+		int hotelsrooms;
+		do {
+			System.out.println("You can only remove" + selectedHotel.removableRooms());
+			System.out.println("How many rooms do you want to remove for " + selectedHotel.getName() +  "?");
+			
+			noOfRooms = getValidNumberInRange(1, selectedHotel.removableRooms());
+			if(noOfRooms == -1) {
+				return;
+			}
+			hotelsrooms = selectedHotel.getNoOfRooms();
+			
+		}while(!confirmation("Are you sure that you want to remove "+ noOfRooms + " rooms off " + selectedHotel.getName() +  "?"));
+		
+		selectedHotel.roomRemover(noOfRooms);
+		
+		if(hotelsrooms - noOfRooms  == 1) {
+			System.out.println("\tHotel has reached minimum rooms.");
+			System.out.println("\n\tPress Enter to continue.\n");
+			scn.nextLine();
+		}
+	}
+
 	private void removeHotel() {
 		Hotel selectedHotel;
 		do {
@@ -394,8 +421,8 @@ System.out.println("Manage Hotel");
 			
 			System.out.println("How much do you want to change the price?");
 			
-			roomPrice = getValidNumberInRange(100.00, true);
-			if(roomPrice == 0) {
+			roomPrice = getValidNumberInRange(100.00);
+			if(roomPrice == -1) {
 				return;
 			}
 			selectedHotel.setPrice(roomPrice);
@@ -405,23 +432,38 @@ System.out.println("Manage Hotel");
 	}
 		
 	private void addRooms() {
-		Hotel selectedHotel = selectHotel();
-		if(selectedHotel == null) {
-			return;
-		}
+		
+		Hotel selectedHotel;
+		do {
+			selectedHotel = selectHotel();
+			if(selectedHotel == null) {
+				return;
+			}
+			if(selectedHotel.getNoOfRooms() == 50)
+				System.out.println("Hotel is already at max rooms. Pick another one");
+		}while(selectedHotel.getNoOfRooms() == 50);
+		
 		int noOfRooms;
+		int hotelsrooms;
 		do {
 			
 			System.out.println("How many rooms do you want to add for " + selectedHotel.getName() +  "?");
 			
-			noOfRooms = getValidNumberInRange(1, 50 - selectedHotel.getNoOfRooms(), true);
-			if(noOfRooms == 0) {
+			noOfRooms = getValidNumberInRange(1, 50 - selectedHotel.getNoOfRooms());
+			if(noOfRooms == -1) {
 				return;
 			}
-			selectedHotel.setNoOfRooms(noOfRooms);
+			hotelsrooms = selectedHotel.getNoOfRooms();
 			
-			
-		}while(confirmation("Do you want to add more rooms for" + selectedHotel.getName() + "?"));
+		}while(!confirmation("Are you sure that you want to add "+ noOfRooms + " to " + selectedHotel.getName() +  "?"));
+		
+		selectedHotel.addRooms(noOfRooms + hotelsrooms);
+		
+		if(noOfRooms + hotelsrooms  == 50) {
+			System.out.println("\tHotel has reached maximum rooms.");
+			System.out.println("\n\tPress Enter to continue.\n");
+			scn.nextLine();
+		}
 	}
 	
 	
@@ -483,10 +525,6 @@ System.out.println("Manage Hotel");
 			System.out.println("Hotel List");
 			HRS.displayHotels();
 		/* ask them for a hotel */ //MAKE THIS INTO A GODDAMN METHOD
-			String guestName = scn.nextLine();
-			if(guestName.isBlank()) {
-				return;
-			}
 			do {
 				System.out.println("Hotel name: ");
 				String someString = scn.nextLine();
@@ -495,8 +533,14 @@ System.out.println("Manage Hotel");
 				hotelToBook = HRS.findHotel(someString);
 			}while(hotelToBook == null);
 			
+			
+			String guestName = scn.nextLine();
+			if(guestName.isBlank()) {
+				return;
+			}
+			
 			System.out.println("Check in: "); 
-			int checkIn = getValidNumberInRange(1, 30, true);
+			int checkIn = getValidNumberInRange(1, 30);
 			
 			if(checkIn == -1) {
 				return;
@@ -505,7 +549,7 @@ System.out.println("Manage Hotel");
 			do {
 			System.out.println("Check out: ");
 			
-			checkOut = getValidNumberInRange(2, 31, true);
+			checkOut = getValidNumberInRange(2, 31);
 			
 			if(checkOut == -1) {
 				return;
@@ -590,12 +634,39 @@ System.out.println("Manage Hotel");
 		return someNumber;
 	}
 	
+	
+	
+	private double getPositiveDoubleInput() {
+		double number = 0;
+	    boolean validInput = false;
+
+	    while (!validInput) {
+	        try {
+	            String input = scn.nextLine();
+	            if (input.isBlank()) {
+	                return -1;
+	            } 
+                number = Double.parseDouble(input);
+                if (number > 0) {
+                    validInput = true; 
+                } else {
+                    System.out.println("\n\tInput should be positive.");
+                }
+	            
+	        } catch (NumberFormatException e) {
+	            System.out.println("\n\tInvalid input. Please enter a valid positive integer.");
+	        }
+	    }
+	    
+	    return number;
+	}
+	
 	private double getValidNumberInRange(double min) {
 		double someNumber = 0;
 		boolean isInRange;
 		do {
-			someNumber = getPositiveInput();
-			isInRange = (someNumber >= min) || (someNumber == 0 && checkForZero);
+			someNumber = getPositiveDoubleInput();
+			isInRange = (someNumber >= min);
 			if(!isInRange) {
 				System.out.println("Invalid input. number is not in range. \n");
 			}

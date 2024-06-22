@@ -9,13 +9,22 @@ public class Reservation {
 	private int checkInDay;
 	private int checkOutDay;
 	private Room room;
-	
+	private String reservationID;
 	Reservation (String guestName, int checkInDay, int checkOutDay, Room room){
 		this.guestName = guestName;
 		this.checkInDay = checkInDay;
 		this.checkOutDay = checkOutDay;
 		this.room = room;
+		this.reservationID = String.format("%s%2d%2d", room.getRoomName().substring(room.getRoomName().length() - 2), checkInDay, checkOutDay);
 		room.setReservationStatus(true);
+	}
+	
+	
+	public double getPricePerNight() {
+		return room.getRoomPrice();
+	}
+	public String getReservationID() {
+		return reservationID;
 	}
 	
 	/**
@@ -41,5 +50,9 @@ public class Reservation {
 	 */
 	public Room getRoom() {
 		return room;
+	}
+	
+	public String getRoomName() {
+		return room.getRoomName();
 	}
 }

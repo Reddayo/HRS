@@ -46,12 +46,7 @@ public class HotelReservationSystem {
     }
 	
 	public void remove(Hotel hotel) {
-		for(Hotel someHotel: hotels) {
-			if(someHotel.getName().equals(hotel.getName())) {
-				hotels.remove(hotel);
-				return;
-			}
-		}
+		hotels.remove(hotel);
 	}
 	//implement ViewHotel method 
 	
@@ -117,42 +112,7 @@ public class HotelReservationSystem {
 	
 	
 	//implement ManageHotel method
-	
-	
-	public void ManageHotel(String chosenOption){
-		
-		/* In this feature, the user can modify the different configurations of the hotel. The user should be
-			able to perform the following:
-			//a. Change the name of the hotel
-			//i. Unique naming convention should still be upheld
-			//b. Add room(s)
-			i. Unique naming convention should still be upheld
-			c. Remove room(s)
-			i. A room can only be removed if it does not have an active reservation
-			ii. For example, if there are ten rooms and rooms one to three have reservations, only
-			rooms four to ten can be removed
-			d. Update the base price for a room
-			i. Updating the base price for a room can only be done if there are currently no
-			reservations in the entire hotel since the room’s price should be consistent across
-			rooms.
-			ii. The new price must be >= 100.0.
-			e. Remove reservation
-			f. Remove hotel
-		 */
-		/*
-		ManageHotelOptions MHO = scn.nextLine();
-		switch() {
-		case CHANGE_NAME:;
-		case ADD_ROOM:;
-		case REMOVE_ROOM:;
-		case UPDATE_PRICE:;
-		case REMOVE_RESERVATION:;
-		case REMOVE_HOTEL:;
-		}
-		*/
-		
-	}
-	
+
 	
 	public void changeHotelName(String hoteltobechanged, String name) {
 		Hotel hotel = findHotel(hoteltobechanged);

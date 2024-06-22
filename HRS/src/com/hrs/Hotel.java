@@ -1,6 +1,7 @@
 package com.hrs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 public class Hotel {
 	private String name;
 	private ArrayList<Room> rooms;
@@ -27,23 +28,143 @@ public class Hotel {
 		return rooms.get(index);
 	}
 	public void roomsInitializer(int noOfRooms) {
-		for(int i = 1; i <= noOfRooms; i++) {
-			rooms.add(new Room(hotelRoomPrefix + i));
+		 for (int i = 1; i <= noOfRooms; i++) {
+	            String roomId = String.format("%s%02d", hotelRoomPrefix, i);
+	            rooms.add(new Room(roomId, price));
+	        }
+	        this.noOfRooms = noOfRooms;
+	}
+	
+	
+	 public double getEstimate() {
+	        double totalEstimate = 0.0;
+	        for (Reservation reservation : reservations) {
+	            int checkInDay = reservation.getCheckIn();
+	            int checkOutDay = reservation.getCheckOut();
+
+	            // Calculate number of nights stayed
+	            int numberOfNights = checkOutDay - checkInDay;
+
+	            // Calculate total price for the reservation
+	            double reservationPrice = numberOfNights * price;
+	            totalEstimate += reservationPrice;
+	        }
+	        return totalEstimate;
+	    }
+	
+	 public void addRooms(int noOfRooms) {
+	        for (int i = 0; i < noOfRooms; i++) {
+	            String nextRoomId = getNextRoomId();
+	            rooms.add(new Room(nextRoomId, price));
+	        }
+	    }
+	 
+	   private String getNextRoomId() {
+	      
+	        ArrayList<Integer> roomNumbers = new ArrayList<>();
+	        for (Room room : rooms) {
+	            String numberPart = room.getRoomName().substring(hotelRoomPrefix.length());
+	            roomNumbers.add(Integer.parseInt(numberPart));
+	        }
+	        Collections.sort(roomNumbers);
+
+	        int nextNumber = 1;
+	        for (int number : roomNumbers) {
+	            if (number != nextNumber) {
+	                break;
+	            }
+	            nextNumber++;
+	        }
+
+	        return String.format("%s%02d", hotelRoomPrefix, nextNumber);
+	    }
+
+	
+	   public void removeRoom(int index) {
+		    if (index < 0 || index >= rooms.size()) {
+		        throw new IllegalArgumentException("Invalid room index");
+		    }
+		    Room room = rooms.get(index);
+		    if (room.getReservations().isEmpty()) {
+		        rooms.remove(index);
+		    } else {
+		        throw new IllegalArgumentException("Room cannot be removed because it has reservations");
+		    }
 		}
-	}
+	   
+	   public void roomRemover(int count) {
+		   for(int i = 0; i < rooms.size(); i++) {
+			   Room room = rooms.get(i);
+			   if (room.getReservations().isEmpty()) {
+				   rooms.remove(i);
+				   count--;
+		 
+			   }
+		    if(count == 0) {
+		    	 noOfRooms = rooms.size();
+		    	return;
+		    }
+		    
+		   }
+		  
+		   
+	   }
 	
+	   public void removeRooms(int startIndex, int endIndex) {
+		    if (startIndex < 0 || endIndex >= rooms.size() || startIndex > endIndex) {
+		        throw new IllegalArgumentException("Invalid start or end index");
+		    }
+		    for (int i = endIndex; i >= startIndex; i--) {
+		        Room room = rooms.get(i);
+		        if (room.getReservations().isEmpty()) {
+		            rooms.remove(i);
+		        } else {
+		            throw new IllegalArgumentException("Room at index " + i + " has reservations and cannot be removed");
+		        }
+		    }
+		}
+	   
+	   public int removableRooms() {
+		    //System.out.println("Rooms without reservations:");
+		    int i = 0;
+		    for (Room room : rooms) {
+		        if (room.getReservations().isEmpty()) {
+		            //ystem.out.println(room.getRoomName());
+		        	i++;
+		        }
+		    }
+		    return i;
+		}
+	   
+	   
+	   public boolean reservationIDChecker(String reservationID) {
+		   
+		   for(Reservation r: reservations) {
+			   if(r.getReservationID() == reservationID) {
+				   return true;
+			   }
+		   }
+		   return false;
+	   }
 	
-	public double getEstimate() {
-		return price * reservations.size();
-	}
+	   
+	   
+	   public Reservation rFinder(String reservationID) {
+		   Reservation ra = null;
+		   for(Reservation r: reservations) {
+			   if(r.getReservationID() == reservationID) {
+				  ra = r;
+			   }
+		   }
+		   return ra;
+	   }
 	
-	
-	
-	
-	
-	
-	
-	
+	   public void removeReservation(Reservation someRes) {
+		   
+		   Room room = someRes.getRoom();
+		   room.removeReservation(someRes);
+		   reservations.remove(someRes);
+	   }
 	
 	
 	
