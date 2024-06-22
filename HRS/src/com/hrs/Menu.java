@@ -15,8 +15,13 @@ public class Menu {
 	public void start () {
 		boolean stop = false;
 		int chosenOption = 0;
+		
+		ascii.heart();
+		scn.nextLine();
 		while(!stop) {
+
 			
+			ascii.otherMenu();
 			displayMainMenu();
 			
 			chosenOption = getValidNumberInRange(1, 5, false);
@@ -30,15 +35,17 @@ public class Menu {
 				case EXIT: 				System.out.println("Exitting program..."); stop = true; break;
 				default: break;
 			}
-
+			
 		}
+		
+		ascii.animegirlheart();
 		
 	}
 	
 	private void displayMainMenu() {
-		System.out.println("\t\tMain Menu\n");
+		//System.out.println("\t\tMain Menu\n");
 		for (MainMenuOptions option : MainMenuOptions.values()) {
-            System.out.println("\t" + (option.ordinal() + 1) + ". " + option.getDescription());
+            System.out.println("\t[" + (option.ordinal() + 1) + "] " + option.getDescription());
         }
 		System.out.print(">> ");
 	}
@@ -235,8 +242,10 @@ public class Menu {
 	
 	
 	private void displayManageHotelMenu() {
-
+		boolean stop = false;
+		do {
 		System.out.println("Manage Hotel");
+		
 		System.out.println("1. Change hotel name");
 		/* ask for the hotel that will be changed */
 		/* then continually ask the user for an actual name 
@@ -261,10 +270,126 @@ public class Menu {
 		
 		System.out.println("7. Exit");
 		
+		int chosenOption = getValidNumberInRange(1, ManageHotelMenuOptions.values().length, false);
+		ManageHotelMenuOptions mhmo = ManageHotelMenuOptions.values()[chosenOption - 1];
+		
+		switch(mhmo) {
+
+		case CHANGEHOTELNAME:  changeHotelName();
+		case ADD_ROOMS:			addRooms();
+		case REMOVE_ROOMS:
+		case CHANGEROOMPRICE:   changeRoomPrice();
+		case REMOVERESERVATION: 
+		case REMOVEHOTEL:       removeHotel();
+		case EXITM: stop = true; break;
+		}
+		}while(!stop);
 		/* However, users must be prompted to confirm a modification or else the modification would be discarded.*/
 	}
-		
 	
+	private void removeHotel() {
+		Hotel selectedHotel;
+		do {
+			
+			System.out.println("What hotel do you want to delete?");
+			
+			selectedHotel = selectHotel();
+			if(selectedHotel == null) {
+				return;
+			}
+			HRS.remove(selectedHotel);
+			System.out.println("Hotel has been removed");
+			
+			
+		}while(confirmation("Do you want to remove another hotel?"));
+	}
+	private void changeRoomPrice() {
+		Hotel selectedHotel = selectHotel();
+		if(selectedHotel == null) {
+			return;
+		}
+		double roomPrice;
+		do {
+			
+			System.out.println("How much do you want to change the price?");
+			
+			roomPrice = getValidNumberInRange(100.00, true);
+			if(roomPrice == 0) {
+				return;
+			}
+			selectedHotel.setPrice(roomPrice);
+			
+			
+		}while(confirmation("Do you want to change the price again for" + selectedHotel.getName() + "?"));
+	}
+		
+	private void addRooms() {
+		Hotel selectedHotel = selectHotel();
+		if(selectedHotel == null) {
+			return;
+		}
+		int noOfRooms;
+		do {
+			
+			System.out.println("How many rooms do you want to add for " + selectedHotel.getName() +  "?");
+			
+			noOfRooms = getValidNumberInRange(1, 50 - selectedHotel.getNoOfRooms(), true);
+			if(noOfRooms == 0) {
+				return;
+			}
+			selectedHotel.setNoOfRooms(noOfRooms);
+			
+			
+		}while(confirmation("Do you want to add more rooms for" + selectedHotel.getName() + "?"));
+	}
+	
+	
+	
+	private void changeHotelName() {
+		
+		String answer;
+		Hotel selectedHotel = selectHotel();
+		if(selectedHotel == null) {
+			return;
+		}
+		
+		do {
+			System.out.print("New Hotel Name: ");
+			answer = scn.nextLine();
+			if(answer.isBlank()) {
+				return;
+			}
+			if(HRS.isHotelNameUnique(answer)) {
+				selectedHotel.setName(answer); 
+				System.out.println("Hotel name has been changed");
+				return;
+			}
+			System.out.println("New Hotel name is not unique");
+			
+		}while(true);
+		
+		
+	}
+	private Hotel selectHotel() {
+		
+		Hotel selectedHotel;
+		String answer;
+		do {
+			HRS.displayHotels();
+			System.out.println("Select a hotel");
+			answer = scn.nextLine();
+			if(answer.isBlank()) {
+				return null;
+			}
+			selectedHotel = HRS.findHotel(answer);
+			if(selectedHotel != null) {
+				return selectedHotel;
+			}
+			System.out.println("Invalid Input. select a valid hotel");
+			
+		}while(true);
+		
+	}
 	
 	private void displaySimulateBookingMenu() {
 		 /* No reservations can be made when the check-out is on the 1st of the month 
@@ -363,6 +488,22 @@ public class Menu {
 		return someNumber;
 	}
 	
+	private double getValidNumberInRange(double min, boolean checkForZero) {
+		double someNumber = 0;
+		boolean isInRange;
+		do {
+			someNumber = getValidIntInput();
+			isInRange = (someNumber >= min) || (someNumber == 0 && checkForZero);
+			if(!isInRange) {
+				System.out.println("Invalid input. number is not in range. \n");
+				if(checkForZero) {
+					System.out.println("Enter 0 to exit.");
+				}
+			}
+			
+		}while(!isInRange);
+		return someNumber;
+	}
 	
 	
 }

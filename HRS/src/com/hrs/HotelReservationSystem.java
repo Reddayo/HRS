@@ -1,5 +1,6 @@
 package com.hrs;
 //CHANGE THIS CLASS TO A HOTELINVENTORY/MANAGER OR SOMETHING ALL THE LOGIC WOULD BE AT THE MENU
+//IF THERE ARE NO HOTELS THEN MAKE IT NOT CALL THE FUCKING METHOD
 import java.util.ArrayList;
 public class HotelReservationSystem {
 
@@ -42,7 +43,14 @@ public class HotelReservationSystem {
 		return null;
     }
 	
-	
+	public void remove(Hotel hotel) {
+		for(Hotel someHotel: hotels) {
+			if(someHotel.getName().equals(hotel.getName())) {
+				hotels.remove(hotel);
+				return;
+			}
+		}
+	}
 	//implement ViewHotel method 
 	
 	//technically bad rn

@@ -15,6 +15,7 @@ public class Reservation {
 		this.checkInDay = checkInDay;
 		this.checkOutDay = checkOutDay;
 		this.room = room;
+		room.setReservationStatus(true);
 	}
 	
 	/**

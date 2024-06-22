@@ -2,7 +2,7 @@ package com.hrs;
 
 public enum ManageHotelMenuOptions {
 
-	CHANGE_HOTEL("Change Hotel"),
+	CHANGEHOTELNAME("Change Hotel"),
 	ADD_ROOMS("Add Room(s)"),
 	REMOVE_ROOMS("Remove Room(s)"),
 	CHANGEROOMPRICE("Change Room Price"),
