@@ -18,6 +18,10 @@ public class Room {
 	public boolean getReservationStatus() {
 		return this.reservationStatus;
 	}
+	
+	public Reservation getReservation(int i) {
+		return reservation.get(i);
+	}
 	public int getReservationSize() {
 		return reservation.size();
 	}

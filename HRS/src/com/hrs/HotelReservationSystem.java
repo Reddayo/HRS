@@ -13,7 +13,9 @@ public class HotelReservationSystem {
 		
 		hotels.add(new Hotel(name, noOfRooms, prefixGenerator(hotels.size())));	
 	}
-	
+	public boolean isEmpty() {
+		return hotels.isEmpty();
+	}
 	
 	public String prefixGenerator(int counter) {
         StringBuilder result = new StringBuilder();
