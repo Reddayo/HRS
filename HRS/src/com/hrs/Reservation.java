@@ -1,15 +1,27 @@
 package com.hrs;
-
+/**
+ * The <code>Reservation</code> class represents a reservation made by a guest
+ * for a specific room in a hotel. It includes guest information, check-in and
+ * check-out dates, room details, reservation ID, and pricing information.
+ */
 public class Reservation {
 	
-	/*For additional context, a reservation has a guest name,
-	check-in date, check-out date, and have a link to the room’s information. The reservation should
-	also have information on the total price for the booking and a breakdown of the cost per night.*/
+	
 	private String guestName;
 	private int checkInDay;
 	private int checkOutDay;
 	private Room room;
 	private String reservationID;
+	
+	/**
+     * Constructs a new <code>Reservation</code> object with the given guest name,
+     * check-in day, check-out day, and room.
+     *
+     * @param guestName   The name of the guest making the reservation.
+     * @param checkInDay  The day when the guest checks in.
+     * @param checkOutDay The day when the guest checks out.
+     * @param room        The room reserved for the guest.
+     */
 	Reservation (String guestName, int checkInDay, int checkOutDay, Room room){
 		this.guestName = guestName;
 		this.checkInDay = checkInDay;
@@ -18,13 +30,29 @@ public class Reservation {
 		this.reservationID = String.format("%s%02d%02d", room.getRoomName(), checkInDay, checkOutDay);
 		room.setReservationStatus(true);
 	}
-	
+	 /**
+     * Retrieves the total price for the reservation based on the number of nights
+     * stayed and the room's price per night.
+     *
+     * @return The total price for the reservation.
+     */
 	public double getTotalPrice() {
 		return room.getRoomPrice() * (checkOutDay - checkInDay);
 	}
+	 /**
+     * Retrieves the price per night for the room reserved in this reservation.
+     *
+     * @return The price per night for the room.
+     */
 	public double getPricePerNight() {
 		return room.getRoomPrice();
 	}
+
+    /**
+     * Retrieves the reservation ID, which is a unique identifier for this reservation.
+     *
+     * @return The reservation ID.
+     */
 	public String getReservationID() {
 		return reservationID;
 	}

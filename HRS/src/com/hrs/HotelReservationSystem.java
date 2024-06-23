@@ -2,21 +2,38 @@ package com.hrs;
 //CHANGE THIS CLASS TO A HOTELINVENTORY/MANAGER OR SOMETHING ALL THE LOGIC WOULD BE AT THE MENU
 //IF THERE ARE NO HOTELS THEN MAKE IT NOT CALL THE FUCKING METHOD
 import java.util.ArrayList;
+
+/**
+ * <p>
+ * The <code>HotelReservationSystem</code> class manages a collection of hotels
+ * within a hotel reservation system. It provides functionality to create hotels,
+ * check uniqueness of hotel names, find hotels by name, remove hotels, and display
+ * a list of all hotels currently managed.
+ * </p>
+ * <p>
+ * This class supports operations for managing hotels in the system, such as adding,
+ * finding, and removing hotels. It also includes utility methods for generating
+ * unique prefixes and displaying hotel information.
+ * </p>
+ */
 public class HotelReservationSystem {
 
 	//private Scanner scn = new Scanner(System.in);
-	private ArrayList<Hotel> hotels =  new ArrayList<Hotel>();
+	private ArrayList<Hotel> hotels;
 	static final int MAX_ROOMS = 50;
-
-	//Implement createHotel method
-	public void createHotel(String name, int noOfRooms){
-		
-		hotels.add(new Hotel(name, noOfRooms, prefixGenerator(hotels.size())));	
+	static final double defaultPrice = 1299;
+	 /**
+     * Constructs a new <code>HotelReservationSystem</code> instance with an empty list of hotels.
+     */
+	HotelReservationSystem(){
+		hotels =  new ArrayList<Hotel>();
 	}
-	public boolean isEmpty() {
-		return hotels.isEmpty();
-	}
-	
+	/**
+     * Creates a new hotel with the specified name and number of rooms, and adds it to the system.
+     * 
+     * @param name The name of the hotel to create.
+     * @param noOfRooms The number of rooms in the hotel.
+     */
 	public String prefixGenerator(int counter) {
         StringBuilder result = new StringBuilder();
         while (counter >= 0) {
@@ -25,7 +42,25 @@ public class HotelReservationSystem {
         }
         return result.toString();
     }
+	//Implement createHotel method
+	public void createHotel(String name, int noOfRooms){
+		
+		hotels.add(new Hotel(name, noOfRooms, prefixGenerator(hotels.size())));	
+	} /**
+     * Checks if the list of hotels is empty.
+     * 
+     * @return <code>true</code> if there are no hotels in the system, <code>false</code> otherwise.
+     */
+	public boolean isEmpty() {
+		return hotels.isEmpty();
+	}
 	
+	 /**
+     * Checks if a hotel name is unique among all existing hotels in the system.
+     * 
+     * @param name The name of the hotel to check for uniqueness.
+     * @return <code>true</code> if the hotel name is unique, <code>false</code> otherwise.
+     */
 	public boolean isHotelNameUnique (String name) {
 		for (Hotel hotel : hotels) {
 	        if (hotel.getName().equals(name)) {
@@ -35,7 +70,12 @@ public class HotelReservationSystem {
 	    }
 		return true;
 	}
-	
+	/**
+     * Finds a hotel by its name.
+     * 
+     * @param name The name of the hotel to find.
+     * @return The <code>Hotel</code> object if found, or <code>null</code> if not found.
+     */
 	public Hotel findHotel(String name) {
 		for(Hotel hotel: hotels) {
 			if(hotel.getName().equals(name)) {
@@ -44,100 +84,24 @@ public class HotelReservationSystem {
 		}
 		return null;
     }
-	
+	 /**
+     * Removes a specified hotel from the system.
+     * 
+     * @param hotel The <code>Hotel</code> object to remove from the system.
+     */
 	public void remove(Hotel hotel) {
 		hotels.remove(hotel);
 	}
-	//implement ViewHotel method 
-	
-	//technically bad rn
-	public void ViewHotel(String hotelName) {
-		System.out.println("What do you want to see!");
-		displayHotels();
-		//add a menu here before displaying hotels
-		/*
-		 * 2. View Hotel
-		 * 
-		 * > display all the hotels
-		 * > ask for a hotel name
-		 * Total number of available and booked rooms for a selected date
-		 * > immediately print high level info
-		 * 
-		 * 1. Hotel Information
-		 * 2. Room Information
-		 * 3. Reservation Information
-		 * 
-		 * 
-		 * 
-		 */
-		//add a scanner here, find a hotel
-		Hotel tempHotel = findHotel(hotelName);
-		if(tempHotel != null) {
-			System.out.println("Hotel Name: " + tempHotel.getName());
-			System.out.println("Total No. of Rooms: " + tempHotel.getNoOfRooms());
-			System.out.println("Estimate Earnings for the month: " + tempHotel.getEstimate());
-			/* 
-			 * Total number of available and booked rooms for a selected date
-				ii. Information about a selected room, such as the room’s name, price per night, and
-				availability across the entire month
-				iii. Information about a selected reservation, such as the guest information, room
-				information, check-in and -out dates, the total price for the booking, and the
-				breakdown of the price per night
-			 */
-			System.out.println("");
-			// some scanner thing if (string.equals(yes)){
-			
-			
-			System.out.println("");
-				for(Room room : tempHotel.getRooms())
-					System.out.println(room.getRoomName());
-			//}	
-			
-		}
-		
-		/*
-		switch() {
-		case HIGH_LEVEL:;
-		case LOW_LEVEL:;
-		}*/
-	}
-	
-	
+
+	/**
+     * Displays a list of all hotels currently managed by the system.
+     * Each hotel is listed with a bullet symbol and its name.
+     */
 	public void displayHotels() {
-		char bulletSymbol=  '\u2023'; 
+		char bulletSymbol=  149; 
 		for(Hotel hotel: hotels)
-		System.out.println(bulletSymbol + "  " + hotel.getName() );
+		System.out.println("\t" + bulletSymbol + "  " + hotel.getName() );
 	}
-	
-	
-	
-	//implement ManageHotel method
 
-	
-	public void changeHotelName(String hoteltobechanged, String name) {
-		Hotel hotel = findHotel(hoteltobechanged);
-		if(hoteltobechanged.equals(name)) {
-			System.out.println("New name is the same as the hotel to be changed");
-			return;
-		}
 		
-		if(!isHotelNameUnique(name)) {
-			System.out.println("Name is not unique");
-			return;
-		}
-		
-		if(hotel == null) {
-			return;
-		}
-		
-		
-		hotel.setName(name);
-	}
-	
-	
-	
-	//implement simulateBooking method
-	
-	
-
 }
