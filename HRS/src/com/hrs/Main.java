@@ -6,7 +6,7 @@ import java.util.Scanner;
  * and starts the menu for user interaction.
  *
  * @author Red
- * @version 3.0
+ * @version 4.0
  */
 public class Main {
 	 /**
