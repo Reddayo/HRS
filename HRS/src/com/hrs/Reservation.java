@@ -15,11 +15,13 @@ public class Reservation {
 		this.checkInDay = checkInDay;
 		this.checkOutDay = checkOutDay;
 		this.room = room;
-		this.reservationID = String.format("%s%2d%2d", room.getRoomName().substring(room.getRoomName().length() - 2), checkInDay, checkOutDay);
+		this.reservationID = String.format("%s%02d%02d", room.getRoomName(), checkInDay, checkOutDay);
 		room.setReservationStatus(true);
 	}
 	
-	
+	public double getTotalPrice() {
+		return room.getRoomPrice() * (checkOutDay - checkInDay);
+	}
 	public double getPricePerNight() {
 		return room.getRoomPrice();
 	}

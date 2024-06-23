@@ -13,6 +13,21 @@ public class Room {
 		this.reservationStatus = false;
 		this.roomPrice = 1299.0;
 	}
+	
+	
+	
+	  public boolean isAvailable(int checkInDay, int checkOutDay) {
+	        for (Reservation re : reservation) {
+	            int reservedCheckIn = re.getCheckIn();
+	            int reservedCheckOut = re.getCheckOut();
+	            
+	            // Check if there is an overlap
+	            if ((checkInDay < reservedCheckOut) && (checkOutDay > reservedCheckIn)) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
 	public double getRoomPrice() {
 		return this.roomPrice;
 	}
@@ -21,7 +36,7 @@ public class Room {
 	        availabilityString.append("Availability Calendar for Room ").append(name).append(":\n");
 
 	        // Loop through days 1 to 31
-	        for (int day = 1; day <= 31; day++) {
+	        for (int day = 1; day <= 30; day++) {
 	            boolean available = true;
 	            
 	            // Check each reservation
@@ -48,6 +63,7 @@ public class Room {
 	                availabilityString.append("\n");
 	            }
 	        }
+	        availabilityString.append("XX");
 	        
 	        return availabilityString.toString();
 	    }

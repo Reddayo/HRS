@@ -264,6 +264,7 @@ private void displayCreateHotelMenu() {
 			System.out.println("\n\tPress enter to continue.");
 			scn.nextLine();
 			
+			
 		}while(confirmation("Do you want to check out other rooms?"));
 	}
 	public void reservationInfo(Hotel hotel) {
@@ -271,16 +272,30 @@ private void displayCreateHotelMenu() {
 		do {
 			do {
 				
+				for(int i = 0; i < hotel.getReservation().size(); i++) {
+					System.out.println(hotel.getReservation().get(i).getReservationID());
+				}
+				
+				/*
+				 * 
+				 */
+				
+				
+				System.out.print("Enter Reservation ID: ");
 				String someString = scn.nextLine();
 				if(someString.isBlank())
 					return;
 				reservation = hotel.rFinder(someString);
+				if(reservation == null) {
+					System.out.println("Reservation not found");
+				}
 			}while(reservation == null);
 			System.out.println("Guest name: " + reservation.getGuestName());
 			System.out.println("Room information: " + reservation.getRoomName());
 			System.out.println("Check-in: " + reservation.getCheckIn());
 			System.out.println("Check-out: "+ reservation.getCheckOut());
 			System.out.println("Price per night: " + reservation.getPricePerNight());
+			System.out.println("Total price: " + reservation.getTotalPrice());
 			/* THIS SHOULD PRINT OUT A CALENDAR OK */
 			System.out.println("Room availability: " + reservation.getRoom().availability());
 		}while(confirmation("Do you want to check other reservations?"));
@@ -353,8 +368,9 @@ private void displayCreateHotelMenu() {
 			
 		}while(!confirmation("Are you sure that you want to remove reservation?"));
 		
-		
+		Room room = ram.getRoom();
 		selectedHotel.removeReservation(ram);
+		room.removeReservation(ram);
 		System.out.println("Removed reservation");
 		System.out.println("Press Enter to continue.");
 		scn.nextLine();
@@ -375,7 +391,7 @@ private void displayCreateHotelMenu() {
 		int noOfRooms;
 		int hotelsrooms;
 		do {
-			System.out.println("You can only remove" + selectedHotel.removableRooms());
+			System.out.println("You can only remove " + selectedHotel.removableRooms() + " rooms");
 			System.out.println("How many rooms do you want to remove for " + selectedHotel.getName() +  "?");
 			
 			noOfRooms = getValidNumberInRange(1, selectedHotel.removableRooms());
@@ -457,7 +473,7 @@ private void displayCreateHotelMenu() {
 			
 		}while(!confirmation("Are you sure that you want to add "+ noOfRooms + " to " + selectedHotel.getName() +  "?"));
 		
-		selectedHotel.addRooms(noOfRooms + hotelsrooms);
+		selectedHotel.addRooms(noOfRooms);
 		
 		if(noOfRooms + hotelsrooms  == 50) {
 			System.out.println("\tHotel has reached maximum rooms.");
@@ -522,18 +538,18 @@ private void displayCreateHotelMenu() {
 		Hotel hotelToBook;
 		do{
 		/* Display the hotel list */
-			System.out.println("Hotel List");
+			System.out.println("\tHotel List");
 			HRS.displayHotels();
 		/* ask them for a hotel */ //MAKE THIS INTO A GODDAMN METHOD
 			do {
-				System.out.println("Hotel name: ");
+				System.out.println("\tHotel name: ");
 				String someString = scn.nextLine();
 				if(someString.isBlank())
 					return;
 				hotelToBook = HRS.findHotel(someString);
 			}while(hotelToBook == null);
 			
-			
+			System.out.println("\tGuest name:");
 			String guestName = scn.nextLine();
 			if(guestName.isBlank()) {
 				return;
@@ -547,22 +563,34 @@ private void displayCreateHotelMenu() {
 			}
 			int checkOut;
 			do {
-			System.out.println("Check out: ");
-			
-			checkOut = getValidNumberInRange(2, 31);
-			
-			if(checkOut == -1) {
-				return;
+				System.out.println("Check out: ");
+				
+				checkOut = getValidNumberInRange(2, 31);
+				
+				if(checkOut == -1) {
+					return;
 			}
 			if(checkOut == checkIn) {
 				System.out.println("You cannot check in and check out in the same day.");
 			}
+			
 			}while(checkOut == checkIn);
 			
 		/* ask for checkIn checkOut dates */
 		/* Bookings cannot be made outside of defined period */
+			/*make this actually work*/
 			
-			hotelToBook.addReservation(new Reservation(guestName, checkIn, checkOut, hotelToBook.getRoom(0)));
+			Room room = hotelToBook.findAvailableRoom(checkIn, checkOut);
+			if(room  == null) {
+				System.out.println("There are no available rooms in this hotel, given the time frame");
+				return;
+			}
+			Reservation some = new Reservation(guestName, checkIn, checkOut, room);
+	
+			hotelToBook.addReservation(some);
+			room.addReservation(some);
+			System.out.println("\tReservation has been added");
+			System.out.println("\tReservationID " + some.getReservationID());
 		/* if SELECTING FOR ROOM IS GONNA BE MANUAL YOU FUCKS ARE GONNA PAY */
 		
 		}while(confirmation("Do you want to make another booking"));

@@ -53,10 +53,11 @@ public class Hotel {
 	    }
 	
 	 public void addRooms(int noOfRooms) {
-	        for (int i = 0; i < noOfRooms; i++) {
+	        for (int i = 1; i <= noOfRooms; i++) {
 	            String nextRoomId = getNextRoomId();
 	            rooms.add(new Room(nextRoomId, price));
 	        }
+	       this.noOfRooms += noOfRooms;
 	    }
 	 
 	   private String getNextRoomId() {
@@ -93,22 +94,29 @@ public class Hotel {
 		}
 	   
 	   public void roomRemover(int count) {
-		   for(int i = 0; i < rooms.size(); i++) {
+		   for(int i = 0; i < rooms.size() && count > 0; i++) {
 			   Room room = rooms.get(i);
 			   if (room.getReservations().isEmpty()) {
 				   rooms.remove(i);
 				   count--;
-		 
+				   i--;
 			   }
 		    if(count == 0) {
-		    	 noOfRooms = rooms.size();
+		    	this.noOfRooms = rooms.size();
 		    	return;
 		    }
-		    
 		   }
-		  
-		   
 	   }
+	   
+	   
+	   public Room findAvailableRoom(int checkInDay, int checkOutDay) {
+	        for (Room room : rooms) {
+	            if (room.isAvailable(checkInDay, checkOutDay)) {
+	                return room;
+	            }
+	        }
+	        return null; // No available room found
+	    }
 	
 	   public void removeRooms(int startIndex, int endIndex) {
 		    if (startIndex < 0 || endIndex >= rooms.size() || startIndex > endIndex) {
@@ -152,7 +160,7 @@ public class Hotel {
 	   public Reservation rFinder(String reservationID) {
 		   Reservation ra = null;
 		   for(Reservation r: reservations) {
-			   if(r.getReservationID() == reservationID) {
+			   if(r.getReservationID().equals(reservationID)) {
 				  ra = r;
 			   }
 		   }
