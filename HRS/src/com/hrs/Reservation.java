@@ -28,7 +28,7 @@ public class Reservation {
 		this.checkOutDay = checkOutDay;
 		this.room = room;
 		this.reservationID = String.format("%s%02d%02d", room.getRoomName(), checkInDay, checkOutDay);
-		room.setReservationStatus(true);
+		
 	}
 	 /**
      * Retrieves the total price for the reservation based on the number of nights

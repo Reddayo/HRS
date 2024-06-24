@@ -15,9 +15,9 @@ public class Main {
      * @param args The command-line arguments (not used in this application).
      */
 	public static void main (String[] args) {
-		HotelReservationSystem HRS = new HotelReservationSystem();
+		HotelListManager HRS = new HotelListManager();
 		Scanner scn = new Scanner(System.in);
-		Menu menu = new Menu(HRS, scn);
+		MenuHandler menu = new MenuHandler(HRS, scn);
 		menu.start();
 	}
 }

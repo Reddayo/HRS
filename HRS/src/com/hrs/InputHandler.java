@@ -37,14 +37,14 @@ import java.util.Scanner;
     public boolean confirmation( String prompt) {
         while (true) {
             System.out.print(prompt + " (Y/N): ");
-            String answer = scn.nextLine().trim().toUpperCase();
+            String answer = scn.nextLine().trim();
 
             if (answer.equals("Y")) {
                 return true;
             } else if (answer.equals("N")) {
                 return false;
             } else {
-                System.out.println("\n\tInvalid input. Enter Y or N.");
+                System.out.println("\nInvalid input. Enter Y or N.");
             }
         }
     }
@@ -67,10 +67,10 @@ import java.util.Scanner;
                 if (number > 0) {
                     return number;
                 } else {
-                    System.out.println("\n\tInput should be a positive integer.");
+                    System.out.println("\nInput should be a positive integer.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("\n\tInvalid input. Please enter a valid positive integer.");
+                System.out.println("\nInvalid input. Please enter a valid positive integer.");
             }
         }
     }
@@ -91,7 +91,7 @@ import java.util.Scanner;
             if (number >= min && number <= max) {
                 return number;
             } else {
-                System.out.println("\n\tInput should be between " + min + " and " + max + ".");
+                System.out.println("\nInput should be between " + min + " and " + max + ".");
             }
         }
     }
@@ -114,10 +114,10 @@ import java.util.Scanner;
                 if (number > 0) {
                     return number;
                 } else {
-                    System.out.println("\n\tInput should be a positive number.");
+                    System.out.println("\nInput should be a positive number.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("\"\\n\\tInvalid input. Please enter a valid positive number.");
+                System.out.println("\nInvalid input. Please enter a valid positive number.");
             }
         }
     }
@@ -137,7 +137,7 @@ import java.util.Scanner;
             if (number >= min) {
                 return number;
             } else {
-                System.out.println("\n\tInput should be greater than or equal to " + min + ".");
+                System.out.println("\nInput should be greater than or equal to " + min + ".");
             }
         }
     }
@@ -150,7 +150,7 @@ import java.util.Scanner;
      * @param prompt The message prompt to display.
      * @return The unique hotel name input from the user.
      */
-    public String getUniqueHotelName(HotelReservationSystem HRS, String prompt) {
+    public String getUniqueHotelName(HotelListManager HRS, String prompt) {
         String hotelName;
         while(true) {
             System.out.print(prompt);
@@ -161,8 +161,85 @@ import java.util.Scanner;
             if (HRS.isHotelNameUnique(hotelName)) {
             	 return hotelName;
             }
-            System.out.println("\n\t" +hotelName + " is not unique.");
+            System.out.println("\n" +hotelName + " is not unique.");
         } 
   
     }
+    
+    
+    
+    /**
+	 * Selects a hotel from the list of available hotels.
+	 * 
+	 * @return The selected <code>Hotel</code> object, or <code>null</code> if no valid hotel is selected.
+	 */
+    public Hotel selectHotel(HotelListManager HRS) {
+			Hotel selectedHotel;
+			String answer;
+			while(true){
+				System.out.print(HRS.hotelsText());
+				System.out.println("\nSelect a hotel");
+				System.out.print(">> ");
+				answer = scn.nextLine();
+				if(answer.isBlank()) {
+					return null;
+				}
+				selectedHotel = HRS.findHotel(answer);
+				if(selectedHotel != null) {
+					return selectedHotel;
+				}
+				System.out.println("\nHotel not found. Enter a hotel or Press enter to exit.\n\n");
+			}
+			
+		}
+
+
+	/**
+     * Selects a room from the list of available rooms in a hotel.
+     * 
+     * @param foundHotel The <code>Hotel</code> object to select a room from.
+     * @return The selected <code>Room</code> object, or <code>null</code> if no valid room is selected.
+     */
+	public Room selectRoom(HotelListManager HRS, Hotel foundHotel) {
+		
+		while(true){
+			
+			System.out.print(HRS.roomsOfHotelText(foundHotel));
+			System.out.println("\nSelect a room");
+			System.out.print(">> ");
+			String someString = scn.nextLine();
+			if(someString.isBlank())
+				return null;
+			Room room = foundHotel.findRoom(someString);
+			if(room != null) {
+				return room;
+			}
+			System.out.println("\nRoom not found. Enter a valid room or Press enter to exit.\n\n");
+		}
+	}
+	  /**
+	 * Selects a reservation from the list of reservations in a hotel.
+	 * 
+	 * @param foundHotel The <code>Hotel</code> object to select a reservation from.
+	 * @return The selected <code>Reservation</code> object, or <code>null</code> if no valid reservation is selected.
+	 */	
+	public Reservation selectReservation(HotelListManager HRS, Hotel foundHotel) {
+		Reservation reservation;
+		while(true) {
+			
+			System.out.print(HRS.reservationsOfHotelText(foundHotel));
+			
+			System.out.print("Enter Reservation ID: ");
+			String someString = scn.nextLine();
+			if(someString.isBlank()) {
+				return null;
+			}
+			reservation = foundHotel.rFinder(someString);
+			if(reservation != null) {
+				return reservation;
+			}
+			System.out.println("\nReservation not found. Enter a valid reservation ID or Press Enter to Exit.\n\n");
+		}
+	}
+
 }

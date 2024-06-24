@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * unique prefixes and displaying hotel information.
  * </p>
  */
-public class HotelReservationSystem {
+public class HotelListManager {
 
 	//private Scanner scn = new Scanner(System.in);
 	private ArrayList<Hotel> hotels;
@@ -25,27 +25,39 @@ public class HotelReservationSystem {
 	 /**
      * Constructs a new <code>HotelReservationSystem</code> instance with an empty list of hotels.
      */
-	HotelReservationSystem(){
+	HotelListManager(){
 		hotels =  new ArrayList<Hotel>();
 	}
-	/**
-     * Creates a new hotel with the specified name and number of rooms, and adds it to the system.
-     * 
-     * @param name The name of the hotel to create.
-     * @param noOfRooms The number of rooms in the hotel.
-     */
-	public String prefixGenerator(int counter) {
-        StringBuilder result = new StringBuilder();
-        while (counter >= 0) {
-            result.insert(0, (char) ('A' + counter % 26));
-            counter = counter / 26 - 1;
-        }
-        return result.toString();
-    }
+	 private String prefixGenerator() {
+	        int counter = 0;
+	        StringBuilder result = new StringBuilder();
+	        while (true) {
+	            result.setLength(0); 
+	            int tempCounter = counter;
+	            while (tempCounter >= 0) {
+	                result.insert(0, (char) ('A' + tempCounter % 26));
+	                tempCounter = tempCounter / 26 - 1;
+	            }
+	            
+	       
+	            boolean isUnique = true;
+	            for (Hotel hotel : hotels) {
+	                if (hotel.getRoomPrefix().equals(result.toString())) {
+	                    isUnique = false;
+	                    break;
+	                }
+	            }
+	            
+	            if (isUnique) {
+	                return result.toString();
+	            }
+	            counter++;
+	        }
+	    }
 	//Implement createHotel method
 	public void createHotel(String name, int noOfRooms){
 		
-		hotels.add(new Hotel(name, noOfRooms, prefixGenerator(hotels.size())));	
+		hotels.add(new Hotel(name, noOfRooms, prefixGenerator()));	
 	} /**
      * Checks if the list of hotels is empty.
      * 
@@ -84,6 +96,8 @@ public class HotelReservationSystem {
 		}
 		return null;
     }
+	
+	
 	 /**
      * Removes a specified hotel from the system.
      * 
@@ -94,14 +108,42 @@ public class HotelReservationSystem {
 	}
 
 	/**
-     * Displays a list of all hotels currently managed by the system.
-     * Each hotel is listed with a bullet symbol and its name.
-     */
-	public void displayHotels() {
-		char bulletSymbol=  149; 
-		for(Hotel hotel: hotels)
-		System.out.println("\t" + bulletSymbol + "  " + hotel.getName() );
+	 * Displays a list of all hotels currently managed by the system.
+	 * Each hotel is listed with a bullet symbol and its name.
+	 */
+	public String hotelsText() {
+	    char bulletSymbol = '~';
+	    StringBuilder output = new StringBuilder();
+	    for (Hotel hotel : hotels) {
+	        output.append(bulletSymbol).append("  ").append(hotel.getName()).append("\n");
+	    }
+	    return output.toString();
 	}
 
-		
+	/**
+	 * Displays a list of available rooms in a selected hotel for booking.
+	 * 
+	 * @param hotel The <code>Hotel</code> object to display available rooms for.
+	 */
+	public String roomsOfHotelText(Hotel hotel) {
+	    StringBuilder output = new StringBuilder("\n\n");
+	    for (Room room : hotel.getRooms()) {
+	        output.append("~ ").append(room.getRoomName()).append("\n");
+	    }
+	    return output.toString();
+	}
+
+	/**
+	 * Displays a list of reservations in a selected hotel.
+	 * 
+	 * @param hotel The <code>Hotel</code> object to display reservations for.
+	 */
+	public String reservationsOfHotelText(Hotel hotel) {
+	    StringBuilder output = new StringBuilder();
+	    for (int i = 0; i < hotel.getReservation().size(); i++) {
+	        output.append("~ ").append(hotel.getReservation().get(i).getReservationID()).append("\n");
+	    }
+	    return output.toString();
+	}
+
 }

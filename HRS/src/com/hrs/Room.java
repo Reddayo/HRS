@@ -10,8 +10,8 @@ import java.util.ArrayList;
  */
 public class Room {
 	private String name;
-	private ArrayList<Reservation> reservation;
-	private boolean reservationStatus;
+	private ArrayList<Reservation> reservations;
+	
 	private double roomPrice;
 	
 	/**
@@ -22,12 +22,33 @@ public class Room {
      */
 	Room(String name, double roomPrice){
 		this.name = name;
-		this.reservation = new ArrayList<Reservation>();
-		this.reservationStatus = false;
+		this.reservations = new ArrayList<Reservation>();
 		this.roomPrice = 1299.0;
 	}
 	
 	
+	/**
+	     * Removes a reservation from the room.
+	     *
+	     * @param reservation The reservation to be removed.
+	     */
+	 public void removeReservation(Reservation reservation) {
+		this.reservations.remove(reservation);
+	
+	}
+
+
+	/**
+	     * Adds a new reservation to the room.
+	     *
+	     * @param reservation The reservation to be added.
+	     */
+	public void addReservation(Reservation reservation) {
+		this.reservations.add(reservation);
+		
+	}
+
+
 	/**
 	* Checks if the room is available for booking during the specified period.
 	*
@@ -36,7 +57,7 @@ public class Room {
 	* @return <code>true</code> if the room is available, <code>false</code> otherwise.
 	*/
 	public boolean isAvailable(int checkInDay, int checkOutDay) {
-	        for (Reservation re : reservation) {
+	        for (Reservation re : reservations) {
 	            int reservedCheckIn = re.getCheckIn();
 	            int reservedCheckOut = re.getCheckOut();
 	            
@@ -48,28 +69,20 @@ public class Room {
 	        return true;
 	    }
 	/**
-     * Retrieves the price per night for the room.
-     *
-     * @return The price per night for the room.
-     */
-	public double getRoomPrice() {
-		return this.roomPrice;
-	}
-	/**
      * Generates a textual representation of the room's availability for the month.
      *
      * @return A string representing the availability of the room.
      */
 	 public String availability() {
 	        StringBuilder availabilityString = new StringBuilder();
-	        availabilityString.append("\tAvailability Calendar for Room ").append(name).append(":\n\t");
+	        availabilityString.append("Availability Calendar for Room ").append(name).append(":\n");
 
 	        // Loop through days 1 to 31
 	        for (int day = 1; day <= 30; day++) {
 	            boolean available = true;
 	            
 	            // Check each reservation
-	            for (Reservation reservation : reservation) {
+	            for (Reservation reservation : reservations) {
 	                int checkInDay = reservation.getCheckIn();
 	                int checkOutDay = reservation.getCheckOut();
 	                
@@ -89,7 +102,7 @@ public class Room {
 	            
 	            // Add newline after every 7 days for readability
 	            if (day % 7 == 0) {
-	                availabilityString.append("\n\t");
+	                availabilityString.append("\n");
 	            }
 	        }
 	        availabilityString.append("XX");
@@ -98,36 +111,12 @@ public class Room {
 	    }
 	
 	 /**
-	     * Removes a reservation from the room.
-	     *
-	     * @param reservation The reservation to be removed.
-	     */
-	 public void removeReservation(Reservation reservation) {
-		this.reservation.remove(reservation);
-	}
-	 /**
-	     * Adds a new reservation to the room.
-	     *
-	     * @param reservation The reservation to be added.
-	     */
-	public void addReservation(Reservation reservation) {
-		this.reservation.add(reservation);
-	}
-	/**
-     * Sets the reservation status of the room.
-     *
-     * @param reservationStatus The new reservation status.
-     */
-	public void setReservationStatus(boolean reservationStatus) {
-		this.reservationStatus = reservationStatus;
-	}
-	/**
-     * Retrieves the reservation status of the room.
-     *
-     * @return The reservation status of the room.
-     */
-	public boolean getReservationStatus() {
-		return this.reservationStatus;
+	 * Retrieves the price per night for the room.
+	 *
+	 * @return The price per night for the room.
+	 */
+	public double getRoomPrice() {
+		return this.roomPrice;
 	}
 	  /**
      * Retrieves a specific reservation from the room based on its index.
@@ -136,7 +125,7 @@ public class Room {
      * @return The reservation at the specified index.
      */
 	public Reservation getReservation(int i) {
-		return reservation.get(i);
+		return reservations.get(i);
 	}
 	 /**
      * Retrieves all reservations associated with the room.
@@ -144,7 +133,7 @@ public class Room {
      * @return The list of reservations associated with the room.
      */
 	public ArrayList<Reservation> getReservations() {
-		return reservation;
+		return reservations;
 	}
 	
 	/**
@@ -153,7 +142,7 @@ public class Room {
      * @return The number of reservations associated with the room.
      */
 	public int getReservationSize() {
-		return reservation.size();
+		return reservations.size();
 	}
 	
 	/**

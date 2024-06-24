@@ -11,10 +11,10 @@ import java.util.Scanner;
  * the program.
  * </p>
  */
-public class Menu {
+public class MenuHandler {
 
 	private final Scanner scn;
-	private final HotelReservationSystem HRS;
+	private final HotelListManager HRS;
 	private final InputHandler IH;
 		
 	 /**
@@ -23,7 +23,7 @@ public class Menu {
      * @param HRS The <code>HotelReservationSystem</code> instance to interact with.
      * @param scn The <code>Scanner</code> instance for user input.
      */
-	Menu (HotelReservationSystem HRS, Scanner scn){
+	MenuHandler (HotelListManager HRS, Scanner scn){
 		this.HRS = HRS;
 		this.scn = scn;
 		this.IH = new InputHandler(scn);
@@ -46,7 +46,7 @@ public class Menu {
 			ascii.otherMenu();
 			displayOptions(MENU_OPTIONS);
 			
-			chosenOption = IH.getValidIntegerInRange(1, MENU_OPTIONS.length, "\t>> ");
+			chosenOption = IH.getValidIntegerInRange(1, MENU_OPTIONS.length, ">> ");
 			
 			switch(chosenOption) {
 				case 1:	createHotel(); break; 
@@ -70,7 +70,7 @@ public class Menu {
 		System.out.println("\n\n");
 		int i = 0;
 		for (String someString: someStringsToDisplay) {
-            System.out.println("\t[" + ++i + "]  " + someString);
+            System.out.println("[" + ++i + "]  " + someString);
         }
 	}
 	/**
@@ -82,23 +82,23 @@ public class Menu {
 		String newHotelName;
 		int newNoOfRooms;
 		while(true) {
-			System.out.println("\n\n\t\tCreate Hotel\n\n");
-			System.out.println("\tPress enter to abort.");
+			System.out.println("\n\nCreate Hotel\n\n");
+			System.out.println("Press enter to abort.");
 	
-			newHotelName = IH.getUniqueHotelName(HRS, "\n\tHotel name: ");
+			newHotelName = IH.getUniqueHotelName(HRS, "\nHotel name: ");
 			
 			if(newHotelName == null)
 				return;
 			
-			newNoOfRooms = IH.getValidIntegerInRange(1, HotelReservationSystem.MAX_ROOMS, "\n\tNo. of rooms: " );
+			newNoOfRooms = IH.getValidIntegerInRange(1, HotelListManager.MAX_ROOMS, "\nNo. of rooms: " );
 			
 			if(newNoOfRooms == -1)
 				return;
 			
 			HRS.createHotel(newHotelName, newNoOfRooms);
 
-			System.out.println("\n\n\t" + newHotelName + " with " + newNoOfRooms + " rooms has been created!");
-			if(!IH.confirmation("\n\tDo you want to create another hotel?"))
+			System.out.println("\n\n" + newHotelName + " with " + newNoOfRooms + " rooms has been created!");
+			if(!IH.confirmation("\nDo you want to create another hotel?"))
 				return;
 		}
 	}
@@ -108,26 +108,26 @@ public class Menu {
 	private void ViewHotel() {
 		
 		if(HRS.isEmpty()) {
-			System.out.println("\tThere are no hotels to view.");
-			System.out.println("\tPress enter to continue.");
+			System.out.println("\nThere are no hotels to view.");
+			System.out.println("\nPress enter to continue.");
 			scn.nextLine();
 			return;
 		}
 		final String[] VIEWHOTEL_OPTS = new String[] {"Overview Information", 
-													"Detailed Information", 
-													"View another hotel", 
-													"Exit"};
+														"Detailed Information", 
+														"View another hotel", 
+														"Exit"};
 		while(true) {
 			boolean stop = false;
-			System.out.println("\t\tView Hotel");
-			Hotel foundHotel = selectHotel();
+			System.out.println("\n\nView Hotel\n\n");
+			Hotel foundHotel = IH.selectHotel(HRS);
 			if(foundHotel == null) {
 				return;
 			}
 			
 			do {
 				displayOptions(VIEWHOTEL_OPTS);
-				int chosen  = IH.getValidIntegerInRange(1, VIEWHOTEL_OPTS.length, "\t>> ");
+				int chosen  = IH.getValidIntegerInRange(1, VIEWHOTEL_OPTS.length, ">> ");
 				
 				if(chosen == -1) {
 					return;
@@ -135,7 +135,7 @@ public class Menu {
 				switch (chosen) {
 					case 1: displayOverviewInfo(foundHotel); break;
 					case 2: detailedViewHotelMenu(foundHotel); break;
-					case 3: System.out.println("\tViewing another hotel."); stop = true; break;
+					case 3: System.out.println("Viewing another hotel."); stop = true; break;
 					case 4:	return;
 				}
 				
@@ -151,10 +151,10 @@ public class Menu {
      */
 	private void displayOverviewInfo(Hotel foundHotel) {
 		
-		System.out.println("\tHotel Name: " + foundHotel.getName());
-		System.out.println("\tTotal number of rooms: " + foundHotel.getNoOfRooms());
-		System.out.println("\tEstimate earnings: " + foundHotel.getEstimate());
-		System.out.print("\n\n\tPress enter to continue.");
+		System.out.println("\n\nHotel Name: " + foundHotel.getName());
+		System.out.println("Total number of rooms: " + foundHotel.getNoOfRooms());
+		System.out.println("Estimate earnings: " + foundHotel.getEstimate());
+		System.out.print("\n\nPress enter to continue.");
 		scn.nextLine();
 	}
 	/**
@@ -169,7 +169,7 @@ public class Menu {
 													"Go to previous menu"};
 		while(true) {
 			displayOptions(DETAILED_VIEWHOTEL_OPTS);
-			int chosen = IH.getValidIntegerInRange(1, DETAILED_VIEWHOTEL_OPTS.length, "\t>> ");
+			int chosen = IH.getValidIntegerInRange(1, DETAILED_VIEWHOTEL_OPTS.length, ">> ");
 			if(chosen == -1) {
 				return;
 			}
@@ -196,60 +196,31 @@ public class Menu {
 	
 		while(true) {	
 		
-			int day = IH.getValidIntegerInRange(1, 31, "\tEnter a day [Number 1 to 31]: ");
+			int day = IH.getValidIntegerInRange(1, 31, "\n\nEnter a day [Number 1 to 31]: ");
 			if(day == 31) {
-				System.out.println("\tDay is not available to check in.");
+				System.out.println("Day is not available to check in.");
 				continue;
 			}
 			if(day == -1) {
 				return;
 			}
-			
+			//System.out.println(foundHotel.getNoOfRooms());
 			int num = foundHotel.getNoOfAvailableRooms(day);
 			
-			System.out.println("\tNo. of available rooms bv Day " + day + ": " + num);
-			System.out.println("\tNo. of booked rooms by Day " + day + ": " + (foundHotel.getNoOfRooms() - num));
-			System.out.print("\n\tPress enter to continue");
+			System.out.println("\nNo. of available rooms bv Day " + day + ": " + num);
+			System.out.println("No. of booked rooms by Day " + day + ": " + (foundHotel.getNoOfRooms() - num));
+			System.out.print("\nPress enter to continue.");
 			scn.nextLine();
 			
-			if(!IH.confirmation("Do you want to check other days?")) {
+			if(!IH.confirmation("\nDo you want to check other days?")) {
 				return;
 			}
 		}
 	}
-	  /**
-     * Displays a list of available rooms in a selected hotel for booking.
-     * 
-     * @param hotel The <code>Hotel</code> object to display available rooms for.
-     */
-	private void displayRoomsOfHotel(Hotel hotel) {
-		System.out.println("\n\n");
-		for(Room room: hotel.getRooms())
-			System.out.println("\t" + room.getRoomName());
-	}
+	  
+	
+
 	/**
-     * Selects a room from the list of available rooms in a hotel.
-     * 
-     * @param foundHotel The <code>Hotel</code> object to select a room from.
-     * @return The selected <code>Room</code> object, or <code>null</code> if no valid room is selected.
-     */
-	private Room selectRoom(Hotel foundHotel) {
-		
-		while(true){
-			System.out.println("\tSelect a room");
-			System.out.print("\t>> ");
-			displayRoomsOfHotel(foundHotel);
-			String someString = scn.nextLine();
-			if(someString.isBlank())
-				return null;
-			Room room = foundHotel.findRoom(someString);
-			if(room != null) {
-				return room;
-			}
-			System.out.println("\tRoom not found. Enter a valid room or Press enter to exit.");
-		}
-	}
-	  /**
      * Displays detailed information about a selected room in a hotel.
      * 
      * @param foundHotel The <code>Hotel</code> object containing the room to display information for.
@@ -258,68 +229,48 @@ public class Menu {
 		
 		while(true){
 			Room room;
-			room = selectRoom(foundHotel);
+			room = IH.selectRoom(HRS, foundHotel);
 			if(room == null) {
 				return;
 			}
-			System.out.println("Room name: " + room.getRoomName());
+			System.out.println("\n\nRoom name: " + room.getRoomName());
 			System.out.println("Room price: " + foundHotel.getPrice());
 			/* THIS SHOULD PRINT OUT A CALENDAR OK */
-			System.out.println("Room availability: " + room.availability());
+			System.out.println(room.availability());
 			
-			System.out.println("\n\tPress enter to continue.");
+			System.out.print("\nPress enter to continue.");
 			scn.nextLine();
 			
-			if(!IH.confirmation("Do you want to check out other rooms?")){
+			if(!IH.confirmation("\nDo you want to check out other rooms?")){
 				return;
 			}
 			
 		}
 	}
 	 /**
-     * Selects a reservation from the list of reservations in a hotel.
-     * 
-     * @param foundHotel The <code>Hotel</code> object to select a reservation from.
-     * @return The selected <code>Reservation</code> object, or <code>null</code> if no valid reservation is selected.
-     */	
-	private Reservation selectReservation(Hotel foundHotel) {
-		Reservation reservation;
-		while(true) {
-			
-			for(int i = 0; i < foundHotel.getReservation().size(); i++) {
-				System.out.println("\t"+foundHotel.getReservation().get(i).getReservationID());
-			}
-			
-			System.out.print("\tEnter Reservation ID: ");
-			String someString = scn.nextLine();
-			if(someString.isBlank()) {
-				return null;
-			}
-			reservation = foundHotel.rFinder(someString);
-			if(reservation != null) {
-				return reservation;
-			}
-			System.out.println("\teservation not found");
-		}
-	}
-    /**
      * Displays detailed information about a selected reservation in a hotel.
      * 
      * @param foundHotel The <code>Hotel</code> object containing the reservation to display information for.
      */	
 	private void reservationInfo(Hotel foundHotel) {
 		Reservation reservation;
+		if(foundHotel.getReservation().isEmpty()) {
+			System.out.println("\n\n" + foundHotel.getName() + " currently has no reservations");
+			System.out.println("\nPress enter to continue");
+			scn.nextLine();
+			return;
+		}
 		while(true) {
-			reservation = selectReservation(foundHotel);
+			reservation = IH.selectReservation(HRS, foundHotel);
 			if(reservation == null) {
 				return;
 			}
-			System.out.println("\n\n\tGuest name: " + reservation.getGuestName());
-			System.out.println("\tRoom information: " + reservation.getRoomName());
-			System.out.println("\tCheck-in: " + reservation.getCheckIn());
-			System.out.println("\tCheck-out: "+ reservation.getCheckOut());
-			System.out.println("\tPrice per night: " + reservation.getPricePerNight());
-			System.out.println("\tTotal price: " + reservation.getTotalPrice());
+			System.out.println("\n\nGuest name: " + reservation.getGuestName());
+			System.out.println("Room information: " + reservation.getRoomName());
+			System.out.println("Check-in: " + reservation.getCheckIn());
+			System.out.println("Check-out: "+ reservation.getCheckOut());
+			System.out.println("Price per night: " + reservation.getPricePerNight());
+			System.out.println("Total price: " + reservation.getTotalPrice());
 			/* THIS SHOULD PRINT OUT A CALENDAR OK */
 			System.out.println(reservation.getRoom().availability());
 			
@@ -329,46 +280,27 @@ public class Menu {
 		}
 	}
 	/**
-     * Selects a hotel from the list of available hotels.
-     * 
-     * @return The selected <code>Hotel</code> object, or <code>null</code> if no valid hotel is selected.
-     */
-	private Hotel selectHotel() {
-			Hotel selectedHotel;
-			String answer;
-			while(true){
-				HRS.displayHotels();
-				System.out.println("\tSelect a hotel");
-				System.out.print("\t>> ");
-				answer = scn.nextLine();
-				if(answer.isBlank()) {
-					return null;
-				}
-				selectedHotel = HRS.findHotel(answer);
-				if(selectedHotel != null) {
-					return selectedHotel;
-				}
-				System.out.println("\tHotel not found. Enter a valid hotel or Press enter to exit.");
-			}
-			
-		}
-	/**
      * Manages options related to a selected hotel, such as changing hotel name, adding rooms,
      * removing rooms, changing room prices, removing reservations, or removing the entire hotel.
      */
 	private void ManageHotelMenu() {
 		while(true) {
-			
+			if(HRS.isEmpty()) {
+				System.out.println("\nThere are no hotels to manage.");
+				System.out.println("\nPress enter to continue.");
+				scn.nextLine();
+				return;
+			}
 			final String[] MANAGEHOTEL_OPTS = new String[]{"Change Hotel", "Add Room(s)", "Remove Room(s)",
 														  "Change Room Price", "Remove Reservation", "Remove Hotel",
 														  "Exit"};
 			
 			displayOptions(MANAGEHOTEL_OPTS);
-			int chosen = IH.getValidIntegerInRange(1, 7, "\t>> ");
+			int chosen = IH.getValidIntegerInRange(1, 7, ">> ");
 			if(chosen == -1) {
 				return;
 			}
-			
+			System.out.println("\n\n");
 			switch(chosen) {
 	
 			case 1:   changeHotelName(); break;
@@ -388,22 +320,23 @@ public class Menu {
 	private void changeHotelName() {
 			
 			String answer;
-			Hotel selectedHotel = selectHotel();
+			
+			Hotel selectedHotel = IH.selectHotel(HRS);
 			if(selectedHotel == null) {
 				return;
 			}
 			
-			answer = IH.getUniqueHotelName(HRS, "\tNew Hotel Name: ");
+			answer = IH.getUniqueHotelName(HRS, "\nNew Hotel Name: ");
 			if(answer == null) {
 				return;
 			}
 			
-			if(IH.confirmation("\tReplace "+selectedHotel.getName() + " with " + answer + " ? ")) {
+			if(IH.confirmation("\nReplace "+selectedHotel.getName() + " with " + answer + " ? ")) {
 				selectedHotel.setName(answer); 
-				System.out.println("\tHotel name has been changed");
+				System.out.println("\nHotel name has been changed");
 				
 			}else {
-				System.out.println("\tHotel name has NOT been changed");
+				System.out.println("\nHotel name has NOT been changed");
 			}
 			
 		}
@@ -414,35 +347,38 @@ public class Menu {
 		
 		Hotel selectedHotel;
 		do {
-			selectedHotel = selectHotel();
+			selectedHotel = IH.selectHotel(HRS);
 			if(selectedHotel == null) {
 				return;
 			}
-			if(selectedHotel.getNoOfRooms() == 50)
-				System.out.println("\tHotel is already at max rooms. Pick another one or Press Enter to exit.");
+			if(selectedHotel.getNoOfRooms() == 50) {
+				System.out.println("\nHotel is already at max rooms.");
+				System.out.println("\nPress enter to pick again. Press enter twice to leave.");
+				scn.nextLine();
+			}
 		}while(selectedHotel.getNoOfRooms() == 50);
 		
 		int noOfRooms;
 		
-		System.out.println("\tYou can only add until " + (50 - selectedHotel.getNoOfRooms()) + " room.");
+		System.out.println("\nYou can only add until " + (50 - selectedHotel.getNoOfRooms()) + " room(s).");
 		noOfRooms = IH.getValidIntegerInRange(1, 50 - selectedHotel.getNoOfRooms(), 
-					"\tHow many room(s) do you want to add for " + selectedHotel.getName() +  "? ");
+				"\nHow many room(s) do you want to add for " + selectedHotel.getName() +  "? ");
 	
 		if(noOfRooms == -1) {
 			return;
 		}
 			
-		if(IH.confirmation("\rAre you sure that you want to add "+ noOfRooms + " to " + selectedHotel.getName() +  "?")) {
+		if(IH.confirmation("\nAre you sure that you want to add "+ noOfRooms + " to " + selectedHotel.getName() +  "?")) {
 			selectedHotel.addRooms(noOfRooms);
 			
-			System.out.println("\t " + noOfRooms + " room(s) has been added to " + selectedHotel.getName());
-			System.out.println("\t " + selectedHotel.getName() + " now has " + selectedHotel.getNoOfRooms() + " room(s)");
+			System.out.println("\n" + noOfRooms + " room(s) has been added to " + selectedHotel.getName());
+			System.out.println("\n" + selectedHotel.getName() + " now has " + selectedHotel.getNoOfRooms() + " room(s)");
 			
 			if(selectedHotel.getNoOfRooms()  == 50) {
-				System.out.println("\tHotel has reached maximum rooms.");
+				System.out.println("\nHotel has reached maximum rooms.");
 			}
 			
-			System.out.println("\n\tPress Enter to continue.\n");
+			System.out.println("\nPress Enter to continue.");
 			scn.nextLine();
 		}
 		
@@ -455,36 +391,52 @@ public class Menu {
 	private void removeRooms() {
 		Hotel selectedHotel;
 		
+		
+		
 		do {
-			selectedHotel = selectHotel();
+			selectedHotel = IH.selectHotel(HRS);
 			if(selectedHotel == null) {
 				return;
 			}
-			if(selectedHotel.getNoOfRooms() == 1)
-				System.out.println("\tHotel is already at min rooms. Pick another one");
+			if(selectedHotel.getNoOfRooms() == 1) {
+				System.out.println("\nHotel is already at min rooms.");
+				System.out.println("\nPress enter to continue. Enter blank to exit.");
+				scn.nextLine();
+			}
+			
 		}while(selectedHotel.getNoOfRooms() == 1);
 		
 		int noOfRooms;
 	
-		System.out.println("\tYou can only remove " + selectedHotel.removableRooms() + " rooms");
+		System.out.println("\nYou can only remove " + selectedHotel.removableRooms() + " room(s).");
 		
 		noOfRooms = IH.getValidIntegerInRange(1, selectedHotel.removableRooms(), 
-				"\tHow many rooms do you want to remove for " + selectedHotel.getName() +  "?");
+				"\nHow many rooms do you want to remove for " + selectedHotel.getName() +  "? ");
+		
+		if(noOfRooms == selectedHotel.getNoOfRooms()) {
+			System.out.println("\nWarning! Removal of all the rooms would remove " + selectedHotel.getName() + ".");
+			if(IH.confirmation("\nDo you wish to proceed?")) {
+				HRS.remove(selectedHotel);
+				
+			}
+			return;
+		}
+		
 		if(noOfRooms == -1) {
 			return;
 		}
 			
-		if(IH.confirmation("\tAre you sure that you want to remove "+ noOfRooms + " rooms off " + selectedHotel.getName() +  "?")){
+		if(IH.confirmation("\nAre you sure that you want to remove "+ noOfRooms + " rooms off " + selectedHotel.getName() +  "?")){
 			selectedHotel.roomRemover(noOfRooms);
 
-			System.out.println("\t " + noOfRooms + " room(s) has been removed from " + selectedHotel.getName());
-			System.out.println("\t " + selectedHotel.getName() + " now has " + selectedHotel.getNoOfRooms() + " room(s)");
+			System.out.println("\n" + noOfRooms + " room(s) has been removed from " + selectedHotel.getName());
+			System.out.println("\n" + selectedHotel.getName() + " now has " + selectedHotel.getNoOfRooms() + " room(s)");
 			
 			if(selectedHotel.getNoOfRooms() == 1) {
-				System.out.println("\tHotel has reached minimum rooms.");
+				System.out.println("\nHotel has reached minimum rooms.");
 
 			}
-			System.out.println("\n\tPress Enter to continue.\n");
+			System.out.println("\nPress Enter to continue.");
 			scn.nextLine();
 		}
 		
@@ -496,28 +448,28 @@ public class Menu {
 	private void changeRoomPrice() {
 		Hotel selectedHotel;
 		do {
-		selectedHotel = selectHotel();
-		if(selectedHotel == null) {
-			return;
-		}
-		if(!selectedHotel.getReservation().isEmpty()) {
-			System.out.println("\tHotel has a reservation cannot change price.");
-			System.out.println("\n\tPress enter to continue. Press enter twice to exit.");
-			scn.nextLine();
-		}	
+			selectedHotel = IH.selectHotel(HRS);
+			if(selectedHotel == null) {
+				return;
+			}
+			if(!selectedHotel.getReservation().isEmpty()) {
+				System.out.println("\nHotel has a reservation cannot change price.");
+				System.out.println("Press enter to pick again. Press enter again to exit.");
+				scn.nextLine();
+			}	
 		}while(!selectedHotel.getReservation().isEmpty());
 	
 		double roomPrice;
 		
-		roomPrice = IH.getMinDouble(100.00, "\tHow much do you want to change the price? ");
+		roomPrice = IH.getMinDouble(100.00, "\nHow much do you want to change the price? ");
 		if(roomPrice == -1) {
 			return;
 		}
 		
-		if(IH.confirmation("\tChange price from " + selectedHotel.getPrice() + " to " + roomPrice + " ?"))
+		if(IH.confirmation("\nChange price from " + selectedHotel.getPrice() + " to " + roomPrice + " ?"))
 		{
 			selectedHotel.setPrice(roomPrice);
-			System.out.println("\tPrice has been changed to " + selectedHotel.getPrice());
+			System.out.println("\nPrice has been changed to " + selectedHotel.getPrice());
 			
 		}
 			
@@ -529,15 +481,15 @@ public class Menu {
 	private void removeHotel() {
 		Hotel selectedHotel;
 		
-		System.out.println("\n\n\t\tRemove Hotel");
+		System.out.println("\n\nRemove Hotel");
 		
-		selectedHotel = selectHotel();
+		selectedHotel = IH.selectHotel(HRS);
 		if(selectedHotel == null) {
 			return;
 		}
-		if(IH.confirmation("\n\tDo you want to remove " + selectedHotel.getName() + "? ")) {
+		if(IH.confirmation("\nDo you want to remove " + selectedHotel.getName() + "? ")) {
 			HRS.remove(selectedHotel);
-			System.out.println("\tHotel has been removed");
+			System.out.println("\nHotel has been removed");
 		}
 	}
 	 /**
@@ -547,12 +499,14 @@ public class Menu {
 
 		Hotel selectedHotel;
 		do {
-			selectedHotel = selectHotel();
+			selectedHotel = IH.selectHotel(HRS);
 			if(selectedHotel == null) {
 				return;
 			}
 			if(selectedHotel.getReservation().isEmpty()) {
-				System.out.println("\tHotel has no reservations pick another one.");
+				System.out.println("\n" + selectedHotel.getName() + " currently has no reservations.");
+				System.out.println("Pick another one. Press enter to continue. Press enter twice to exit.");
+				scn.nextLine();
 			}
 				
 		}while(selectedHotel.getReservation().isEmpty());
@@ -566,17 +520,17 @@ public class Menu {
 			}
 			ram = selectedHotel.rFinder(reservationID);
 			if(ram == null) {
-				System.out.println("\tThere are no reservation ID like that.");
+				System.out.println("\nThere are no reservation ID like that.");
 			}
 		}while(ram == null);
 			
-		if(IH.confirmation("\tAre you sure that you want to remove that reservation? "))
+		if(IH.confirmation("\nAre you sure that you want to remove that reservation? "))
 		{
 			Room room = ram.getRoom();
 			selectedHotel.removeReservation(ram);
 			room.removeReservation(ram);
-			System.out.println("\tRemoved reservation");
-			System.out.println("\n\tPress Enter to continue.");
+			System.out.println("\nRemoved reservation");
+			System.out.println("\nPress Enter to continue.");
 			scn.nextLine();
 		}
 	}
@@ -589,57 +543,71 @@ public class Menu {
 		  * or when the check-in is  on the 31st of the month. 
 		  * Bookings cannot be made outside of the defined period for the month.
 		  */
+		if(HRS.isEmpty()) {
+			System.out.println("\nThere are no hotels to book from.");
+			System.out.println("\nPress enter to continue.");
+			scn.nextLine();
+			return;
+		}
 		Hotel hotelToBook;
 		do{
-		/* Display the hotel list */
-			hotelToBook = selectHotel();
+			/* Display the hotel list */
+			/* ask for checkIn checkOut dates */
+			/* Bookings cannot be made outside of defined period */
+				/*make this actually work*/
+			System.out.println("\n\n");
+			hotelToBook = IH.selectHotel(HRS);
 			if(hotelToBook == null) {
 				return;
 			}
-			System.out.print("\tGuest name:");
+			System.out.print("\nGuest name: ");
 			String guestName = scn.nextLine();
+			
 			if(guestName.isBlank()) {
 				return;
 			}
 			
 			System.out.println(); 
-			int checkIn = IH.getValidIntegerInRange(1, 30, "\tCheck in: ");
+			int checkIn = IH.getValidIntegerInRange(1, 30, "\nCheck in: ");
 			
 			if(checkIn == -1) {
 				return;
 			}
+			
 			int checkOut;
+			
 			do {
 					System.out.println();
 					
-					checkOut = IH.getValidIntegerInRange(2, 31, "\tCheck out: ");
+					checkOut = IH.getValidIntegerInRange(2, 31, "\nCheck out: ");
 					
 					if(checkOut == -1) {
 						return;
 				}
 				if(checkOut == checkIn) {
-					System.out.println("\tYou cannot check in and check out in the same day.");
+					System.out.println("\nYou cannot check in and check out in the same day.");
+				}
+				if(checkOut < checkIn) {
+					System.out.println("You cannot check out before the check in day starts.");
 				}
 			
-			}while(checkOut == checkIn);
+			}while(checkOut == checkIn || checkOut < checkIn);
 			
-		/* ask for checkIn checkOut dates */
-		/* Bookings cannot be made outside of defined period */
-			/*make this actually work*/
+			
+		
 			
 			Room room = hotelToBook.findAvailableRoom(checkIn, checkOut);
 			if(room  == null) {
-				System.out.println("\tThere are no available rooms in this hotel, given the time frame");
-				return;
-			}
+				System.out.println("\nThere are no available rooms in this hotel, given the time frame");
+				
+			}else {
 			Reservation some = new Reservation(guestName, checkIn, checkOut, room);
 			hotelToBook.addReservation(some);
-			room.addReservation(some);
-			System.out.println("\tReservation has been added");
-			System.out.println("\tReservationID " + some.getReservationID());
+			System.out.println("\nReservation has been added");
+			System.out.println("\nHere's your Reservation ID: " + some.getReservationID());
 		/* if SELECTING FOR ROOM IS GONNA BE MANUAL YOU FUCKS ARE GONNA PAY */
-		
-		}while(IH.confirmation("\tDo you want to make another booking?"));
+			}
+		}while(IH.confirmation("\nDo you want to make another booking?"));
 		/* ask if they want to make a booking again, which displays hotel list again */
 	}
 //5 MOREEEEEEEEEEEE
