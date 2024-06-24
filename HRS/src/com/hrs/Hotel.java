@@ -36,6 +36,34 @@ public class Hotel {
 		
 		roomsInitializer(noOfRooms);
 	}
+	
+	
+	
+	
+	public void sortRoomsByRoomNumber() {
+        for (int i = 0; i < rooms.size(); i++) {
+            for (int j = i + 1; j < rooms.size(); j++) {
+                Room room1 = rooms.get(i);
+                Room room2 = rooms.get(j);
+                
+                int number1 = extractRoomNumber(room1.getRoomName());
+                int number2 = extractRoomNumber(room2.getRoomName());
+                
+                if (number1 > number2) {
+                    // Swap rooms if necessary
+                    Room temp = rooms.get(i);
+                    rooms.set(i, rooms.get(j));
+                    rooms.set(j, temp);
+                }
+            }
+        }
+    }
+    
+	private int extractRoomNumber(String roomId) {
+        // Assuming roomId format is "prefixXX", where XX is the numeric part
+        String numberPart = roomId.substring(hotelRoomPrefix.length());
+        return Integer.parseInt(numberPart);
+    }
 	 /**
 	     * Adds a specified number of rooms to the hotel.
 	     *
@@ -46,7 +74,9 @@ public class Hotel {
 	            String nextRoomId = getNextRoomId();
 	            rooms.add(new Room(nextRoomId, price));
 	        }
+	        sortRoomsByRoomNumber();
 	       this.noOfRooms += noOfRooms;
+	       
 	    }
 	/**
 	 * Initializes rooms in the hotel with the given number.
@@ -127,12 +157,12 @@ public class Hotel {
 	 * @param count The number of rooms to remove.
 	 */
 	   public void roomRemover(int count) {
-		   for(int i = 0; i < rooms.size() && count > 0; i++) {
+		   for(int i = rooms.size()-1; i >= 0 && count > 0; i--) {
 			   Room room = rooms.get(i);
 			   if (room.getReservations().isEmpty()) {
 				   rooms.remove(i);
 				   count--;
-				   i--;
+				   
 			   }
 		    
 		    	this.noOfRooms = rooms.size();

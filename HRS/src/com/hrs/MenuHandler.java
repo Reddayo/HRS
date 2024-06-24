@@ -46,7 +46,7 @@ public class MenuHandler {
 			ascii.otherMenu();
 			displayOptions(MENU_OPTIONS);
 			
-			chosenOption = IH.getValidIntegerInRange(1, MENU_OPTIONS.length, ">> ");
+			chosenOption = IH.getPositiveIntegerInRange(1, MENU_OPTIONS.length, ">> ");
 			
 			switch(chosenOption) {
 				case 1:	createHotel(); break; 
@@ -90,7 +90,7 @@ public class MenuHandler {
 			if(newHotelName == null)
 				return;
 			
-			newNoOfRooms = IH.getValidIntegerInRange(1, HotelListManager.MAX_ROOMS, "\nNo. of rooms: " );
+			newNoOfRooms = IH.getPositiveIntegerInRange(1, HotelListManager.MAX_ROOMS, "\nNo. of rooms: " );
 			
 			if(newNoOfRooms == -1)
 				return;
@@ -127,7 +127,7 @@ public class MenuHandler {
 			
 			do {
 				displayOptions(VIEWHOTEL_OPTS);
-				int chosen  = IH.getValidIntegerInRange(1, VIEWHOTEL_OPTS.length, ">> ");
+				int chosen  = IH.getPositiveIntegerInRange(1, VIEWHOTEL_OPTS.length, ">> ");
 				
 				if(chosen == -1) {
 					return;
@@ -170,7 +170,7 @@ public class MenuHandler {
 												   "Go to previous menu"};
 		while(true) {
 			displayOptions(DETAILED_VIEWHOTEL_OPTS);
-			int chosen = IH.getValidIntegerInRange(1, DETAILED_VIEWHOTEL_OPTS.length, ">> ");
+			int chosen = IH.getPositiveIntegerInRange(1, DETAILED_VIEWHOTEL_OPTS.length, ">> ");
 			if(chosen == -1) {
 				return;
 			}
@@ -197,7 +197,7 @@ public class MenuHandler {
 	
 		while(true) {	
 		
-			int day = IH.getValidIntegerInRange(1, 31, "\n\nEnter a day [Number 1 to 31]: ");
+			int day = IH.getPositiveIntegerInRange(1, 31, "\n\nEnter a day [Number 1 to 31]: ");
 			if(day == 31) {
 				System.out.println("Day is not available to check in.");
 				continue;
@@ -270,8 +270,8 @@ public class MenuHandler {
 			System.out.println("Room information: " + reservation.getRoomName());
 			System.out.println("Check-in: " + reservation.getCheckIn());
 			System.out.println("Check-out: "+ reservation.getCheckOut());
-			System.out.println("Price per night: " + reservation.getPricePerNight());
-			System.out.printf("Total price: %.2f" + reservation.getTotalPrice());
+			System.out.printf("Price per night: %.2f\n", reservation.getPricePerNight());
+			System.out.printf("Total price: %.2f\n", reservation.getTotalPrice());
 			/* THIS SHOULD PRINT OUT A CALENDAR OK */
 			//System.out.println(reservation.getRoom().availability());
 			
@@ -292,7 +292,7 @@ public class MenuHandler {
 				scn.nextLine();
 				return;
 			}
-			final String[] MANAGEHOTEL_OPTS = {"Change Hotel", 
+			final String[] MANAGEHOTEL_OPTS = {"Change Hotel Name", 
 					                           "Add Room(s)", 
 					                           "Remove Room(s)",
 											   "Change Room Price", 
@@ -301,7 +301,7 @@ public class MenuHandler {
 											   "Exit"};
 			
 			displayOptions(MANAGEHOTEL_OPTS);
-			int chosen = IH.getValidIntegerInRange(1, 7, ">> ");
+			int chosen = IH.getPositiveIntegerInRange(1, 7, ">> ");
 			if(chosen == -1) {
 				return;
 			}
@@ -366,14 +366,14 @@ public class MenuHandler {
 		int noOfRooms;
 		
 		System.out.println("\nYou can only add until " + (50 - selectedHotel.getNoOfRooms()) + " room(s).");
-		noOfRooms = IH.getValidIntegerInRange(1, 50 - selectedHotel.getNoOfRooms(), 
+		noOfRooms = IH.getPositiveIntegerInRange(1, 50 - selectedHotel.getNoOfRooms(), 
 				"\nHow many room(s) do you want to add for " + selectedHotel.getName() +  "? ");
 	
 		if(noOfRooms == -1) {
 			return;
 		}
 			
-		if(IH.confirmation("\nAre you sure that you want to add "+ noOfRooms + " to " + selectedHotel.getName() +  "?")) {
+		if(IH.confirmation("\nAre you sure that you want to add "+ noOfRooms + " room(s) to " + selectedHotel.getName() +  "?")) {
 			selectedHotel.addRooms(noOfRooms);
 			
 			System.out.println("\n" + noOfRooms + " room(s) has been added to " + selectedHotel.getName());
@@ -403,19 +403,27 @@ public class MenuHandler {
 			if(selectedHotel == null) {
 				return;
 			}
+			if(selectedHotel.removableRooms() == 0) {
+				System.out.println("\nHotel has no removable rooms.");
+				System.out.println("\nPress enter to continue.");
+				scn.nextLine();
+				return;
+			}
 			if(selectedHotel.getNoOfRooms() == 1) {
 				System.out.println("\nHotel is already at min rooms.");
 				System.out.println("\nPress enter to continue. Enter blank to exit.");
 				scn.nextLine();
 			}
 			
-		}while(selectedHotel.getNoOfRooms() == 1);
+		}while(selectedHotel.getNoOfRooms() == 1 || selectedHotel.removableRooms() == 0);
 		
 		int noOfRooms;
+		
+		
 	
 		System.out.println("\nYou can only remove " + selectedHotel.removableRooms() + " room(s).");
 		
-		noOfRooms = IH.getValidIntegerInRange(1, selectedHotel.removableRooms(), 
+		noOfRooms = IH.getPositiveIntegerInRange(1, selectedHotel.removableRooms(), 
 				"\nHow many rooms do you want to remove for " + selectedHotel.getName() +  "? ");
 		
 		if(noOfRooms == selectedHotel.getNoOfRooms()) {
@@ -466,7 +474,7 @@ public class MenuHandler {
 	
 		double roomPrice;
 		
-		roomPrice = IH.getMinDouble(100.00, "\nHow much do you want to change the price? ");
+		roomPrice = IH.getMinPositiveDouble(100.00, "\nHow much do you want to change the price? ");
 		if(roomPrice == -1) {
 			return;
 		}
@@ -515,19 +523,9 @@ public class MenuHandler {
 			}
 				
 		}while(selectedHotel.getReservation().isEmpty());
-		String reservationID;
+		
 		Reservation ram;
-		do{
-			reservationID = scn.nextLine();
-			
-			if(reservationID.isBlank()) {
-				return;
-			}
-			ram = selectedHotel.rFinder(reservationID);
-			if(ram == null) {
-				System.out.println("\nThere are no reservation ID like that.");
-			}
-		}while(ram == null);
+		ram = IH.selectReservation(HRS, selectedHotel);
 			
 		if(IH.confirmation("\nAre you sure that you want to remove that reservation? "))
 		{
@@ -573,7 +571,7 @@ public class MenuHandler {
 			}
 			
 			System.out.println(); 
-			int checkIn = IH.getValidIntegerInRange(1, 30, "\nCheck in: ");
+			int checkIn = IH.getPositiveIntegerInRange(1, 30, "\nCheck in: ");
 			
 			if(checkIn == -1) {
 				return;
@@ -584,7 +582,7 @@ public class MenuHandler {
 			do {
 					System.out.println();
 					
-					checkOut = IH.getValidIntegerInRange(2, 31, "\nCheck out: ");
+					checkOut = IH.getPositiveIntegerInRange(2, 31, "\nCheck out: ");
 					
 					if(checkOut == -1) {
 						return;

@@ -24,7 +24,7 @@ import java.util.Scanner;
      *
      * @param scn The <code>Scanner</code> instance used for input operations.
      */
-	public InputHandler(Scanner scn){
+	InputHandler(Scanner scn){
 		this.scn = scn;
 	}
 	
@@ -82,7 +82,7 @@ import java.util.Scanner;
      * @param prompt The message prompt to display.
      * @return The valid integer input within the specified range from the user.
      */
-    public int getValidIntegerInRange(int min, int max, String prompt) {
+    public int getPositiveIntegerInRange(int min, int max, String prompt) {
         while (true) {
             int number = getPositiveIntegerInput( prompt);
             if (number == -1) {
@@ -128,7 +128,7 @@ import java.util.Scanner;
      * @param prompt The message prompt to display.
      * @return The double input greater than or equal to the specified minimum from the user.
      */
-    public double getMinDouble(double min, String prompt) {
+    public double getMinPositiveDouble(double min, String prompt) {
         while (true) {
             double number = getPositiveDoubleInput(prompt);
             if (number == -1) {
@@ -229,7 +229,7 @@ import java.util.Scanner;
 			
 			System.out.print("\n\n"+HRS.reservationsOfHotelText(foundHotel));
 			
-			System.out.print("Enter Reservation ID: ");
+			System.out.print("\nEnter Reservation ID: ");
 			String someString = scn.nextLine();
 			if(someString.isBlank()) {
 				return null;
