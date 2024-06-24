@@ -12,7 +12,7 @@ public class Reservation {
 	private int checkOutDay;
 	private Room room;
 	private String reservationID;
-	
+	private double totalPrice;
 	/**
      * Constructs a new <code>Reservation</code> object with the given guest name,
      * check-in day, check-out day, and room.
@@ -28,7 +28,7 @@ public class Reservation {
 		this.checkOutDay = checkOutDay;
 		this.room = room;
 		this.reservationID = String.format("%s%02d%02d", room.getRoomName(), checkInDay, checkOutDay);
-		
+		this.totalPrice = room.getRoomPrice() * (checkOutDay - checkInDay);
 	}
 	 /**
      * Retrieves the total price for the reservation based on the number of nights
@@ -37,7 +37,7 @@ public class Reservation {
      * @return The total price for the reservation.
      */
 	public double getTotalPrice() {
-		return room.getRoomPrice() * (checkOutDay - checkInDay);
+		return this.totalPrice;
 	}
 	 /**
      * Retrieves the price per night for the room reserved in this reservation.
@@ -54,35 +54,39 @@ public class Reservation {
      * @return The reservation ID.
      */
 	public String getReservationID() {
-		return reservationID;
+		return this.reservationID;
 	}
 	
 	/**
 	 * @return the guestName
 	 */
 	public String getGuestName() {
-		return guestName;
+		return this.guestName;
 	}
 	/**
 	 * @return the checkIn
 	 */
 	public int getCheckIn() {
-		return checkInDay;
+		return this.checkInDay;
 	}
 	/**
 	 * @return the checkOut
 	 */
 	public int getCheckOut() {
-		return checkOutDay;
+		return this.checkOutDay;
 	}
 	/**
 	 * @return the room
 	 */
 	public Room getRoom() {
-		return room;
+		return this.room;
 	}
 	
+	/**
+	 * @return the roomName
+	 */
+	
 	public String getRoomName() {
-		return room.getRoomName();
+		return this.room.getRoomName();
 	}
 }
