@@ -227,7 +227,7 @@ import java.util.Scanner;
 		Reservation reservation;
 		while(true) {
 			
-			System.out.print(HRS.reservationsOfHotelText(foundHotel));
+			System.out.print("\n\n"+HRS.reservationsOfHotelText(foundHotel));
 			
 			System.out.print("Enter Reservation ID: ");
 			String someString = scn.nextLine();

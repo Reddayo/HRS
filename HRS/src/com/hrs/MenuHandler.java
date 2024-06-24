@@ -37,11 +37,11 @@ public class MenuHandler {
 	public void start () {
 		boolean stop = false;
 		int chosenOption = 0;
-		final String[] MENU_OPTIONS = new String[] {"Create Hotel", 
-													"View Hotel", 
-													"Manage Hotel", 
-													"Simulate Booking",
-													"Exit"};
+		final String[] MENU_OPTIONS = {"Create Hotel", 
+									   "View Hotel", 
+									   "Manage Hotel", 
+									   "Simulate Booking",
+									   "Exit"};
 		while(!stop) {
 			ascii.otherMenu();
 			displayOptions(MENU_OPTIONS);
@@ -113,10 +113,10 @@ public class MenuHandler {
 			scn.nextLine();
 			return;
 		}
-		final String[] VIEWHOTEL_OPTS = new String[] {"Overview Information", 
-														"Detailed Information", 
-														"View another hotel", 
-														"Exit"};
+		final String[] VIEWHOTEL_OPTS = {"Overview Information", 
+										 "Detailed Information", 
+										 "View another hotel", 
+										 "Exit"};
 		while(true) {
 			boolean stop = false;
 			System.out.println("\n\nView Hotel\n\n");
@@ -164,9 +164,10 @@ public class MenuHandler {
      */
 	private void detailedViewHotelMenu(Hotel foundHotel) {
 
-		final String[] DETAILED_VIEWHOTEL_OPTS = new String[] { "No. of Available & Booked Rooms for a Selected Date", 
-													"Room Information", "Reservation Information", 
-													"Go to previous menu"};
+		final String[] DETAILED_VIEWHOTEL_OPTS = { "No. of Available & Booked Rooms for a Selected Date", 
+												   "Room Information", 
+												   "Reservation Information", 
+												   "Go to previous menu"};
 		while(true) {
 			displayOptions(DETAILED_VIEWHOTEL_OPTS);
 			int chosen = IH.getValidIntegerInRange(1, DETAILED_VIEWHOTEL_OPTS.length, ">> ");
@@ -270,11 +271,11 @@ public class MenuHandler {
 			System.out.println("Check-in: " + reservation.getCheckIn());
 			System.out.println("Check-out: "+ reservation.getCheckOut());
 			System.out.println("Price per night: " + reservation.getPricePerNight());
-			System.out.println("Total price: " + reservation.getTotalPrice());
+			System.out.printf("Total price: %.2f" + reservation.getTotalPrice());
 			/* THIS SHOULD PRINT OUT A CALENDAR OK */
-			System.out.println(reservation.getRoom().availability());
+			//System.out.println(reservation.getRoom().availability());
 			
-			if(!IH.confirmation("Do you want to check other reservations? ")) {
+			if(!IH.confirmation("\nDo you want to check other reservations? ")) {
 				return;
 			}
 		}
@@ -291,9 +292,13 @@ public class MenuHandler {
 				scn.nextLine();
 				return;
 			}
-			final String[] MANAGEHOTEL_OPTS = new String[]{"Change Hotel", "Add Room(s)", "Remove Room(s)",
-														  "Change Room Price", "Remove Reservation", "Remove Hotel",
-														  "Exit"};
+			final String[] MANAGEHOTEL_OPTS = {"Change Hotel", 
+					                           "Add Room(s)", 
+					                           "Remove Room(s)",
+											   "Change Room Price", 
+											   "Remove Reservation", 
+											   "Remove Hotel",
+											   "Exit"};
 			
 			displayOptions(MANAGEHOTEL_OPTS);
 			int chosen = IH.getValidIntegerInRange(1, 7, ">> ");
@@ -588,7 +593,7 @@ public class MenuHandler {
 					System.out.println("\nYou cannot check in and check out in the same day.");
 				}
 				if(checkOut < checkIn) {
-					System.out.println("You cannot check out before the check in day starts.");
+					System.out.println("\nYou cannot check out before the check in day starts.");
 				}
 			
 			}while(checkOut == checkIn || checkOut < checkIn);
