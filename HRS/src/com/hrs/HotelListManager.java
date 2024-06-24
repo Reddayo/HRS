@@ -58,7 +58,8 @@ public class HotelListManager {
 	public void createHotel(String name, int noOfRooms){
 		
 		hotels.add(new Hotel(name, noOfRooms, prefixGenerator()));	
-	} /**
+	} 
+	/**
      * Checks if the list of hotels is empty.
      * 
      * @return <code>true</code> if there are no hotels in the system, <code>false</code> otherwise.
@@ -140,8 +141,8 @@ public class HotelListManager {
 	 */
 	public String reservationsOfHotelText(Hotel hotel) {
 	    StringBuilder output = new StringBuilder();
-	    for (int i = 0; i < hotel.getReservation().size(); i++) {
-	        output.append("~ ").append(hotel.getReservation().get(i).getReservationID()).append("\n");
+	    for (int i = 0; i < hotel.getReservations().size(); i++) {
+	        output.append("~ ").append(hotel.getReservations().get(i).getReservationID()).append("\n");
 	    }
 	    return output.toString();
 	}

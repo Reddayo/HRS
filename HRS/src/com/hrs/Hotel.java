@@ -40,7 +40,7 @@ public class Hotel {
 	
 	
 	
-	public void sortRoomsByRoomNumber() {
+	private void sortRoomsByRoomNumber() {
         for (int i = 0; i < rooms.size(); i++) {
             for (int j = i + 1; j < rooms.size(); j++) {
                 Room room1 = rooms.get(i);
@@ -64,20 +64,7 @@ public class Hotel {
         String numberPart = roomId.substring(hotelRoomPrefix.length());
         return Integer.parseInt(numberPart);
     }
-	 /**
-	     * Adds a specified number of rooms to the hotel.
-	     *
-	     * @param noOfRooms The number of rooms to add.
-	     */
-	 public void addRooms(int noOfRooms) {
-	        for (int i = 1; i <= noOfRooms; i++) {
-	            String nextRoomId = getNextRoomId();
-	            rooms.add(new Room(nextRoomId, price));
-	        }
-	        sortRoomsByRoomNumber();
-	       this.noOfRooms += noOfRooms;
-	       
-	    }
+	 
 	/**
 	 * Initializes rooms in the hotel with the given number.
 	 *
@@ -90,6 +77,8 @@ public class Hotel {
 	        }
 	        this.noOfRooms = noOfRooms;
 	}
+	
+	
 	/**
 	     * Generates the next available room ID based on existing rooms.
 	     *
@@ -114,6 +103,24 @@ public class Hotel {
 	
 	        return String.format("%s%02d", hotelRoomPrefix, nextNumber);
 	    }
+	/**
+	 * Adds a specified number of rooms to the hotel.
+	 *
+	 * @param noOfRooms The number of rooms to add.
+	 */
+	public void addRooms(int noOfRooms) {
+	    for (int i = 1; i <= noOfRooms; i++) {
+	        String nextRoomId = getNextRoomId();
+	        rooms.add(new Room(nextRoomId, price));
+	    }
+	    sortRoomsByRoomNumber();
+	   this.noOfRooms += noOfRooms;
+	
+	}
+
+
+
+
 	/**
      * Adds a reservation to the hotel.
      *
@@ -176,7 +183,7 @@ public class Hotel {
  * @param reservationID The reservation ID to check.
  * @return <code>true</code> if the reservation ID exists, otherwise <code>false</code>.
  */
-   public boolean reservationIDChecker(String reservationID) {
+   public boolean checkReservationID(String reservationID) {
 	   
 	   for(Reservation r: reservations) {
 		   if(r.getReservationID() == reservationID) {
@@ -222,7 +229,7 @@ public Room findRoom(String roomToFind) {
  * @param reservationID The reservation ID to find.
  * @return The reservation object if found, otherwise <code>null</code>.
  */
-   public Reservation rFinder(String reservationID) {
+   public Reservation findReservation(String reservationID) {
 	   Reservation ra = null;
 	   for(Reservation r: reservations) {
 		   if(r.getReservationID().equals(reservationID)) {
@@ -321,7 +328,7 @@ public Room getRoom(int index) {
 	/**
 	 * @return the reservation
 	 */
-	public ArrayList<Reservation> getReservation() {
+	public ArrayList<Reservation> getReservations() {
 		return reservations;
 	}
 	/**

@@ -234,7 +234,7 @@ import java.util.Scanner;
 			if(someString.isBlank()) {
 				return null;
 			}
-			reservation = foundHotel.rFinder(someString);
+			reservation = foundHotel.findReservation(someString);
 			if(reservation != null) {
 				return reservation;
 			}

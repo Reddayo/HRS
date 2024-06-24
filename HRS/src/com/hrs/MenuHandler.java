@@ -51,8 +51,8 @@ public class MenuHandler {
 			switch(chosenOption) {
 				case 1:	createHotel(); break; 
 				case 2:	ViewHotel(); break;   
-				case 3:	ManageHotelMenu(); break; 
-				case 4:	displaySimulateBookingMenu(); break; 
+				case 3:	manageHotel(); break; 
+				case 4:	simulateBooking(); break; 
 				case 5: System.out.println("Exitting program..."); stop = true; break;
 				default: break;
 			}
@@ -133,8 +133,8 @@ public class MenuHandler {
 					return;
 				}
 				switch (chosen) {
-					case 1: displayOverviewInfo(foundHotel); break;
-					case 2: detailedViewHotelMenu(foundHotel); break;
+					case 1: hotelOverviewInfo(foundHotel); break;
+					case 2: hotelDetailedInfo(foundHotel); break;
 					case 3: System.out.println("Viewing another hotel."); stop = true; break;
 					case 4:	return;
 				}
@@ -149,7 +149,7 @@ public class MenuHandler {
      * 
      * @param foundHotel The <code>Hotel</code> object for which to display overview information.
      */
-	private void displayOverviewInfo(Hotel foundHotel) {
+	private void hotelOverviewInfo(Hotel foundHotel) {
 		
 		System.out.println("\n\nHotel Name: " + foundHotel.getName());
 		System.out.println("Total number of rooms: " + foundHotel.getNoOfRooms());
@@ -162,7 +162,7 @@ public class MenuHandler {
      * 
      * @param foundHotel The <code>Hotel</code> object for which to display detailed room information.
      */
-	private void detailedViewHotelMenu(Hotel foundHotel) {
+	private void hotelDetailedInfo(Hotel foundHotel) {
 
 		final String[] DETAILED_VIEWHOTEL_OPTS = { "No. of Available & Booked Rooms for a Selected Date", 
 												   "Room Information", 
@@ -197,7 +197,7 @@ public class MenuHandler {
 	
 		while(true) {	
 		
-			int day = IH.getPositiveIntegerInRange(1, 31, "\n\nEnter a day [Number 1 to 31]: ");
+			int day = IH.getPositiveIntegerInRange(1, 31, "\n\nEnter a day: ");
 			if(day == 31) {
 				System.out.println("Day is not available to check in.");
 				continue;
@@ -255,7 +255,7 @@ public class MenuHandler {
      */	
 	private void reservationInfo(Hotel foundHotel) {
 		Reservation reservation;
-		if(foundHotel.getReservation().isEmpty()) {
+		if(foundHotel.getReservations().isEmpty()) {
 			System.out.println("\n\n" + foundHotel.getName() + " currently has no reservations");
 			System.out.println("\nPress enter to continue");
 			scn.nextLine();
@@ -284,7 +284,7 @@ public class MenuHandler {
      * Manages options related to a selected hotel, such as changing hotel name, adding rooms,
      * removing rooms, changing room prices, removing reservations, or removing the entire hotel.
      */
-	private void ManageHotelMenu() {
+	private void manageHotel() {
 		while(true) {
 			if(HRS.isEmpty()) {
 				System.out.println("\nThere are no hotels to manage.");
@@ -465,12 +465,12 @@ public class MenuHandler {
 			if(selectedHotel == null) {
 				return;
 			}
-			if(!selectedHotel.getReservation().isEmpty()) {
+			if(!selectedHotel.getReservations().isEmpty()) {
 				System.out.println("\nHotel has a reservation cannot change price.");
 				System.out.println("Press enter to pick again. Press enter again to exit.");
 				scn.nextLine();
 			}	
-		}while(!selectedHotel.getReservation().isEmpty());
+		}while(!selectedHotel.getReservations().isEmpty());
 	
 		double roomPrice;
 		
@@ -516,13 +516,13 @@ public class MenuHandler {
 			if(selectedHotel == null) {
 				return;
 			}
-			if(selectedHotel.getReservation().isEmpty()) {
+			if(selectedHotel.getReservations().isEmpty()) {
 				System.out.println("\n" + selectedHotel.getName() + " currently has no reservations.");
 				System.out.println("Pick another one. Press enter to continue. Press enter twice to exit.");
 				scn.nextLine();
 			}
 				
-		}while(selectedHotel.getReservation().isEmpty());
+		}while(selectedHotel.getReservations().isEmpty());
 		
 		Reservation ram;
 		ram = IH.selectReservation(HRS, selectedHotel);
@@ -541,7 +541,7 @@ public class MenuHandler {
 	/**
      * Displays the menu for simulating a booking in a selected hotel.
      */
-	private void displaySimulateBookingMenu() {
+	private void simulateBooking() {
 		 /* No reservations can be made when the check-out is on the 1st of the month 
 		  * or when the check-in is  on the 31st of the month. 
 		  * Bookings cannot be made outside of the defined period for the month.
