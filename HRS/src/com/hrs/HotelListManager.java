@@ -116,7 +116,7 @@ public class HotelListManager {
 	   
 	    StringBuilder output = new StringBuilder();
 	    for (Hotel hotel : hotels) {
-	        output.append(" •  ").append(hotel.getName()).append("\n");
+	        output.append(" -  ").append(hotel.getName()).append("\n");
 	    }
 	    return output.toString();
 	}
@@ -129,7 +129,7 @@ public class HotelListManager {
 	public String roomsOfHotelText(Hotel hotel) {
 	    StringBuilder output = new StringBuilder("\n\n");
 	    for (Room room : hotel.getRooms()) {
-	        output.append(" •  ").append(room.getRoomName()).append("\n");
+	        output.append(" -  ").append(room.getRoomName()).append("\n");
 	    }
 	    return output.toString();
 	}
@@ -142,7 +142,7 @@ public class HotelListManager {
 	public String reservationsOfHotelText(Hotel hotel) {
 	    StringBuilder output = new StringBuilder();
 	    for (int i = 0; i < hotel.getReservations().size(); i++) {
-	        output.append(" •  ").append(hotel.getReservations().get(i).getReservationID()).append("\n");
+	        output.append(" -  ").append(hotel.getReservations().get(i).getReservationID()).append("\n");
 	    }
 	    return output.toString();
 	}

@@ -177,6 +177,7 @@ import java.util.Scanner;
 			Hotel selectedHotel;
 			String answer;
 			while(true){
+				System.out.println("\n\tHotel List\n");
 				System.out.print(HRS.hotelsText());
 				System.out.println("\nSelect a hotel:");
 				System.out.print(" >>  ");
@@ -203,7 +204,7 @@ import java.util.Scanner;
 	public Room selectRoom(HotelListManager HRS, Hotel foundHotel) {
 		
 		while(true){
-			
+			System.out.println("\n\tRoom List");
 			System.out.print(HRS.roomsOfHotelText(foundHotel));
 			System.out.println("\nSelect a room:");
 			System.out.print(" >>  ");
@@ -226,10 +227,10 @@ import java.util.Scanner;
 	public Reservation selectReservation(HotelListManager HRS, Hotel foundHotel) {
 		Reservation reservation;
 		while(true) {
+			System.out.println("\n\nReservation List");
+			System.out.print("\n"+HRS.reservationsOfHotelText(foundHotel));
 			
-			System.out.print("\n\n"+HRS.reservationsOfHotelText(foundHotel));
-			
-			System.out.print("\nEnter Reservation ID: ");
+			System.out.print("\n\nEnter Reservation ID: ");
 			String someString = scn.nextLine();
 			if(someString.isBlank()) {
 				return null;

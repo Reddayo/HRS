@@ -43,7 +43,8 @@ public class MenuHandler {
 									   "Simulate Booking",
 									   "Exit"};
 		while(!stop) {
-			ascii.otherMenu();
+			System.out.print("\n\n\tMain Menu");
+			
 			displayOptions(MENU_OPTIONS);
 			
 			chosenOption = IH.getPositiveIntegerInRange(1, MENU_OPTIONS.length, " >>  ");
@@ -67,10 +68,13 @@ public class MenuHandler {
 	private void displayOptions(String[] someStringsToDisplay) {
 		System.out.println("\n\n");
 		int i = 0;
+		
 		for (String someString: someStringsToDisplay) {
             System.out.println("[" + ++i + "]  " + someString);
         }
+			
 	}
+	
 	/**
      * Handles the process of creating a new hotel.
      * Prompts the user for hotel name and number of rooms, and adds the hotel to the system.
@@ -80,7 +84,7 @@ public class MenuHandler {
 		String newHotelName;
 		int newNoOfRooms;
 	
-			System.out.println("\n\nCreate Hotel\n\n");
+			System.out.println("\n\n\tCreate Hotel\n\n");
 			System.out.println("Press enter to abort.");
 	
 			newHotelName = IH.getUniqueHotelName(HRS, "\nHotel name: ");
@@ -110,13 +114,13 @@ public class MenuHandler {
 			scn.nextLine();
 			return;
 		}
-		final String[] VIEWHOTEL_OPTS = {"Overview Information", 
-										 "Detailed Information", 
-										 "View another hotel", 
+		final String[] VIEWHOTEL_OPTS = {"High Level Information", 
+										 "Low Level Information", 
+										 "View Another Hotel", 
 										 "Exit"};
 		while(true) {
 			boolean stop = false;
-			System.out.println("\n\nView Hotel\n\n");
+			System.out.println("\n\n\tView Hotel\n\n");
 			Hotel foundHotel = IH.selectHotel(HRS);
 			if(foundHotel == null) {
 				return;
@@ -130,8 +134,8 @@ public class MenuHandler {
 					return;
 				}
 				switch (chosen) {
-					case 1: hotelOverviewInfo(foundHotel); break;
-					case 2: hotelDetailedInfo(foundHotel); break;
+					case 1: hotelHighLevelInfo(foundHotel); break;
+					case 2: hotelLowLevelInfo(foundHotel); break;
 					case 3: System.out.println("Viewing another hotel."); stop = true; break;
 					case 4:	return;
 				}
@@ -146,7 +150,7 @@ public class MenuHandler {
      * 
      * @param foundHotel The <code>Hotel</code> object for which to display overview information.
      */
-	private void hotelOverviewInfo(Hotel foundHotel) {
+	private void hotelHighLevelInfo(Hotel foundHotel) {
 		
 		System.out.println("\n\nHotel Name: " + foundHotel.getName());
 		System.out.println("Total number of rooms: " + foundHotel.getNoOfRooms());
@@ -159,7 +163,7 @@ public class MenuHandler {
      * 
      * @param foundHotel The <code>Hotel</code> object for which to display detailed room information.
      */
-	private void hotelDetailedInfo(Hotel foundHotel) {
+	private void hotelLowLevelInfo(Hotel foundHotel) {
 
 		final String[] DETAILED_VIEWHOTEL_OPTS = { "No. of Available & Booked Rooms for a Selected Date", 
 												   "Room Information", 
@@ -283,7 +287,7 @@ public class MenuHandler {
 			scn.nextLine();
 			return;
 		}
-		System.out.println("\n\nManage Hotel\n");
+		System.out.println("\n\n\tManage Hotel\n");
 		//System.out.println("\n\n");
 		Hotel hotelToManage = IH.selectHotel(HRS);
 		if(hotelToManage == null) {
@@ -310,7 +314,7 @@ public class MenuHandler {
 			System.out.println("\nCurrently managing: " + hotelToManage.getName());
 			displayOptions(MANAGEHOTEL_OPTS);
 
-			int chosen = IH.getPositiveIntegerInRange(1, 7, " >>  ");
+			int chosen = IH.getPositiveIntegerInRange(1, 8, " >>  ");
 			if(chosen == -1) {
 				return;
 			}
@@ -490,27 +494,10 @@ public class MenuHandler {
 
 	}
 	/**
-     * Handles removing a selected hotel from the system.
-     */
-	private void removeHotel(Hotel selectedHotel) {
-		 
-		
-		System.out.println("\n\nRemove Hotel");
-		
-		if(IH.confirmation("\nDo you want to remove " + selectedHotel.getName() + "? ")) {
-			HRS.remove(selectedHotel);
-			System.out.println("\nHotel has been removed");
-		}else {
-			System.out.println("\nHotel has NOT been removed");
-		}
-		System.out.println("\nPress Enter to continue.");
-		scn.nextLine();
-	}
-	 /**
-     * Handles removing a selected reservation from a hotel.
-     */
+	 * Handles removing a selected reservation from a hotel.
+	 */
 	private void removeReservations(Hotel selectedHotel) {
-
+	
 		
 		if(selectedHotel.getReservations().isEmpty()) {
 			System.out.println("\n" + selectedHotel.getName() + " currently has no reservations.");
@@ -537,8 +524,26 @@ public class MenuHandler {
 		System.out.println("\nPress Enter to continue.");
 		scn.nextLine();
 	}
-	
+
+
 	/**
+     * Handles removing a selected hotel from the system.
+     */
+	private void removeHotel(Hotel selectedHotel) {
+		 
+		
+		System.out.println("\n\nRemove Hotel");
+		
+		if(IH.confirmation("\nDo you want to remove " + selectedHotel.getName() + "? ")) {
+			HRS.remove(selectedHotel);
+			System.out.println("\nHotel has been removed");
+		}else {
+			System.out.println("\nHotel has NOT been removed");
+		}
+		System.out.println("\nPress Enter to continue.");
+		scn.nextLine();
+	}
+	 /**
      * Displays the menu for simulating a booking in a selected hotel.
      */
 	private void simulateBooking() {
@@ -558,12 +563,12 @@ public class MenuHandler {
 			/* ask for checkIn checkOut dates */
 			/* Bookings cannot be made outside of defined period */
 				/*make this actually work*/
-			System.out.println("\n\n");
+			System.out.println("\n\n=========================================================\n");
 			hotelToBook = IH.selectHotel(HRS);
 			if(hotelToBook == null) {
 				return;
 			}
-			System.out.print("\nGuest name: ");
+			System.out.print("\nYour name: ");
 			String guestName = scn.nextLine();
 			
 			if(guestName.isBlank()) {
@@ -595,21 +600,21 @@ public class MenuHandler {
 				}
 			
 			}while(checkOut == checkIn || checkOut < checkIn);
-			
-			
-		
+			/*keeping this in cause it made me laugh*/
+
 			
 			Room room = hotelToBook.findAvailableRoom(checkIn, checkOut);
 			if(room  == null) {
-				System.out.println("\nThere are no available rooms in this hotel, given the time frame");
+				System.out.println("\nThere are no available rooms in this hotel, given the time frame\n");
 				
-			}else {
+				
+			} else {
 			Reservation some = new Reservation(guestName, checkIn, checkOut, room);
 			hotelToBook.addReservation(some);
-			System.out.println("\nReservation has been added");
+			System.out.println("\nReservation has been added.");
 			System.out.println("\nHere's your Reservation ID: " + some.getReservationID());
-		/* if SELECTING FOR ROOM IS GONNA BE MANUAL YOU FUCKS ARE GONNA PAY */
 			}
+			System.out.println("\n=========================================================");
 		}while(IH.confirmation("\nDo you want to make another booking?"));
 		/* ask if they want to make a booking again, which displays hotel list again */
 	}

@@ -1,4 +1,4 @@
-package com.hrs;
+package com.bootleg;
 
 public class ascii {
 
@@ -13,6 +13,13 @@ public class ascii {
 	   
 	   
 	   
+	}
+	
+	public static void otherMenuA() {
+		System.out.println("\r\n"
+				+ "  ▒█▀▄▀█ █▀▀█ ░▀░ █▀▀▄ 　 ▒█▀▄▀█ █▀▀ █▀▀▄ █░░█ \r\n"
+				+ "  ▒█▒█▒█ █▄▄█ ▀█▀ █░░█ 　 ▒█▒█▒█ █▀▀ █░░█ █░░█ \r\n"
+				+ "  ▒█░░▒█ ▀░░▀ ▀▀▀ ▀░░▀ 　 ▒█░░▒█ ▀▀▀ ▀░░▀ ░▀▀▀");
 	}
 	
 	public static void animegirlheart() {
