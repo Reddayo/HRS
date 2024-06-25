@@ -178,8 +178,8 @@ import java.util.Scanner;
 			String answer;
 			while(true){
 				System.out.print(HRS.hotelsText());
-				System.out.println("\nSelect a hotel");
-				System.out.print(">> ");
+				System.out.println("\nSelect a hotel:");
+				System.out.print(" >>  ");
 				answer = scn.nextLine();
 				if(answer.isBlank()) {
 					return null;
@@ -205,8 +205,8 @@ import java.util.Scanner;
 		while(true){
 			
 			System.out.print(HRS.roomsOfHotelText(foundHotel));
-			System.out.println("\nSelect a room");
-			System.out.print(">> ");
+			System.out.println("\nSelect a room:");
+			System.out.print(" >>  ");
 			String someString = scn.nextLine();
 			if(someString.isBlank())
 				return null;
