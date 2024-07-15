@@ -1,15 +1,20 @@
 package Controller;
 
-import java.awt.CardLayout;
-import java.awt.event.*;
-import java.util.List;
 
+import java.awt.event.*;
 import javax.swing.DefaultListModel;
+import javax.swing.JTextField;
 import javax.swing.event.*;
 
 import Model.*;
 import View.*;
-public class HRS_Controller implements ActionListener, DocumentListener, ComponentListener {
+public class HRS_Controller implements  ActionListener, 
+										DocumentListener, 
+										ComponentListener,
+										FocusListener, 
+										MouseListener, 
+										KeyListener, 
+										ListSelectionListener {
 	private HotelListManager model;
 	private HRS_GUI gui;
 	
@@ -21,6 +26,9 @@ public class HRS_Controller implements ActionListener, DocumentListener, Compone
 		//updateView();
 		gui.setActionListener(this);
 		gui.setComponentListener(this);
+		gui.setDocumentListener(this);
+		gui.setFocusListener(this);
+		gui.setListListener(this);
 		//gui.setDocumentListener(this);
 		updateView();
 	}
@@ -42,29 +50,28 @@ public class HRS_Controller implements ActionListener, DocumentListener, Compone
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		CardLayout cardLayout = (CardLayout) gui.getCards().getLayout();
+	
 		if(e.getActionCommand().equals("Create Hotel")) {
 			
 			gui.showCreateMenu();
 			System.out.println("You created a hotel!");
-			cardLayout.show(gui.getCards(), "Create Hotel");
 			
 		}else if(e.getActionCommand().equals("View Hotel")) {
 			System.out.println("You viewed a hotel!");
-			cardLayout.show(gui.getCards(), "View Hotel");
+			gui.showViewMenu();
 		}else if(e.getActionCommand().equals("Manage Hotel")) {
 			System.out.println("You managed a hotel!");
-			cardLayout.show(gui.getCards(), "Manage Hotel");
-		} else if (e.getSource() == gui.getSubmitButton()) {
+			gui.showManageMenu();
+		} else if (e.getActionCommand().equals("CSubmit")) {
             try {
-                String name = gui.getNameField().getText();
-                int standardRooms = Integer.parseInt(gui.getStandardField().getText());
-                int deluxeRooms = Integer.parseInt(gui.getDeluxeField().getText());
-                int executiveRooms = Integer.parseInt(gui.getExecutiveField().getText());
+                String name = gui.getHotelName();
+                int standardRooms = Integer.parseInt(gui.getStandardRoomNum());
+                int deluxeRooms = Integer.parseInt(gui.getDeluxeRoomNum());
+                int executiveRooms = Integer.parseInt(gui.getExecutiveRoomNum());
                 double price = 1299;
 
-                if (!gui.getDefaultPriceCheckBox().isSelected()) {
-                    price = Double.parseDouble(gui.getPriceField().getText());
+                if (!gui.isDefaultPriceCheckBoxSelected()) {
+                    price = Double.parseDouble(gui.getPrice());
                 }
 
                 int totalRooms = standardRooms + deluxeRooms + executiveRooms;
@@ -91,8 +98,13 @@ public class HRS_Controller implements ActionListener, DocumentListener, Compone
                 gui.showPopup("Invalid Input", ex.getMessage());
             } 
             
+            gui.showCreateMenu();
+        }else if (e.getActionCommand().equals("VSubmit") ) {
+        	gui.showViewMenu();
+        }else if(e.getActionCommand().equals("Default Price (1299)")) {
+        	gui.toggleDefaultPrice();
         }
-		updateView();
+		
 		
 	}
 	
@@ -103,7 +115,7 @@ public class HRS_Controller implements ActionListener, DocumentListener, Compone
 	@Override
 	public void insertUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Text inserted: " + e.getLength() + " characters");
 	}
 
 	@Override
@@ -151,6 +163,107 @@ public class HRS_Controller implements ActionListener, DocumentListener, Compone
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	 	public void focusGained(FocusEvent e) {
+	        if (e.getSource() instanceof JTextField) {
+	            JTextField textField = (JTextField) e.getSource();
+	            String currentText = textField.getText();
+
+	            // Example: Check if the current text matches a placeholder
+	            if ("Enter Text".equals(currentText)) {
+	                gui.removeNameFieldText(); // Method in Gui to remove placeholder text
+	            }
+	        }
+	    }
+
+	    @Override
+	    public void focusLost(FocusEvent e) {
+	        if (e.getSource() instanceof JTextField) {
+	            JTextField textField = (JTextField) e.getSource();
+	            String currentText = textField.getText();
+
+	            // Example: Check if the current text is empty
+	            if (currentText.isEmpty()) {
+	                gui.addGhostNameField(); // Method in Gui to add placeholder text
+	            }
+	        }
+	    }
+
+
+
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			// TODO Auto-generated method stub
+			if (!e.getValueIsAdjusting()) {
+                gui.showHotelInfo();
+            }
+		}
 
 	
 }

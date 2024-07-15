@@ -1,19 +1,24 @@
 package View;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionListener;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
-import java.util.*;
+import java.awt.event.FocusListener;
 
 public class HRS_GUI extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7413264850018485788L;
 	private Font buttonFonts = new Font("Helvetica", Font.BOLD, 12);
-	private Dimension buttonSizes = new Dimension(100, 20);
+	private Dimension buttonSizes = new Dimension(120, 30);
 	//private JPanel panels;
 	private JPanel cards;
-
+	private CardLayout cardShower = new CardLayout();
 	
 	private JList<String> list = new JList<>();
 	
@@ -25,7 +30,7 @@ public class HRS_GUI extends JFrame {
 	
 	
 	
-	JScrollPane listScrollPane;
+	private JScrollPane listScrollPane;
 	
 	//Card 1
 	//CREATE HOTEL
@@ -38,24 +43,67 @@ public class HRS_GUI extends JFrame {
     private JLabel priceLabel = new JLabel("Price (must be > 100):");
     private JButton submitButton = new JButton("Submit");
     
-
+    //Card 2
+    //VIEW HOTEL
+    private JLabel infoLabel;
+    
+    
+    
+    
+    
+    
+    
+    //Card 3
+    //Manage Hotel
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //CARD 4
+    //Simulate Booking
+    
+    
+    
+    
 
 	
 	public HRS_GUI(String name){
 		super(name);
 		
 		setLayout(new BorderLayout());
-		
-		panels = new JPanel(new BorderLayout());
-				
-		setSize(800, 600);
+		/*
+		ImageIcon LMAO = new ImageIcon("C:\\Users\\Admin\\Documents\\RedsMCO2CCPROG3\\ExtendedHRS\\src\\View\\a.png");
+		setIconImage(LMAO.getImage());
+		*/
+		/*
+		ImageIcon LMAO = new ImageIcon("C:\\Users\\Admin\\Documents\\RedsMCO2CCPROG3\\ExtendedHRS\\src\\View\\a.png");
+		createButton.setContentAreaFilled(false);
+		createButton.setIcon(LMAO);
+		*/
+	   // new JPanel(new BorderLayout());
+		submitButton.setActionCommand("CSubmit");
+		setSize(800, 600);//setMaximumSize(new Dimension(1000, 800));
 		setMinimumSize(new Dimension(800, 600));
+		
 		setResizable(true);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		init();
-		showCreateMenu();
+		//showCreateMenu();
 		
 		
 	}
@@ -102,9 +150,20 @@ public class HRS_GUI extends JFrame {
 		createButton.setBorderPainted(false);
 		viewButton.setBorderPainted(false);
 		manageButton.setBorderPainted(false);
-		createButton.setBackground(Color.BLACK);
-		createButton.setForeground(Color.RED);
-	    viewButton.setForeground(Color.GRAY);
+		
+		
+		
+		createButton.setBackground(Color.decode("0x353535"));
+		createButton.setForeground(Color.decode("0xFFFFFF"));
+		
+		viewButton.setBackground(Color.decode("0x353535"));
+		viewButton.setForeground(Color.decode("0xFFFFFF"));
+		
+		manageButton.setBackground(Color.decode("0x353535"));
+		manageButton.setForeground(Color.decode("0xFFFFFF"));
+		
+		topToolBar.setBackground(Color.decode("0xD9D9D9"));
+	    
 	    
 		topToolBar.add(createButton);
 		topToolBar.add(viewButton);
@@ -119,7 +178,7 @@ public class HRS_GUI extends JFrame {
 		
 		
 		
-		cards = new JPanel(new CardLayout());
+		cards = new JPanel(cardShower);
 		JPanel titlePanel = new JPanel(new FlowLayout());
 		JLabel titleLabel = new JLabel("Hotel Reservation System++");
 		
@@ -130,7 +189,7 @@ public class HRS_GUI extends JFrame {
 		titlePanel.setPreferredSize(new Dimension(getWidth()/3, getHeight()));
 		titlePanel.add(titleLabel);
 		titlePanel.add(devName);
-		titlePanel.add(new JLabel("                                                          \n "));
+		//titlePanel.add(new JLabel("                                                          \n "));
 		titlePanel.add(mistakeName);
 		
 		cards.add(titlePanel, "Title");
@@ -152,33 +211,57 @@ public class HRS_GUI extends JFrame {
        //createPanel.add(new JLabel()); 
         createPanel.add(submitButton);
 
-        defaultPriceCheckBox.addActionListener(e -> {
-            boolean selected = defaultPriceCheckBox.isSelected();
-            priceField.setVisible(!selected);
-            priceLabel.setVisible(!selected);
-            if (selected) {
-                priceField.setText("1299");
-            } else {
-                priceField.setText("");
-            }
-        });
-        createPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, getHeight()/2, 0));
+       
+        createPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, getHeight()/3, 0));
         cards.add(createPanel, "Create Hotel");
 		
 		JPanel viewPanel = new JPanel(new FlowLayout());
-		viewPanel.add(new JLabel("This is view!"));
+		//viewPanel.add(new JLabel("This is view!"));
+		
+		infoLabel = new JLabel("Select a hotel to view");
+		viewPanel.add(infoLabel);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		JPanel managePanel = new JPanel(new FlowLayout());
 		managePanel.add(new JLabel("This is manage!"));
 		
-		cards.add(createPanel, "Create Hotel");
+		//cards.add(createPanel, "Create Hotel");
 		cards.add(viewPanel, "View Hotel");
 		cards.add(managePanel, "Manage Hotel");
+		//cards.setLayout(cardShower);
 		cards.setPreferredSize(new Dimension(getWidth()/3, getHeight()/2));
 		this.add(cards, BorderLayout.EAST);
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
         //JPanel centerPanel = new JPanel(new BorderLayout());
 		setModel(new DefaultListModel<String>());
+		
 		//panels.add(cards, BorderLayout.SOUTH);
 		//this.add(listScrollPane, BorderLayout.CENTER);
 		this.pack();
@@ -193,8 +276,8 @@ public class HRS_GUI extends JFrame {
 	}
 	
 	public void updateCardPanelSize() {
-        int width = getWidth() / 2;
-        int height = getHeight()/2;
+        int width = getWidth() / 3;
+        int height = getHeight()/3;
         cards.setPreferredSize(new Dimension(width, height));
         cards.revalidate();
         cards.repaint();
@@ -205,47 +288,45 @@ public class HRS_GUI extends JFrame {
 		viewButton.addActionListener(listener);
 		manageButton.addActionListener(listener);
 		submitButton.addActionListener(listener);
+		defaultPriceCheckBox.addActionListener(listener);
 	}
 	
 	public void setComponentListener(ComponentListener e) {
 		addComponentListener(e);
 	}
 	
-	public JPanel getCards() {
-        return cards;
-    }
-
-    public JTextField getNameField() {
-        return nameField;
-    }
-
-    public JTextField getStandardField() {
-        return standardField;
-    }
-
-    public JTextField getDeluxeField() {
-        return deluxeField;
-    }
-
-    public JTextField getExecutiveField() {
-        return executiveField;
-    }
-
-    public JCheckBox getDefaultPriceCheckBox() {
-        return defaultPriceCheckBox;
-    }
-
-    public JTextField getPriceField() {
-        return priceField;
-    }
-
-    public JLabel getPriceLabel() {
-        return priceLabel;
-    }
-
-    public JButton getSubmitButton1() {
-        return submitButton;
-    }
+	public void setDocumentListener(DocumentListener listener) {
+		
+		nameField.getDocument().addDocumentListener(listener);
+		standardField.getDocument().addDocumentListener(listener);
+		deluxeField.getDocument().addDocumentListener(listener);
+		executiveField.getDocument().addDocumentListener(listener);
+		priceField.getDocument().addDocumentListener(listener);
+		
+	}
+	
+	public void setFocusListener(FocusListener listener) {
+		nameField.addFocusListener(listener);
+	}
+	
+	public void setListListener(ListSelectionListener listener) {
+		list.addListSelectionListener(listener);
+	}
+	
+	
+	
+	public void removeNameFieldText() {
+		
+        nameField.setText("");
+       
+	}
+	
+	public void addGhostNameField() {
+		nameField.setText("Enter Text");
+	}
+	
+	
+	
 	
 	public void showPopup(String title, String message) {
 		
@@ -253,7 +334,13 @@ public class HRS_GUI extends JFrame {
     }
 	public void showCreateMenu() {
 		
-		 	nameField.setText("");
+			list.setEnabled(false);
+			list.clearSelection();
+			cardShower.show(cards, "Create Hotel");
+			
+			
+			
+		 	nameField.setText("Enter Text");
 	        standardField.setText("0");
 	        deluxeField.setText("0");
 	        executiveField.setText("0");
@@ -264,14 +351,63 @@ public class HRS_GUI extends JFrame {
         //JOptionPane.showMessageDialog(this, "Create Hotel", "Hotel Creation", JOptionPane.INFORMATION_MESSAGE);
     }
 	
-	public void showTitleMenu() {
+	
+	
+	
+	
+	
+	
+	 public boolean isDefaultPriceCheckBoxSelected() {
+		 return defaultPriceCheckBox.isSelected();
+	 }
 
-		
+	public String getHotelName() {
+		return nameField.getText();
 	}
+	public String getStandardRoomNum() {
+		return standardField.getText();
+	}
+	public String getDeluxeRoomNum() {
+		return deluxeField.getText();
+	}
+	public String getExecutiveRoomNum() {
+		return executiveField.getText();
+	}
+	public String getPrice() {
+		return priceField.getText();
+	}
+
 	
-	 public JButton getSubmitButton() {
-	        return submitButton;
-	    }
-	
-	
+
+	public void showViewMenu() {
+		// TODO Auto-generated method stub
+		cardShower.show(cards, "View Hotel");
+		list.setEnabled(true);
+	}
+	public void showManageMenu() {
+		// TODO Auto-generated method stub
+		cardShower.show(cards, "Manage Hotel");
+	}
+	public void toggleDefaultPrice() {
+		boolean selected = defaultPriceCheckBox.isSelected();
+		priceField.setVisible(!selected);
+        priceLabel.setVisible(!selected);
+        if (selected) {
+            priceField.setText("1299");
+        } else {
+            priceField.setText("100");
+        }
+	}
+
+
+
+	public void showHotelInfo() {
+		// TODO Auto-generated method stub
+		String selectedHotel = list.getSelectedValue();
+        if (selectedHotel != null) {
+            infoLabel.setText("Information about " + selectedHotel);
+        }else {
+        	infoLabel.setText("There is no hotel selected");
+        }
+	}
 }

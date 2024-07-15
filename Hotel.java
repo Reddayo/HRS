@@ -10,6 +10,8 @@ import java.util.Collections;
  * and reservations within the hotel.
  */
 public class Hotel {
+
+    private final static int MAXNOOFROOMS = 50;
 	/**
 	 * The name of the hotel.
 	 */
@@ -42,10 +44,20 @@ public class Hotel {
      * @param hotelRoomPrefix The prefix for generating room IDs.
      */
 	Hotel(String name, double price, int standard, int deluxe, int executive, String hotelRoomPrefix){
-		this.name = name;
+
+        if(standard + deluxe + executive == 0){
+            throw new IllegalArgumentException("Total No. of Rooms cannot be 0");
+        }else if(standard + deluxe + executive < 0){
+            throw new IllegalArgumentException("Total No. Rooms cannot be less than 0");
+        }else if(standard + deluxe + executive > MAXNOOFROOMS ){
+            throw new IllegalArgumentException("Total No. Rooms cannot be greater than 0");
+        }
+    
+    	this.name = name;
 		this.rooms = new ArrayList<Room>();
+        this.reservations = new ArrayList<Reservation>();
 		this.price = price;
-		this.reservations = new ArrayList<Reservation>();
+		
 		this.hotelRoomPrefix = hotelRoomPrefix;
 		
 		roomsInitializer(standard, deluxe, executive);
@@ -98,7 +110,7 @@ public class Hotel {
                 int number2 = extractRoomNumber(room2.getRoomName());
                 
                 if (number1 > number2) {
-                    // Swap rooms if necessary
+                    
                     Room temp = rooms.get(i);
                     rooms.set(i, rooms.get(j));
                     rooms.set(j, temp);
@@ -177,7 +189,6 @@ public class Hotel {
 	        rooms.add(new Room(nextRoomId, price, roomType));
 	    }
 	    sortRoomsByRoomNumber();
-
 	}
 
 	/**
@@ -190,7 +201,7 @@ public class Hotel {
 		Room room = reservation.getRoom();
 		room.addReservation(reservation);
 	}
-	 /**
+	/**
 	  * Removes a reservation from the hotel, including its associated room and reservation list.
 	  *
 	  * @param someRes The reservation to remove.
@@ -207,11 +218,10 @@ public class Hotel {
 	 * @return The number of removable rooms.
 	 */
 	   public int removableRooms() {
-		    //System.out.println("Rooms without reservations:");
 			int i = 0;
 			for (Room room : rooms) {
 			    if (room.getReservation(0) != null) {
-			        //ystem.out.println(room.getRoomName());
+			    
 			        	i++;
 			        }
 			    }
@@ -230,10 +240,6 @@ public class Hotel {
 				   count--;
 				   
 			   }
-		    
-		    	//this.noOfRooms = rooms.size();
-		    	
-		    
 		   }
 	   }
 	/**
@@ -333,11 +339,7 @@ public class Hotel {
         for (Reservation reservation : reservations) {
             int checkInDay = reservation.getCheckIn();
             int checkOutDay = reservation.getCheckOut();
-
-            // Calculate number of nights stayed
             int numberOfNights = checkOutDay - checkInDay;
-
-            // Calculate total price for the reservation
             double reservationPrice = numberOfNights * price;
             totalEstimate += reservationPrice;
         }
