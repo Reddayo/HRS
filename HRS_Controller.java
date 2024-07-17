@@ -11,7 +11,6 @@ import View.*;
 public class HRS_Controller implements  ActionListener, 
 										DocumentListener, 
 										ComponentListener,
-										FocusListener, 
 										MouseListener, 
 										KeyListener, 
 										ListSelectionListener {
@@ -27,7 +26,7 @@ public class HRS_Controller implements  ActionListener,
 		gui.setActionListener(this);
 		gui.setComponentListener(this);
 		gui.setDocumentListener(this);
-		gui.setFocusListener(this);
+		//gui.setFocusListener(this);
 		gui.setListListener(this);
 		//gui.setDocumentListener(this);
 		updateView();
@@ -44,22 +43,26 @@ public class HRS_Controller implements  ActionListener,
 	            System.out.println(hotel.getName());
 	        }
 	       
-	        gui.updateList(listModel);
+	        gui.updateHotelList(listModel);
 	    }
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 	
-		if(e.getActionCommand().equals("Create Hotel")) {
+		if(e.getActionCommand().equals("create")) {
 			
 			gui.showCreateMenu();
 			System.out.println("You created a hotel!");
 			
-		}else if(e.getActionCommand().equals("View Hotel")) {
+		}else if(e.getActionCommand().equals("view")) {
+			
 			System.out.println("You viewed a hotel!");
+			
 			gui.showViewMenu();
-		}else if(e.getActionCommand().equals("Manage Hotel")) {
+		
+			
+		}else if(e.getActionCommand().equals("manage")) {
 			System.out.println("You managed a hotel!");
 			gui.showManageMenu();
 		} else if (e.getActionCommand().equals("CSubmit")) {
@@ -79,7 +82,7 @@ public class HRS_Controller implements  ActionListener,
                     throw new IllegalArgumentException("Total rooms must be between 1 and 50.");
                 }
 
-                if (price <= 100) {
+                if (price < 100) {
                     throw new IllegalArgumentException("Price must be greater than 100.");
                 }
                 
@@ -100,10 +103,48 @@ public class HRS_Controller implements  ActionListener,
             
             gui.showCreateMenu();
         }else if (e.getActionCommand().equals("VSubmit") ) {
-        	gui.showViewMenu();
+        	//gui.showViewMenu();
         }else if(e.getActionCommand().equals("Default Price (1299)")) {
         	gui.toggleDefaultPrice();
+        }else if(e.getActionCommand().equals("view availability information")) {
+        	
+        	
+        	
+        	//gui.showAvailabilityMenu();
+        	
+        	//foundHotel.availability();
+        	
+        	
+
+        	gui.showViewAvailabilityInformation();
+        	
+        	
+        	//gui.showTotalAvailability();
+        }else if(e.getActionCommand().equals("view room information")) {
+        	gui.showViewRoomInformation();
+        	
+        }else if(e.getActionCommand().equals("view reservation information")) {
+        	gui.showViewReservationInformation();
+        }else if(e.getActionCommand().equals("availSubmit")) {
+        	/*
+        	int availDate = Integer.parseInt(gui.getAvailableDate());
+        	String selHotel = gui.getSelectedHotel();
+        	Hotel selectedHotel = model.findHotel(selHotel);
+        	
+        	if(selectedHotel != null) {
+        		int available = selectedHotel.getNoOfAvailableRooms(availDate);
+        		gui.showAvailabilityDate(selectedHotel.getRoomSize()-available, available );
+        	}
+        	
+        	*/
+        }else if(e.getActionCommand().equals("simulate")) {
+        	
+        	gui.showSimulation();
+        }else if(e.getActionCommand().equals("new booking")) {
+        	gui.showNewBooking();
         }
+		
+		
 		
 		
 	}
@@ -115,7 +156,7 @@ public class HRS_Controller implements  ActionListener,
 	@Override
 	public void insertUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("Text inserted: " + e.getLength() + " characters");
+		//System.out.println("Text inserted: " + e.getLength() + " characters");
 	}
 
 	@Override
@@ -228,42 +269,31 @@ public class HRS_Controller implements  ActionListener,
 		
 	}
 
-
 	@Override
-	 	public void focusGained(FocusEvent e) {
-	        if (e.getSource() instanceof JTextField) {
-	            JTextField textField = (JTextField) e.getSource();
-	            String currentText = textField.getText();
-
-	            // Example: Check if the current text matches a placeholder
-	            if ("Enter Text".equals(currentText)) {
-	                gui.removeNameFieldText(); // Method in Gui to remove placeholder text
-	            }
-	        }
-	    }
-
-	    @Override
-	    public void focusLost(FocusEvent e) {
-	        if (e.getSource() instanceof JTextField) {
-	            JTextField textField = (JTextField) e.getSource();
-	            String currentText = textField.getText();
-
-	            // Example: Check if the current text is empty
-	            if (currentText.isEmpty()) {
-	                gui.addGhostNameField(); // Method in Gui to add placeholder text
-	            }
-	        }
-	    }
-
-
-
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-			// TODO Auto-generated method stub
-			if (!e.getValueIsAdjusting()) {
-                gui.showHotelInfo();
-            }
-		}
+	public void valueChanged(ListSelectionEvent e) {
+		// TODO Auto-generated method stub
+		
+		if (!e.getValueIsAdjusting()) {
+           // gui.showHotelInfo();
+			String selectedHotel = gui.getSelectedHotel();
+			//precondition that is always gonna be a hotel there;
+			Hotel foundHotel = model.findHotel(selectedHotel);
+			if(foundHotel != null) {
+			//hotel name, number of rooms, we can also get it dissected, estimate earnings
+			
+				gui.showHotelInfo(foundHotel.getName(), foundHotel.getRoomSize(), 
+								 foundHotel.getNoOfStandardRooms(), 
+								 foundHotel.getNoOfDeluxeRooms(),
+								 foundHotel.getNoOfExecutiveRooms(),
+								 foundHotel.getEstimate());
+			}
+			
+			
+			gui.revalidate();
+			gui.repaint();
+        }
+        
+	}
 
 	
 }

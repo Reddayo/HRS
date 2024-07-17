@@ -32,12 +32,15 @@ public class HotelListManager {
      */
 	public HotelListManager(){
 		hotels =  new ArrayList<Hotel>();
-		hotels.add(new Hotel("Blue",1299, 10, 20, 10, "A"));
+		hotels.add(new Hotel("Blue",1299, 1, 2, 3, "A"));
 		hotels.add(new Hotel("Red", 1299, 1, 0, 1, "B"));
 		hotels.add(new Hotel("Green",1299, 10, 20, 10, "C"));
 		hotels.add(new Hotel("Yellow", 1299, 1, 0, 1, "D"));
 		hotels.add(new Hotel("Purple",1299, 10, 20, 10, "E"));
 		hotels.add(new Hotel("Orange", 1299, 1, 0, 1, "F"));
+		Hotel hotel = hotels.get(5);
+		//String guestName, int checkInDay, int checkOutDay, Room room
+		hotel.addReservation(new Reservation("Akai Haato", 1, 31, hotel.getRoom(0)));
 	}
 	/**
 	 * Generates the next prefix for the room in the list of hotel.
