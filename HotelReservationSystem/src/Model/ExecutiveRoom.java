@@ -16,4 +16,9 @@ public class ExecutiveRoom extends Room {
     public void setRoomPrice(double roomPrice) {
         super.setRoomPrice(roomPrice*BASE_RATE_MULTIPLIER);
     }
+    
+    @Override 
+    public String getRoomType() {
+    	return "Executive";
+    }
 }

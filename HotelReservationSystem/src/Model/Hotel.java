@@ -249,8 +249,10 @@ public class Hotel {
 	   Room room = findAvailableRoom(checkIn, checkOut, roomType);
 		
 	   if(room == null) {
-		   throw new IllegalArgumentException ("There are no more " + roomType +  " rooms");
+		   throw new IllegalArgumentException ("There are no " + roomType +  " rooms available");
 	   }
+	   
+	   
 		
 		Reservation res = new Reservation(guestName, checkIn, checkOut, room, discount, datePriceModifier);
 		reservations.add(res);
@@ -445,7 +447,7 @@ public class Hotel {
 	/**
 	 * @return the price
 	 */
-	public double getPrice() {
+	public double getBasePrice() {
 		return price;
 	}
 	/**
@@ -613,6 +615,11 @@ public class Hotel {
 	public void removeRoom(String roomName) {
 		Room room = findRoom(roomName);
 		rooms.remove(room);
+	}
+	
+	public String getRoomRoomType(String roomName) {
+		Room room = findRoom(roomName);
+		return room.getRoomType();
 	}
 
 }

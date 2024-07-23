@@ -38,6 +38,7 @@ public class HotelListManager {
      */
 	public HotelListManager(){
 		hotels =  new ArrayList<Hotel>();
+		/*
 		hotels.add(new Hotel("Blue",1299, 1, 2, 3, "A"));
 		hotels.add(new Hotel("Red", 1299, 1, 0, 1, "B"));
 		hotels.add(new Hotel("Green",1299, 10, 20, 10, "C"));
@@ -52,7 +53,7 @@ public class HotelListManager {
 		hotel.addReservation("Akai Haato", "Deluxe", 11, 21, "PAYDAY");
 		hotel = hotels.get(1);
 		hotel.addReservation("Suisei Hoshimati", "Executive", 11, 21, "STAY4_GET1");
-		
+		*/
 	}
 	/**
 	 * Generates the next prefix for the room in the list of hotel.

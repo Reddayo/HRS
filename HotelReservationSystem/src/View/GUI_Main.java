@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -69,6 +70,7 @@ public class GUI_Main extends JFrame {
 
         topPanel.add(toolBar, BorderLayout.NORTH);
         topPanel.add(managePanel, BorderLayout.SOUTH);
+        toolBar.getSimulateButton().setEnabled(false);
         managePanel.setVisible(false);
         
         this.add(topPanel, BorderLayout.NORTH);
@@ -77,8 +79,9 @@ public class GUI_Main extends JFrame {
         kronii.add(viewPanel, "View Hotel");
         
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,  listScrollPane, kronii);
-        kronii.setPreferredSize(new Dimension(getWidth()/3, getHeight()));
-        listScrollPane.setMinimumSize(new Dimension(getWidth()/5, getHeight()));
+        kronii.setPreferredSize(new Dimension(getWidth()/2+100, getHeight()));
+       
+        kronii.setMinimumSize(new Dimension(getWidth()/2, getHeight()));
         listScrollPane.setBorder(null);
         splitPane.setResizeWeight(0.7);
         this.add(splitPane, BorderLayout.CENTER);
@@ -232,6 +235,11 @@ public class GUI_Main extends JFrame {
         viewPanel.setActionListener(listener);
         simulateDialog.setActionListener(listener);
         managePanel.setActionListener(listener);
+        
+    }
+    
+    public GUI_Simulate getBooking() {
+    	return simulateDialog;
     }
 
     public void setChangeListener(ChangeListener listener){
@@ -256,7 +264,9 @@ public class GUI_Main extends JFrame {
 
     public void showViewPanel() {
     	if(!viewPanel.isVisible()) {
-        viewmanagetitleshower.show(kronii, "View Hotel");
+    		viewmanagetitleshower.show(kronii, "View Hotel");
+    		viewPanel.shownothing();
+    		viewPanel.resetInfo();
     	}else {
     		viewmanagetitleshower.show(kronii, "Title");
     	}
@@ -295,5 +305,10 @@ public class GUI_Main extends JFrame {
     public int showConfirmationDialog(String string) {
         return JOptionPane.showConfirmDialog(null, string, string, JOptionPane.YES_NO_OPTION);
     }
+
+	public void setSimulateEnabled(boolean b) {
+		toolBar.getSimulateButton().setEnabled(b);;
+		
+	}
 
 }

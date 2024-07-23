@@ -31,6 +31,10 @@ public class GUI_toolBar extends JPanel {
         add(manageButton);
         add(simulateButton);
     }
+    
+    public PlainButton getSimulateButton() {
+    	return simulateButton;
+    }
 
     private PlainButton createButton(String text) {
         PlainButton button = new PlainButton(text);

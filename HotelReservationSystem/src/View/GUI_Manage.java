@@ -25,6 +25,7 @@ public class GUI_Manage extends JPanel {
     private JTextField newHotelNameField;
     private JTextField newBasePriceField;
     private JTextField newPriceModifierField;
+  
     private JLabel newBasePrice;
     private String selected;
     private JList<String> reservationList;
@@ -102,6 +103,9 @@ public class GUI_Manage extends JPanel {
         return new ArrayList<>(selectedValuesList);
     }
     
+    public void updateCurrentBasePrice(double basePriceToShow) {
+    	newBasePrice = new JLabel(String.format("Current Base Price: %s", basePriceToShow));
+    }
     
     public ListSelectionListener getLSL(){
         return lsl;
@@ -198,7 +202,7 @@ public class GUI_Manage extends JPanel {
         switch (dialogType) {
             case "Change Hotel Name"://done
                 return createChangeHotelNamePanel();
-            case "Add Room"://tom
+            case "Add Room"://tom //SOMEDAY ILL ADD YOU TODAY THO FR
                 return createAddRoomPanel();
             case "Remove Room"://done //we're just gonna show removable rooms
                 return createRemoveRoomPanel();
@@ -257,6 +261,28 @@ public class GUI_Manage extends JPanel {
         JLabel addableRooms = new JLabel("Addable Rooms:");
         panel.add(addableRooms);
         panel.add(roomAdd);
+        
+        
+        //standardSpinner = createSpinner();
+        //deluxeSpinner = createSpinner();
+        //executiveSpinner = createSpinner();
+        
+        JLabel standardLabel = new JLabel("Standard: ");
+        JLabel deluxeLabel = new JLabel("Deluxe: ");
+        JLabel executiveLabel = new JLabel("Executive: ");
+        panel.add(standardLabel);
+        //panel.add(standardSpinner);
+        panel.add(deluxeLabel);
+        //panel.add(deluxeSpinner);
+        panel.add(executiveLabel);
+        //panel.add(executiveSpinner);
+        
+        JPanel somePanel = new JPanel(new GridLayout(1, 3));
+        confirmation.setText("Add Rooms");
+        somePanel.add(new JLabel(" "));
+        somePanel.add(confirmation);
+        somePanel.add(new JLabel(" "));
+        
         return panel;
     }
 
@@ -285,22 +311,26 @@ public class GUI_Manage extends JPanel {
     private JPanel createUpdateBasePricePanel() {
  
         JPanel panel = new JPanel(new BorderLayout());
-
-        JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel panel3 = new JPanel(new BorderLayout());
+        JPanel panel1 = new JPanel(new BorderLayout());
         JPanel panel2 = new JPanel(new GridLayout(1, 3));
 
         newBasePriceField = new JTextField(20);
-        newBasePrice= new JLabel("New Base Price:  " );
-        confirmation.setActionCommand("Confirm");
-        confirmation.setText("Update");
-
-        panel1.add(newBasePrice);
         
-        panel1.add(newBasePriceField);
+       //newBasePrice= new JLabel("New Base Price:  " );
+        //confirmation.setActionCommand("Confirm");
+        confirmation.setText("Update");
+       
+        panel1.add(newBasePrice, BorderLayout.NORTH);
+    
+        panel1.add(new JLabel("Enter new price (>=100): "), BorderLayout.SOUTH);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 30, 20));
+        panel3.add(newBasePriceField, BorderLayout.SOUTH);
+        panel3.add(panel1, BorderLayout.NORTH);
         panel2.add(new JLabel(" "));
         panel2.add(confirmation);
         panel2.add(new JLabel(" "));
-        panel.add(panel1, BorderLayout.CENTER);
+        panel.add(panel3, BorderLayout.NORTH);
         panel.add(panel2, BorderLayout.SOUTH);
         return panel;
     }

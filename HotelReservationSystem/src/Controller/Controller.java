@@ -148,7 +148,33 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 
 
         }else if(event.equals("Book")){
-            System.out.println("There is too much going on rn");
+            
+        	if(showConfirmation() != 0) return;
+        	
+        	int checkInDay = gui_Main.getBooking().getCheckInDay();
+        	int checkOutDay = gui_Main.getBooking().getCheckOutDay();
+        	String discountCode = gui_Main.getBooking().getDiscountCode();
+        	String guestName = gui_Main.getBooking().getGuestName();
+        	String roomType = gui_Main.getBooking().getRoomType();
+        	
+        	Hotel selectedHotel = model_HRS.findHotel(gui_Main.getSelectedHotel());
+        	
+        	try {
+	        	selectedHotel.addReservation(guestName, 
+	        								 roomType, 
+	        								 checkInDay, 
+	        								 checkOutDay, 
+	        								 discountCode);
+	        	
+	        	updateView();
+	        	updateReservationView();
+	        	gui_Main.getBooking().disposeDialog();
+	        	}catch(IllegalArgumentException ev) {
+	        		gui_Main.showPopup(ev);
+        	}
+        	
+        	
+        	
         }else if(event.equals("Simulate Booking")){
             gui_Main.showSimulateBooking();
         }else if(event.equals("Create Hotel")){
@@ -196,6 +222,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                 gui_Main.getManagePanel().openDialog(action);
                 break;
             case "Update Base Price":
+            	foundHotel = model_HRS.findHotel(gui_Main.getSelectedHotel());
+            	
+            	gui_Main.getManagePanel().updateCurrentBasePrice(foundHotel.getBasePrice());
                 gui_Main.getManagePanel().openDialog(action);
                 System.out.println(action);
                 break;
@@ -288,7 +317,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
           	
         	  foundHotel.updateDatePriceModifier(selectedIndices, num);
           	
-            
+        	  updateView();
           }
     
           gui_Main.getManagePanel().disposeManageDialog();
@@ -547,12 +576,15 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
+            	
                 String selectedHotel = gui_Main.getSelectedHotel();
                 Hotel foundHotel = model_HRS.findHotel(selectedHotel);
-
+                
                 if(foundHotel == null){
+                	
                     return;
                 }
+              
                 String selectedRoom = gui_Main.getViewPanel().getSelectedRoom();
                
                 if(selectedRoom == null){
@@ -560,15 +592,15 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                 }
                 
                 
-               
+               gui_Main.getViewPanel().showRoomPanel();
 
-                gui_Main.getViewPanel().showRoomInfo(selectedRoom, 
+                gui_Main.getViewPanel().showRoomInfo(selectedRoom, foundHotel.getRoomRoomType(selectedRoom),
                                                      foundHotel.getRoomBaseRate(selectedRoom), 
                                                      foundHotel.getAvailability(selectedRoom));
-                boolean[] a = foundHotel.getAvailability(selectedRoom);
+               // boolean[] a = foundHotel.getAvailability(selectedRoom);
 
                 
-                System.out.println("This is working");
+                //System.out.println("This is working");
 
             }
             
@@ -618,13 +650,16 @@ public class Controller implements ActionListener, ListSelectionListener, Change
            // System.out.println(e.getSource().toString());
              String selectedHotel = gui_Main.getSelectedHotel();
              if(selectedHotel == null){
+            	 gui_Main.setSimulateEnabled(false);
+            	 gui_Main.getViewPanel().noInfo();
                 return;
              }
+             gui_Main.setSimulateEnabled(true);
              //precondition that is always gonna be a hotel there;
              Hotel foundHotel = model_HRS.findHotel(selectedHotel);
              if(foundHotel != null) {
              //hotel name, number of rooms, we can also get it dissected, estimate earnings
-             
+            	  gui_Main.getViewPanel().showInfo();
                  gui_Main.getViewPanel().showHotelInfo(foundHotel.getName(), foundHotel.getRoomSize(), 
                                 foundHotel.getNoOfStandardRooms(), 
                                 foundHotel.getNoOfDeluxeRooms(),

@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -32,6 +33,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
@@ -85,12 +87,22 @@ public class GUI_View extends JPanel {
     private CardLayout viewHotelMiscInfoShower;
     private JSpinner dateSpinner;
 
-
+    private JPanel selectSomething;
     private JSplitPane splitPane;
     private JPanel calendarPanel;
     private JPanel breakdownPanel;
+    private CardLayout showInfo;
     public GUI_View() {
-        setLayout(new BorderLayout());
+    	showInfo = new CardLayout();
+        setLayout(showInfo);
+        JPanel blankPanel = new JPanel();
+        JLabel hotelaselect = new JLabel("Select a hotel");
+        hotelaselect.setFont(new Font("Tahoma", Font.PLAIN, 15));
+       // blankPanel.setBorder(BorderFactory.createEmptyBorder(100, 50, 0, 0));
+        blankPanel.add(hotelaselect, BorderLayout.NORTH);
+        		
+        add(blankPanel, "blank");
+        
         viewHotelMiscInfoShower = new CardLayout();
         viewMiscInfoPanel = new JPanel(viewHotelMiscInfoShower);
         viewHotelInfoPanel = createHotelInfoPanel();
@@ -100,37 +112,76 @@ public class GUI_View extends JPanel {
         reservationInformationPanel = createReservationInformationPanel();
         calendarPanel = new JPanel();
         roomInformationPanel.add(calendarPanel);
-
+         
+        
+        
         breakdownPanel = new JPanel();
         reservationInformationPanel.add(breakdownPanel);
         viewMiscInfoPanel.add(hotelAvailabilityPanel, "view availability information");
         viewMiscInfoPanel.add(roomInformationPanel, "view room information");
         viewMiscInfoPanel.add(reservationInformationPanel, "view reservation information");
-
+        
         viewHotelTopPanel = new JPanel(new BorderLayout());
         viewHotelTopPanel.add(viewHotelInfoPanel, BorderLayout.CENTER);
         viewHotelTopPanel.add(viewButtonsPanel, BorderLayout.SOUTH);
         
-
+        
 
 
         JPanel basedPanel = new JPanel(new BorderLayout());
 
 
         basedPanel.add(viewHotelTopPanel, BorderLayout.NORTH);
-        basedPanel.add(viewMiscInfoPanel, BorderLayout.CENTER);
+        
         roomListInit();
         reservationListInit();
+        
+       // roomInformationPanel.setMaximumSize(new Dimension(300, 300));
         /*JPanel listPanel = new JPanel(listShower);
         
         listPanel.add(roomList, "room list");
         listPanel.add(reservationList, "reservationList");
         */
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,basedPanel, listScrollPane );
-        add(splitPane, BorderLayout.CENTER);
-        splitPane.setDividerLocation(0.5);
-        splitPane.setRightComponent( null);
+         
+        selectSomething = new JPanel();
+        selectSomething.add(new JLabel("Press one of the three buttons to show information"));
+        listScrollPane.getVerticalScrollBar().setBackground(new Color(240, 240, 240));
+        listScrollPane.getHorizontalScrollBar().setBackground(new Color(240, 240, 240));
+        viewMiscInfoPanel.add(selectSomething, "show nothing");
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, viewMiscInfoPanel, listScrollPane );
         
+       listScrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+    	    @Override
+    	    protected void configureScrollBarColors() {
+    	        this.thumbColor = new Color(205, 205, 205);
+    	        //this.incrButton.setBackground(thumbColor);
+    	    }
+    	    
+    	    @Override
+    	    protected JButton createDecreaseButton(int orientation) {
+    	        JButton button = super.createDecreaseButton(orientation);
+    	        button.setBackground(new Color(240, 240, 240));
+    	        button.setForeground(new Color(77, 77, 77));
+    	        button.setBorder(null);
+    	        return button;
+    	    }
+
+    	    @Override
+    	    protected JButton createIncreaseButton(int orientation) {
+    	        JButton button = super.createIncreaseButton(orientation);
+    	        button.setBackground(new Color(240, 240, 240));
+    	        button.setForeground(new Color(240, 240, 240));
+    	        button.setBorder(null);
+    	        return button;
+    	    }
+    	});
+        add(basedPanel,"hotel info");
+        splitPane.setDividerLocation(0.6);
+       // splitPane.setDividerSize(0);
+        splitPane.setResizeWeight(0.6);
+        
+        splitPane.setRightComponent( null);
+        basedPanel.add(splitPane, BorderLayout.CENTER);
         splitPane.setUI(new BasicSplitPaneUI() 
         {
             @Override
@@ -159,6 +210,17 @@ public class GUI_View extends JPanel {
         splitPane.setBorder(null);
         //listScrollPane.setVisible(false);
     }
+    
+    public void showInfo() {
+    	showInfo.show(this, "hotel info");
+    }
+    
+    public void noInfo() {
+    	showInfo.show(this, "blank");
+    }
+    public void shownothing() {
+    	viewHotelMiscInfoShower.show(viewMiscInfoPanel, "show nothing");
+    }
 
     private JList<String> roomList;
     private JList<String> reservationList;
@@ -166,6 +228,7 @@ public class GUI_View extends JPanel {
     private JScrollPane listScrollPane2 ;
     private JPanel availabilityCalendarPanelRoI;
     private JPanel breakDownPriceNightListReI;
+	private JLabel roomTypeRoI;
 
     public void roomListInit() {
         roomList = new JList<String>();
@@ -329,21 +392,36 @@ public class GUI_View extends JPanel {
 
 
     private JPanel createRoomInformationPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        JPanel mainPanel = new JPanel();
+        JPanel roomDetailsPanel = new JPanel();
+        JPanel availabilityPanel = new JPanel();
+        JPanel notePanel = new JPanel();
+
+        mainPanel.setLayout(new BorderLayout());
+        roomDetailsPanel.setLayout(new GridLayout(3, 1)); 
+        availabilityPanel.setLayout(new BorderLayout());
+        notePanel.setLayout(new BorderLayout());
 
         roomNameRoI = new JLabel("Room Name: ");
-        roomPriceRoI = new JLabel("Room Price: ");
+        roomTypeRoI = new JLabel("Room Type: ");
+        roomPriceRoI = new JLabel("Room Base Price: ");
         availabilityCalendarRoI = new JLabel("Availability Calendar: ");
         availabilityCalendarPanelRoI = new JPanel();
-        panel.add(roomNameRoI);
-        panel.add(roomPriceRoI);
-        panel.add(availabilityCalendarRoI);
-        panel.add(availabilityCalendarPanelRoI);
-        panel.add(new JLabel("Note: Day 31 cannot be booked thereby blacked out"));
 
-        return panel;
+        roomDetailsPanel.add(roomNameRoI);
+        roomDetailsPanel.add(roomTypeRoI);
+        roomDetailsPanel.add(roomPriceRoI);
+        
+        availabilityPanel.add(availabilityCalendarRoI, BorderLayout.NORTH);
+        availabilityPanel.add(availabilityCalendarPanelRoI, BorderLayout.CENTER);
+        notePanel.add(new JLabel("Note: Day 31 cannot be booked thereby blacked out"), BorderLayout.SOUTH);
+        
+        mainPanel.add(roomDetailsPanel, BorderLayout.NORTH);
+        mainPanel.add(availabilityPanel, BorderLayout.CENTER);
+        mainPanel.add(notePanel, BorderLayout.SOUTH);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        return mainPanel;
     }
 
     private JPanel createReservationInformationPanel() {
@@ -382,10 +460,11 @@ public class GUI_View extends JPanel {
         estimateEarnings.setText(String.format("Estimate Earnings: %.2f", estimate));
     }
 
-    public void showRoomInfo(String name, double roomPrice, boolean[] availabilityCalendar) {
+    public void showRoomInfo(String name, String roomType, double roomPrice, boolean[] availabilityCalendar) {
         roomNameRoI.setText("Room Name: " + name);
+        roomTypeRoI.setText("Room Type: " + roomType);
         //ystem.out.println(name+roomPrice+availabilityCalendar);
-        roomPriceRoI.setText("Room Price " + roomPrice);
+        roomPriceRoI.setText("Room Price: " + (String.format("%.2f", roomPrice)));
         availabilityCalendarRoI.setText("Availablity Calendar: " );
         updateCalendarPanel(availabilityCalendar);
         revalidate();
@@ -552,17 +631,21 @@ public class GUI_View extends JPanel {
     }
 
     public void showAvailabilityPanel() {
+    	resetInfo();
         viewHotelMiscInfoShower.show(viewMiscInfoPanel, "view availability information");
         splitPane.setRightComponent( null);
     }
 
     public void showRoomPanel() {
-        viewHotelMiscInfoShower.show(viewMiscInfoPanel, "view room information");
-        splitPane.setRightComponent(listScrollPane);
+    	resetInfo();
+    		viewHotelMiscInfoShower.show(viewMiscInfoPanel, "view room information");
+     
+    	   splitPane.setRightComponent(listScrollPane);
     }
-
+	
     public void showReservationPanel() {
-        viewHotelMiscInfoShower.show(viewMiscInfoPanel, "view reservation information");
+    	resetInfo();
+    	viewHotelMiscInfoShower.show(viewMiscInfoPanel, "view reservation information");
         splitPane.setRightComponent(listScrollPane2);
     }
 
@@ -586,6 +669,7 @@ public class GUI_View extends JPanel {
 
     public void resetRoomInfo() {
         roomNameRoI.setText("Room Name: ");
+        roomTypeRoI.setText("Room Type: ");
         roomPriceRoI.setText("Room Price: " );
         availabilityCalendarRoI.setText("Availablity Calendar: " );
         boolean[] blah = new boolean[31];
@@ -606,7 +690,25 @@ public class GUI_View extends JPanel {
         updateBreakdownPriceNight(new double[31], 0, -1);
     }
 
-
+    public void resetInfo() {
+    	resetRoomInfo();
+    	resetReservationInfo();
+    	resetAvailabilityInfo();
+    }
+    
+    
+    public void resetAvailabilityInfo() {
+    	this.bookedRooms.setText("Total No. of Booked Rooms: ");
+        this.bookedStandardRooms .setText("   Standard: ");
+        this.bookedDeluxeRooms.setText("      Deluxe: ");
+        this.bookedExecutiveRooms.setText("  Executive: ");
+        this.availableRooms.setText("Total No. of Available Rooms: ");
+        this.availableStandardRooms.setText("   Standard: ");
+        this.availableDeluxeRooms.setText("      Deluxe: ");
+        this.availableExecutiveRooms.setText("  Executive:  ");
+    }
+    	
+    
     public String getSelectedReservation() {
         return reservationList.getSelectedValue();
     }

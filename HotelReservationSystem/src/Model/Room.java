@@ -166,6 +166,9 @@ public class Room {
 	public String getRoomName() {
 		return this.name;
 	}
-
+	
+	public String getRoomType() {
+		return "Generic";
+	}
 
 }
