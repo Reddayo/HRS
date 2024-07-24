@@ -44,7 +44,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         for (int i = 0; i < model_HRS.getHotelListSize(); i++) {
             Hotel hotel = model_HRS.getHotel(i);
             listModel.addElement(hotel.getName());
-            System.out.println(hotel.getName());
+           // System.out.println(hotel.getName());
         }
        
         gui_Main.updateHotelList(listModel);
@@ -66,7 +66,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                  for(String room: rooms) {
                  	
                      listModel.addElement(room);
-                     System.out.println(room);
+                    // System.out.println(room);
                  }
              }
              
@@ -123,12 +123,12 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                     int[] rooms = gui_Main.getCreateDialog().getRooms();
                     double price = gui_Main.getCreateDialog().getPrice();
 
-                    System.out.println("Hotel Name: " + name);
-                    System.out.println("Standard Rooms: " + rooms[0]);
-                    System.out.println("Deluxe Rooms: " + rooms[1]);
-                    System.out.println("Executive Rooms: " + rooms[2]);
-                    System.out.println("Price: " + price);
-                    System.out.println("Default Price Selected: " + gui_Main.getCreateDialog().isDefaultPriceSelected());
+                    //System.out.println("Hotel Name: " + name);
+                   // System.out.println("Standard Rooms: " + rooms[0]);
+                  //  System.out.println("Deluxe Rooms: " + rooms[1]);
+                  //  System.out.println("Executive Rooms: " + rooms[2]);
+                    //System.out.println("Price: " + price);
+                   // System.out.println("Default Price Selected: " + gui_Main.getCreateDialog().isDefaultPriceSelected());
                     try {
                         model_HRS.createHotel(name,price, rooms[0], rooms[1], rooms[2]);
                     } catch (Exception e1) {
@@ -161,19 +161,19 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         	
         	if (guestName.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please enter your name.", "Missing Information", JOptionPane.ERROR_MESSAGE);
-                return;
+               
             } else if (roomType == null) {
                 JOptionPane.showMessageDialog(null, "Please select a room type.", "Missing Information", JOptionPane.ERROR_MESSAGE);
-                return;
-            } else if (checkInDay == 0) {
+               
+            } else if (checkInDay <= 0) {
                 JOptionPane.showMessageDialog(null, "Please select a check-in day.", "Missing Information", JOptionPane.ERROR_MESSAGE);
-                return;
-            } else if (checkOutDay == 0) {
+               
+            } else if (checkOutDay <= 0) {
                 JOptionPane.showMessageDialog(null, "Please select a check-out day.", "Missing Information", JOptionPane.ERROR_MESSAGE);
-                return;
+              
             } else if (!gui_Main.getBooking().isValidBooking()) {
                 JOptionPane.showMessageDialog(null, "Please enter a valid discount code or leave it empty.", "Invalid Discount Code", JOptionPane.ERROR_MESSAGE);
-                return;
+               
             }else {
         	
             	if(showConfirmation() != 0) return;
@@ -194,12 +194,27 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 	        		gui_Main.showPopup(ev);
 	        		return;
 	        	}
+        	gui_Main.getBooking().disposeDialog();
             }
         	
-        	gui_Main.getBooking().disposeDialog();
+        	
         	
         	
         }else if(event.equals("Simulate Booking")){
+        	String someString = gui_Main.getSelectedHotel();
+        	Hotel fHotel = model_HRS.findHotel(someString);
+        	ArrayList<String> list  = new ArrayList<String>();
+        	if(fHotel != null) {
+            	double[] priceModifier = fHotel.getDatePriceModifier();
+            	
+            	for (int i = 0; i < priceModifier.length; i++) {
+            		String priceMod = String.format("Day %02d -> Day %02d = %.2f%%", i+1, i+2, priceModifier[i] * 100);
+                    
+                    list.add(priceMod);
+                    //System.out.println(priceMod);
+                }
+             }
+        	gui_Main.getBooking().updateDatePriceList(list);
             gui_Main.showSimulateBooking();
         }else if(event.equals("Create Hotel")){
             gui_Main.showCreateDialog();
@@ -260,7 +275,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
             	
             	gui_Main.getManagePanel().updateCurrentBasePrice(foundHotel.getBasePrice());
                 gui_Main.getManagePanel().openDialog(action);
-                System.out.println(action);
+                //System.out.println(action);
                 break;
             case "Remove Reservation":
             	foundHotel = model_HRS.findHotel(gui_Main.getSelectedHotel());
@@ -405,7 +420,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
               gui_Main.getManagePanel().disposeManageDialog();
               return;
           }
-          System.out.println(selectedReservationID);
+         // System.out.println(selectedReservationID);
           if(showConfirmation() == 0){
         	  foundHotel.removeReservation(selectedReservationID);
               updateView();
@@ -612,7 +627,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                     String roomInfo = removableRoomList.get(i);
                     
                     listModel.addElement(roomInfo);
-                    System.out.println(roomInfo);
+                  //  System.out.println(roomInfo);
                 }
              }
        
@@ -635,7 +650,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
             		String priceMod = String.format("Day %02d -> Day %02d = %.2f%%", i+1, i+2, priceModifier[i] * 100);
                     
                     listModel.addElement(priceMod);
-                    System.out.println(priceMod);
+                  //  System.out.println(priceMod);
                 }
              }
        
@@ -692,7 +707,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                     return;
                 }
                 String selectedReservation = gui_Main.getViewPanel().getSelectedReservation();
-                System.out.println(selectedReservation);
+               // System.out.println(selectedReservation);
                 if(selectedReservation == null){
                     return;
                 }
@@ -710,7 +725,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                 		foundHotel.getReservationBreakdown(selectedReservation)
                                                             );
         
-                System.out.println("This is working");
+               // System.out.println("This is working");
 
             }
             
@@ -761,7 +776,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 
 
        if (e.getSource() == gui_Main.getViewPanel().getAvailabilitySpinner()){
-            System.out.println("It's changing huh");
+            //System.out.println("It's changing huh");
 
             updateAvailability((int)gui_Main.getViewPanel().getAvailabilitySpinner().getValue());
        }

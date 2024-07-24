@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -283,6 +282,7 @@ public class GUI_Main extends JFrame {
 
 
     public void showSimulateBooking(){
+    	simulateDialog.disposeDialog();
         simulateDialog.setVisible(true);
     }
 

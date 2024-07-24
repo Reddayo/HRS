@@ -1,5 +1,7 @@
 package Driver;
 
+import javax.swing.SwingUtilities;
+
 import Controller.*;
 import Model.*;
 import View.*;
@@ -14,8 +16,12 @@ public class Driver {
     	//JFrame.setDefaultLookAndFeelDecorated(true);
     	
     
-        GUI_Main hrs_view = new GUI_Main("Hotel Reservation System++");
-        HotelListManager hrs_model = new HotelListManager();
-        Controller cont = new Controller(hrs_model, hrs_view);
+    	SwingUtilities.invokeLater(() -> {
+            // Initialize GUI components and model
+            GUI_Main hrs_view = new GUI_Main("Hotel Reservation System++");
+            HotelListManager hrs_model = new HotelListManager();
+            @SuppressWarnings("unused")
+			Controller cont = new Controller(hrs_model, hrs_view);
+    	});
     }
 }

@@ -137,33 +137,35 @@ public class Reservation {
 		    } else {
 		         prices[j] = room.getRoomBaseRate(); 
 		    }
-		}
-		
-		
-		for(int i = 0; i < prices.length; i++) {
-			totalPrice += prices[i]; 
+
 		}
 		
 		switch(discount) {
 			case "I_WORK_HERE": 
-				totalPrice *= (1 - 0.10);
+				for (int i1 = 0; i1 < prices.length; i1++) {
+	                prices[i1] *= (1 - 0.10); 
+	            }
 				break;
 			case "STAY4_GET1":
 				if(getDuration() >= 5) {
 					prices[0] = 0;
-					totalPrice = 0;
-					for(int i = 0; i < prices.length; i++) {
-						totalPrice += prices[i]; 
-					}	
 				}
 				break;
 			case "PAYDAY":
 				if ((checkInDay <= 15 && checkOutDay > 15) ||
 					(checkInDay <= 30 && checkOutDay > 30 )) 
 				   {
-				     totalPrice *= (1 - 0.07);
+					for (int i1 = 0; i1 < prices.length; i1++) {
+		                prices[i1] *= (1 - 0.07); 
+		            }
 				   }
 				break;
+		}
+		
+		totalPrice = 0;
+		
+		for(int i1 = 0; i1 < prices.length; i1++) {
+			totalPrice += prices[i1]; 
 		}
 		
 		

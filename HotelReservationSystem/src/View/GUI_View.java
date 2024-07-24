@@ -14,7 +14,6 @@ import java.awt.GridLayout;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
