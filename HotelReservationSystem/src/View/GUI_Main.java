@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 
@@ -121,6 +122,7 @@ public class GUI_Main extends JFrame {
         // Set the alignment of the titlePanel to the center
         titlePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         JLabel titleLabel = new JLabel("Hotel Reservation System++");
+        titleLabel.setFont(new Font("Consolas", Font.BOLD, 30));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         JLabel devName = new JLabel("Made by: Jusper Angelo Cesar");
         devName.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -128,7 +130,7 @@ public class GUI_Main extends JFrame {
         JLabel E2 = new JLabel("As a requirement for CCPROG3 MCO2");
         E2.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        JLabel mistakeName = new JLabel("This was a mistake!");
+        JLabel mistakeName = new JLabel("Finished as of June 25th. 2024. v4.3");
         mistakeName.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         titlePanel.setPreferredSize(new Dimension(getWidth() / 3, getHeight()));

@@ -38,7 +38,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         gui_Main.setActionListener(this);
     }
 
-    public void updateView() {
+    private void updateView() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         
         for (int i = 0; i < model_HRS.getHotelListSize(); i++) {
@@ -52,7 +52,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 
 
 
-    public void updateRoomView() {
+    private void updateRoomView() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         String selectedHotel = gui_Main.getSelectedHotel();
              if(selectedHotel == null){
@@ -77,7 +77,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
     
     
     
-    public void updateAvailability(int day) {
+    private void updateAvailability(int day) {
         
 
         String selectedHotel = gui_Main.getSelectedHotel();
@@ -572,7 +572,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
     }
 
 
-    public void updateReservationView() {
+    private void updateReservationView() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         String selectedHotel = gui_Main.getSelectedHotel();
              if(selectedHotel == null){
