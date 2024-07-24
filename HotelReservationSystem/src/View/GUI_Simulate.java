@@ -1,248 +1,142 @@
 package View;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.ButtonGroup;
-
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GUI_Simulate extends JDialog {
 
-    private static final long serialVersionUID = -2149736069481276153L;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7007581124621903960L;
+	private JLabel nameLabel;
+    private JTextField guestNameField;
+    private JLabel roomTypeLabel;
+    private JToggleButton standardButton;
+    private JToggleButton deluxeButton;
+    private JToggleButton executiveButton;
     private JLabel checkInLabel;
+    private JComboBox<String> checkInComboBox;
     private JLabel checkOutLabel;
-    private JToggleButton standardButtonSB;
-    private JToggleButton deluxeButtonSB;
-    private JToggleButton executiveButtonSB;
-    private ButtonGroup roomTypePick;
-    private JTextField discountFieldSB;
-    private JButton bookButtonSB;
-    private JButton[] dayButtons;
-    private int checkInDay = 0;
-    private int checkOutDay = 0;
-    private boolean selectingCheckIn = true; 
-    private JTextField guestNameFieldSB;
-    private JPanel panel;
-    private JPanel calendarPanel;
-    private JPanel rightPanel;
-    
+    private JComboBox<String> checkOutComboBox;
+    private JLabel discountLabel;
+    private JTextField discountField;
+    private JButton bookButton;
     private JLabel errorLabel;
+    private boolean isValid;
+    private int checkInDay;
+    private int checkOutDay;
 
     GUI_Simulate(JFrame owner) {
         super(owner, "Simulate Booking", true);
-
-        panel = new JPanel();
+        checkInDay = 1;
+        checkOutDay = 2;
+        isValid = true;
+        JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); 
+        gbc.insets = new Insets(5, 5, 15, 5);
 
-        checkInLabel = new JLabel("Check-in: None");
-        checkOutLabel = new JLabel("Check-out: None");
+        nameLabel = new JLabel("Your Name:");
+        guestNameField = new JTextField(20);
 
-        
-        standardButtonSB = new JToggleButton("Standard");
-        deluxeButtonSB = new JToggleButton("Deluxe");
-        executiveButtonSB = new JToggleButton("Executive");
-        
-        standardButtonSB.setBackground(Color.LIGHT_GRAY);
-        deluxeButtonSB.setBackground(Color.decode("0xA020F0"));
-        executiveButtonSB.setBackground(Color.decode("0xFFD700"));
+        roomTypeLabel = new JLabel("Room Type:");
+        standardButton = new JToggleButton("Standard");
+        deluxeButton = new JToggleButton("Deluxe");
+        executiveButton = new JToggleButton("Executive");
 
-        bookButtonSB = new JButton("Book");
-        discountFieldSB = new JTextField(10);
-        roomTypePick = new ButtonGroup();
-        roomTypePick.add(standardButtonSB);
-        roomTypePick.add(deluxeButtonSB);
-        roomTypePick.add(executiveButtonSB);
+        // Group the buttons together to allow only one selection at a time
+        ButtonGroup roomTypeGroup = new ButtonGroup();
+        roomTypeGroup.add(standardButton);
+        roomTypeGroup.add(deluxeButton);
+        roomTypeGroup.add(executiveButton);
 
-     
-        errorLabel = new JLabel("");
-        errorLabel.setForeground(Color.RED);
-
-        JLabel guestNameLabelSB = new JLabel("Guest Name:");
-        guestNameFieldSB = new JTextField(15);
         JPanel roomTypePanel = new JPanel();
-        roomTypePanel.setLayout(new GridBagLayout());
-        GridBagConstraints roomTypeGbc = new GridBagConstraints();
-        roomTypeGbc.insets = new Insets(5, 5, 5, 5);
-        roomTypeGbc.anchor = GridBagConstraints.WEST;
+        roomTypePanel.add(standardButton);
+        roomTypePanel.add(deluxeButton);
+        roomTypePanel.add(executiveButton);
 
-        roomTypeGbc.gridx = 0;
-        roomTypePanel.add(standardButtonSB, roomTypeGbc);
+        discountLabel = new JLabel("Discount Code:");
+        discountField = new JTextField(20);
 
-        roomTypeGbc.gridx = 1;
-        roomTypePanel.add(deluxeButtonSB, roomTypeGbc);
-        roomTypeGbc.gridx = 2;
-        roomTypePanel.add(executiveButtonSB, roomTypeGbc);
-        calendarPanel = createCalendarPanel();
+        checkInLabel = new JLabel("Check In:");
+        checkInComboBox = new JComboBox<>();
+        updateCheckInComboBox();
+        checkInComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                checkInDay = checkInComboBox.getSelectedIndex() + 1;
+                updateCheckOutComboBox();
+            }
+        });
 
-      
-        rightPanel = new JPanel();
-        rightPanel.setLayout(new GridBagLayout());
-        GridBagConstraints rightGbc = new GridBagConstraints();
-        rightGbc.insets = new Insets(5, 5, 5, 5); 
-        rightGbc.fill = GridBagConstraints.HORIZONTAL; 
+        checkOutLabel = new JLabel("Check Out:");
+        checkOutComboBox = new JComboBox<>();
+        updateCheckOutComboBox();
+        checkOutComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                checkOutDay = checkOutComboBox.getSelectedIndex() + 1;
+            }
+        });
 
-     
-        rightGbc.gridx = 0;
-        rightGbc.gridy = 0;
-        rightPanel.add(guestNameLabelSB, rightGbc);
-
-        rightGbc.gridy = 1;
-        rightPanel.add(guestNameFieldSB, rightGbc);
-        
-        rightGbc.gridx = 0;
-        rightGbc.gridy = 2;
-        rightPanel.add(new JLabel("Pick a Room Type"), rightGbc);
-
-        rightGbc.gridy = 3;
-        rightPanel.add(roomTypePanel, rightGbc);
-
-        rightGbc.gridy = 5;
-        rightPanel.add(new JLabel("Discount Coupon "), rightGbc);
-
-        rightGbc.gridy = 6;
-        rightPanel.add(discountFieldSB, rightGbc);
-
-        rightGbc.gridy = 7;
-        rightPanel.add(bookButtonSB, rightGbc);
-
-        rightGbc.gridy = 8;
-        rightPanel.add(errorLabel, rightGbc); 
+        errorLabel = new JLabel();
+        errorLabel.setForeground(Color.RED);
+        bookButton = new JButton("Book");
+        bookButton.setActionCommand("Book");
+        bookButton.setEnabled(true); // Always enabled
+       
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        panel.add(new JLabel("Select Day (Check-in / Check-out): "), gbc);
+        gbc.anchor = GridBagConstraints.WEST;
+        panel.add(nameLabel, gbc);
 
+        gbc.gridx = 1;
+        panel.add(guestNameField, gbc);
+
+        gbc.gridx = 0;
         gbc.gridy = 1;
-        panel.add(calendarPanel, gbc);
+        panel.add(roomTypeLabel, gbc);
 
+        gbc.gridx = 1;
+        panel.add(roomTypePanel, gbc);
+
+        gbc.gridx = 0;
         gbc.gridy = 2;
+        panel.add(discountLabel, gbc);
+
+        gbc.gridx = 1;
+        panel.add(discountField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         panel.add(checkInLabel, gbc);
 
-        gbc.gridy = 3;
+        gbc.gridx = 1;
+        panel.add(checkInComboBox, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         panel.add(checkOutLabel, gbc);
 
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.gridheight = 7; 
-        gbc.fill = GridBagConstraints.BOTH; 
-        panel.add(rightPanel, gbc);
+        gbc.gridx = 1;
+        panel.add(checkOutComboBox, gbc);
 
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        this.add(panel);
-        this.setSize(800, 600); 
-        this.setResizable(true);
-        addDocumentListener();
-    }
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(bookButton, gbc);
 
+        gbc.gridy = 6;
+        panel.add(errorLabel, gbc);
 
-    private JPanel createCalendarPanel() {
-        JPanel calendarPanel = new JPanel();
-        GridBagLayout layout = new GridBagLayout();
-        calendarPanel.setLayout(layout);
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(2, 2, 2, 2); 
-
- 
-        dayButtons = new JButton[31];
-        for (int i = 0; i < 31; i++) {
-            int day = i + 1;
-            dayButtons[i] = new JButton(String.valueOf(day));
-            dayButtons[i].setPreferredSize(new Dimension(60, 60)); 
-            dayButtons[i].setFont(new Font("Arial", Font.BOLD, 16)); 
-            dayButtons[i].setBackground(Color.WHITE);
-            dayButtons[i].addActionListener(new CalendarButtonListener(day));
-
-            gbc.gridx = i % 7; 
-            gbc.gridy = (i / 7) + 1; 
-
-            calendarPanel.add(dayButtons[i], gbc);
-        }
-
-        return calendarPanel;
-    }
-
-    private class CalendarButtonListener implements ActionListener {
-        private int day;
-
-        public CalendarButtonListener(int day) {
-            this.day = day;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (selectingCheckIn) {
-                handleCheckInSelection();
-            } else {
-                handleCheckOutSelection();
-            }
-
-            updateButtonStates();
-        }
-
-        private void handleCheckInSelection() {
-            if (checkInDay != 0) {
-                dayButtons[checkInDay - 1].setBackground(null); 
-            }
-
-            checkInDay = day;
-            checkInLabel.setText("Check-in: Day " + day);
-            dayButtons[day - 1].setBackground(Color.GREEN); 
-
-           
-            if (checkOutDay != 0 && checkOutDay <= checkInDay) {
-                dayButtons[checkOutDay - 1].setBackground(null);
-                checkOutDay = 0;
-                checkOutLabel.setText("Check-out: None");
-            }
-
-            selectingCheckIn = false;
-        }
-
-        private void handleCheckOutSelection() {
-            if (checkOutDay != 0) {
-                dayButtons[checkOutDay - 1].setBackground(null); 
-            }
-
-            checkOutDay = day;
-            checkOutLabel.setText("Check-out: Day " + day);
-            dayButtons[day - 1].setBackground(Color.RED); 
-
-            if (checkInDay != 0 && checkOutDay <= checkInDay) {
-                dayButtons[checkInDay - 1].setBackground(null);
-                checkInDay = checkOutDay;
-                checkInLabel.setText("Check-in: Day " + checkOutDay);
-                dayButtons[checkOutDay - 1].setBackground(Color.GREEN);
-            }
-
-            selectingCheckIn = true; 
-        }
-    }
-
-   
-    
-
-    private void addDocumentListener() {
-        discountFieldSB.getDocument().addDocumentListener(new DocumentListener() {
+        discountField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 checkDiscountCode();
@@ -255,94 +149,109 @@ public class GUI_Simulate extends JDialog {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-              
+                // Plain text components do not fire these events
             }
         });
+
+        add(panel);
+        setSize(450, 400);
+        setLocationRelativeTo(owner);
+        setResizable(false);
+        setBackground(Color.WHITE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }
+
+    private void updateCheckInComboBox() {
+        checkInComboBox.removeAllItems();
+        for (int i = 1; i <= 30; i++) { // Exclude day 31 for check in
+            checkInComboBox.addItem("Day " + i);
+        }
+        if (checkInDay != 0) {
+            checkInComboBox.setSelectedItem("Day " + checkInDay);
+        }
+    }
+
+    private void updateCheckOutComboBox() {
+        checkOutComboBox.removeAllItems();
+        int startDay = checkInDay + 1; 
+        for (int i = startDay; i <= 31; i++) {
+            checkOutComboBox.addItem("Day " + i);
+        }
+        if (checkOutDay != 0) {
+            checkOutComboBox.setSelectedItem("Day " + checkOutDay);
+        }
     }
 
     private void checkDiscountCode() {
-        String text = discountFieldSB.getText().trim();
-        
+        String text = discountField.getText().trim();
+
         if (text.equals("I_WORK_HERE") || text.equals("STAY4_GET1") || text.equals("PAYDAY")) {
             errorLabel.setText("Valid discount code entered: " + text);
             errorLabel.setForeground(Color.GREEN);
-            bookButtonSB.setEnabled(true);
-          
-        } else if (text.isEmpty()){
-        	errorLabel.setText("");
-        	bookButtonSB.setEnabled(true);
-        }else {
-        	errorLabel.setText("Invalid discount code.");
-       	 	errorLabel.setForeground(Color.RED);
-       	 	bookButtonSB.setEnabled(false);
-        }
-    }
-
-    private void updateButtonStates() {
-        for (int i = 0; i < 31; i++) {
-            if (i + 1 != checkInDay && i + 1 != checkOutDay) {
-                dayButtons[i].setBackground(Color.WHITE); 
-            }
-        }
-        if (checkInDay == checkOutDay || checkInDay == 0 || checkOutDay == 0) {
-            bookButtonSB.setEnabled(false);
+            isValid = true;
+        } else if (text.isEmpty()) {
+            errorLabel.setText("");
+            isValid = true;
         } else {
-            bookButtonSB.setEnabled(true);
+            errorLabel.setText("Invalid discount code.");
+            errorLabel.setForeground(Color.RED);
+            isValid = false;
         }
     }
 
- 
-    public void setActionListener(ActionListener listener) {
-        bookButtonSB.addActionListener(listener);
-    }
-
+   
+    
+    
     public int getCheckInDay() {
-        return checkInDay;
+    	return checkInDay;
     }
-
+    
     public int getCheckOutDay() {
-        return checkOutDay;
+    	return checkOutDay;
     }
     
     public String getDiscountCode() {
-        return discountFieldSB.getText();
+    	return discountField.getText().trim();
     }
     
+    public String getGuestName() {
+    	return guestNameField.getText().trim();
+    }
     public String getRoomType() {
-        if(standardButtonSB.isSelected()) {
-        	return "Standard";
-        }else if(deluxeButtonSB.isSelected()) {
-        	return "Deluxe";
-        }else if(executiveButtonSB.isSelected()) {
-        	return "Executive";
-        }else return null;
+    	 if (standardButton.isSelected()) {
+             return "Standard";
+         } else if (deluxeButton.isSelected()) {
+             return "Deluxe";
+         } else if (executiveButton.isSelected()) {
+             return "Executive";
+         } else {
+             return null;
+         }
     }
     
+    
+    
+    
+    public void setActionListener(ActionListener listener) {
+    	bookButton.addActionListener(listener);
+    }
+    
+    public boolean isValidBooking() {
+    	return isValid;
+    }
+   
     public void disposeDialog() {
-    	
-    	if(standardButtonSB.isSelected()) {
-        	standardButtonSB.setSelected(false);
-        }
-    	
-    	if(deluxeButtonSB.isSelected()) {
-    		deluxeButtonSB.setSelected(false);
-        }
-    	
-    	if(executiveButtonSB.isSelected()) {
-    		executiveButtonSB.setSelected(false);
-        }
-    	
-    	
-    	guestNameFieldSB.setText("");
-    	discountFieldSB.setText("");
-    	checkInDay = 0;
-    	checkOutDay = 0;
-    	updateButtonStates();
+    	standardButton.setSelected(false);
+    	deluxeButton.setSelected(false);
+    	executiveButton.setSelected(false);
+    	errorLabel.setText("");
+    	guestNameField.setText("");
+    	discountField.setText("");
+    	checkInDay = 1;
+    	checkOutDay = 2;
     	
     	dispose();
     }
-    public String getGuestName() {
-    	return guestNameFieldSB.getText();
-    }
 
+   
 }

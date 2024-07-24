@@ -1,11 +1,12 @@
 package View;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -31,8 +32,11 @@ public class GUI_Manage extends JPanel {
     private JList<String> reservationList;
     private JList<String> roomList;
     private JList<String> priceModsList;
+    private JSpinner standardSpinner;
+    private JSpinner deluxeSpinner;
+    private JSpinner executiveSpinner;
+    private int maxrooms;
     
-
     public GUI_Manage(JFrame parentFrame) {
         this.parentFrame = parentFrame;
         confirmation = new JButton();
@@ -41,7 +45,7 @@ public class GUI_Manage extends JPanel {
         setLayout(new BorderLayout());
         
         add(toolBar, BorderLayout.NORTH);
-        
+        maxrooms = 50;
         reservationList = new JList<String>();
     	roomList = new JList<String>();
     	priceModsList = new JList<String>();
@@ -158,7 +162,7 @@ public class GUI_Manage extends JPanel {
             "Update Base Price", "Remove Reservation", "Remove Hotel", 
             "Modify Date Price"//, "Duplicate Hotel"
         };
-        int i = 0;
+        //int i = 0;
         for (String buttonLabel : buttonLabels) {
             PlainButton button = new PlainButton(buttonLabel);
             buttons.add(button); // Add to button array
@@ -256,34 +260,96 @@ public class GUI_Manage extends JPanel {
         return newBasePriceField.getText();
     }
     private JPanel createAddRoomPanel() {
-        JPanel panel = new JPanel(new GridLayout(2, 2));
-        JTextField roomAdd = new JTextField();
-        JLabel addableRooms = new JLabel("Addable Rooms:");
-        panel.add(addableRooms);
-        panel.add(roomAdd);
-        
-        
-        //standardSpinner = createSpinner();
-        //deluxeSpinner = createSpinner();
-        //executiveSpinner = createSpinner();
-        
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        standardSpinner = new JSpinner();
+        deluxeSpinner = new JSpinner();
+        executiveSpinner = new JSpinner();
+        ((SpinnerNumberModel) standardSpinner.getModel()).setMinimum(0);
+        ((SpinnerNumberModel) deluxeSpinner.getModel()).setMinimum(0);
+        ((SpinnerNumberModel) executiveSpinner.getModel()).setMinimum(0);
         JLabel standardLabel = new JLabel("Standard: ");
         JLabel deluxeLabel = new JLabel("Deluxe: ");
         JLabel executiveLabel = new JLabel("Executive: ");
-        panel.add(standardLabel);
-        //panel.add(standardSpinner);
-        panel.add(deluxeLabel);
-        //panel.add(deluxeSpinner);
-        panel.add(executiveLabel);
-        //panel.add(executiveSpinner);
         
+        panel.add(standardLabel);
+        panel.add(new JLabel(" "));
+        panel.add(standardSpinner);
+        panel.add(new JLabel(" "));
+        panel.add(deluxeLabel);
+        panel.add(new JLabel(" "));
+        panel.add(deluxeSpinner);
+        panel.add(new JLabel(" "));
+        panel.add(executiveLabel);
+        panel.add(new JLabel(" "));
+        panel.add(executiveSpinner);
+
         JPanel somePanel = new JPanel(new GridLayout(1, 3));
-        confirmation.setText("Add Rooms");
+        confirmation.setText("Add");
         somePanel.add(new JLabel(" "));
         somePanel.add(confirmation);
         somePanel.add(new JLabel(" "));
+        somePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
+        panel.add(somePanel);
+
+        addSpinnerListeners();
+
         return panel;
+    }
+
+    public void setMaxRooms(int maxrooms) {
+    	this.maxrooms = maxrooms;
+    }
+    private void addSpinnerListeners() {
+        ChangeListener listener = new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                updateSpinnerModels();
+            }
+        };
+
+        standardSpinner.addChangeListener(listener);
+        deluxeSpinner.addChangeListener(listener);
+        executiveSpinner.addChangeListener(listener);
+
+       
+    }
+
+    private void updateSpinnerModels() {
+        int standard = (Integer) standardSpinner.getValue();
+        int deluxe = (Integer) deluxeSpinner.getValue();
+        int executive = (Integer) executiveSpinner.getValue();
+
+        ((SpinnerNumberModel) standardSpinner.getModel()).setMaximum(maxrooms - deluxe - executive);
+        ((SpinnerNumberModel) deluxeSpinner.getModel()).setMaximum(maxrooms - standard - executive);
+        ((SpinnerNumberModel) executiveSpinner.getModel()).setMaximum(maxrooms - standard - deluxe);
+        
+   
+        if (standard > maxrooms - deluxe - executive) {
+            standardSpinner.setValue(maxrooms - deluxe - executive);
+        }
+        if (deluxe > maxrooms - standard - executive) {
+            deluxeSpinner.setValue(maxrooms - standard - executive);
+        }
+        if (executive > maxrooms - standard - deluxe) {
+            executiveSpinner.setValue(maxrooms - standard - deluxe);
+        }
+    }
+
+    public int[] getRooms() throws IllegalArgumentException {
+        Integer standardRooms = (Integer) standardSpinner.getValue();
+        Integer deluxeRooms = (Integer) deluxeSpinner.getValue();
+        Integer executiveRooms = (Integer) executiveSpinner.getValue();
+
+        int totalRooms = standardRooms + deluxeRooms + executiveRooms;
+        if (totalRooms == 0) {
+            throw new IllegalArgumentException("Total number of rooms cannot be zero.");
+        }
+
+        return new int[]{standardRooms, deluxeRooms, executiveRooms};
     }
 
     private JPanel createRemoveRoomPanel() {

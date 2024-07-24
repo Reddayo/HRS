@@ -111,6 +111,8 @@ public class Reservation {
 		return this.room;
 	}
 	
+
+	
 	/**
 	 * @return the roomName
 	 */
@@ -133,7 +135,7 @@ public class Reservation {
 			 if (i >= 0 && i < priceMods.length) {
 			        prices[j] = room.getRoomBaseRate() * priceMods[i];
 		    } else {
-		         prices[j] = 1.0; 
+		         prices[j] = room.getRoomBaseRate(); 
 		    }
 		}
 		
@@ -142,26 +144,27 @@ public class Reservation {
 			totalPrice += prices[i]; 
 		}
 		
-		if(discount.equals("I_WORK_HERE")) {
-		    totalPrice *= (1 - 0.10);
-		}else if(discount.equals("STAY4_GET1")) {
-			if(getDuration() >= 5) {
-				prices[0] = 0;
-				totalPrice = 0;
-				for(int i = 0; i < prices.length; i++) {
-					totalPrice += prices[i]; 
+		switch(discount) {
+			case "I_WORK_HERE": 
+				totalPrice *= (1 - 0.10);
+				break;
+			case "STAY4_GET1":
+				if(getDuration() >= 5) {
+					prices[0] = 0;
+					totalPrice = 0;
+					for(int i = 0; i < prices.length; i++) {
+						totalPrice += prices[i]; 
+					}	
 				}
-				
-				
-			}
-		}else if(discount.equals("PAYDAY")) {
-		   if ((checkInDay <= 15 && checkOutDay > 15) ||
-		       (checkInDay <= 30 && checkOutDay > 30 )) 
-		   {
-		     totalPrice *= (1 - 0.07);
-		  }
+				break;
+			case "PAYDAY":
+				if ((checkInDay <= 15 && checkOutDay > 15) ||
+					(checkInDay <= 30 && checkOutDay > 30 )) 
+				   {
+				     totalPrice *= (1 - 0.07);
+				   }
+				break;
 		}
-		
 		
 		
 	}

@@ -48,7 +48,7 @@ public class Hotel {
 	        }
 	    }
 		for (Reservation reservation : reservations) {
-            reservation.recalculatePrice(datePriceModifier); // You need to implement this in the Reservation class
+			reservation.recalculatePrice(datePriceModifier); // You need to implement this in the Reservation class
         }
 	}
 
@@ -237,6 +237,12 @@ public class Hotel {
             rooms.add(new ExecutiveRoom(nextRoomId, price));
         }
 		sortRoomsByRoomNumber();
+    }
+    
+    public void addRooms(int scount, int dcount, int ecount) {
+    	addStandardRooms(scount);
+    	addDeluxeRooms(dcount);
+    	addExecutiveRooms(ecount);
     }
 
 	/**
@@ -620,6 +626,11 @@ public class Hotel {
 	public String getRoomRoomType(String roomName) {
 		Room room = findRoom(roomName);
 		return room.getRoomType();
+	}
+	
+	public String getReservationRoomType(String roomName) {
+		Reservation reservation = findReservation(roomName);
+		return reservation.getRoom().getRoomType();
 	}
 
 }

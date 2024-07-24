@@ -13,6 +13,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
+
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -97,7 +99,7 @@ public class GUI_View extends JPanel {
         setLayout(showInfo);
         JPanel blankPanel = new JPanel();
         JLabel hotelaselect = new JLabel("Select a hotel");
-        hotelaselect.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        hotelaselect.setFont(new Font("Segoe UI", Font.PLAIN, 15));
        // blankPanel.setBorder(BorderFactory.createEmptyBorder(100, 50, 0, 0));
         blankPanel.add(hotelaselect, BorderLayout.NORTH);
         		
@@ -229,6 +231,7 @@ public class GUI_View extends JPanel {
     private JPanel availabilityCalendarPanelRoI;
     private JPanel breakDownPriceNightListReI;
 	private JLabel roomTypeRoI;
+	private JLabel roomTypeReI;
 
     public void roomListInit() {
         roomList = new JList<String>();
@@ -432,6 +435,7 @@ public class GUI_View extends JPanel {
         reservationIDReI = new JLabel("Reservation ID: ");
         guestNameReI = new JLabel("Guest Name: ");
         roomNameReI = new JLabel("Room Name: ");
+        roomTypeReI = new JLabel("Room Type: ");
         checkInReI = new JLabel("Check In: ");
         checkOutReI = new JLabel("Check Out: ");
         totalPriceReI = new JLabel("Total Price: ");
@@ -441,6 +445,7 @@ public class GUI_View extends JPanel {
         panel.add(reservationIDReI);
         panel.add(guestNameReI);
         panel.add(roomNameReI);
+        panel.add(roomTypeReI);
         panel.add(checkInReI);
         panel.add(checkOutReI);
         panel.add(totalPriceReI);
@@ -475,6 +480,7 @@ public class GUI_View extends JPanel {
     public void showReservationInfo(String reservationID, 
                                      String guestName,
                                      String roomName, 
+                                     String roomType,
                                      int checkIn, 
                                      int checkOut,
                                      double totalPrice, 
@@ -483,6 +489,7 @@ public class GUI_View extends JPanel {
         reservationIDReI.setText("Reservation ID: " + reservationID);
         guestNameReI.setText("Guest Name: "+ guestName);
         roomNameReI.setText("Room Name: " + roomName);
+        roomTypeReI.setText("Room Type: " + roomType);
         checkInReI.setText("Check In: " + checkIn);
         checkOutReI.setText("Check Out: " + checkOut);
         totalPriceReI.setText("Total Price: "+ String.format("%.2f", totalPrice));
@@ -683,6 +690,7 @@ public class GUI_View extends JPanel {
         reservationIDReI.setText("Reservation ID: ");
         guestNameReI.setText("Guest Name: ");
         roomNameReI.setText("Room Name: ");
+        roomTypeReI.setText("Room Type: ");
         checkInReI.setText("Check In: " );
         checkOutReI.setText("Check Out: " );
         totalPriceReI.setText("Total Price: ");

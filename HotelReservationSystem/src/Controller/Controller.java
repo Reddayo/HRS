@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -149,13 +150,33 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 
         }else if(event.equals("Book")){
             
-        	if(showConfirmation() != 0) return;
+        	
         	
         	int checkInDay = gui_Main.getBooking().getCheckInDay();
         	int checkOutDay = gui_Main.getBooking().getCheckOutDay();
         	String discountCode = gui_Main.getBooking().getDiscountCode();
         	String guestName = gui_Main.getBooking().getGuestName();
         	String roomType = gui_Main.getBooking().getRoomType();
+        	
+        	
+        	if (guestName.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter your name.", "Missing Information", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (roomType == null) {
+                JOptionPane.showMessageDialog(null, "Please select a room type.", "Missing Information", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (checkInDay == 0) {
+                JOptionPane.showMessageDialog(null, "Please select a check-in day.", "Missing Information", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (checkOutDay == 0) {
+                JOptionPane.showMessageDialog(null, "Please select a check-out day.", "Missing Information", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (!gui_Main.getBooking().isValidBooking()) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid discount code or leave it empty.", "Invalid Discount Code", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else {
+        	
+            	if(showConfirmation() != 0) return;
         	
         	Hotel selectedHotel = model_HRS.findHotel(gui_Main.getSelectedHotel());
         	
@@ -171,8 +192,11 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 	        	gui_Main.getBooking().disposeDialog();
 	        	}catch(IllegalArgumentException ev) {
 	        		gui_Main.showPopup(ev);
-        	}
+	        		return;
+	        	}
+            }
         	
+        	gui_Main.getBooking().disposeDialog();
         	
         	
         }else if(event.equals("Simulate Booking")){
@@ -207,7 +231,16 @@ public class Controller implements ActionListener, ListSelectionListener, Change
             	gui_Main.getManagePanel().openDialog(action);
                 break;
             case "Add Room":
-                gui_Main.getManagePanel().openDialog(action);
+            	foundHotel = model_HRS.findHotel(gui_Main.getSelectedHotel());
+            	if( foundHotel != null) {
+            		if(foundHotel.getRoomSize() == 50) {
+            			gui_Main.showPopup(new IllegalArgumentException("There are no more rooms to add"));
+            			return;
+            		}
+            		gui_Main.getManagePanel().setMaxRooms(50 - foundHotel.getRoomSize());
+            		gui_Main.getManagePanel().openDialog(action);
+            	}
+                
                 break;
             case "Remove Room":
             	
@@ -217,9 +250,10 @@ public class Controller implements ActionListener, ListSelectionListener, Change
             			gui_Main.showPopup(new IllegalArgumentException("There are no available rooms to remove"));
             			return;
             		}
+            		updateRoomListRemoveRoom();
+                    gui_Main.getManagePanel().openDialog(action);
             	}
-            	updateRoomListRemoveRoom();
-                gui_Main.getManagePanel().openDialog(action);
+            	
                 break;
             case "Update Base Price":
             	foundHotel = model_HRS.findHotel(gui_Main.getSelectedHotel());
@@ -235,10 +269,11 @@ public class Controller implements ActionListener, ListSelectionListener, Change
             			gui_Main.showPopup(new IllegalArgumentException("There are no reservations to remove"));
             			return;
             		}
+            		updateReservationListRemoveRes();
+                	
+                    gui_Main.getManagePanel().openDialog(action);
             	}
-            	updateReservationListRemoveRes();
             	
-                gui_Main.getManagePanel().openDialog(action);
                 break;
             case "Remove Hotel":
                 gui_Main.getManagePanel().openDialog(action);
@@ -254,7 +289,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
             case "Confirm Change Hotel Name":
                 handleChangeHotelName();
                 break;
-
+            case "Confirm Add Room":
+                handleAddRoom();
+                break;
             case "Confirm Remove Room":
             	handleRemoveRoom();
             	break;
@@ -278,6 +315,38 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                 break;
         }
     }
+    
+    private void handleAddRoom() {
+    	String oldName = gui_Main.getSelectedHotel();
+    	Hotel foundHotel = model_HRS.findHotel(oldName);
+    	
+    	if(foundHotel == null){
+            gui_Main.showPopup(new IllegalArgumentException("Select a hotel first"));
+            gui_Main.getManagePanel().disposeManageDialog();
+            return;
+        }
+    	try {
+    		if(showConfirmation() == 0){
+          	
+    			int[] rooms = gui_Main.getManagePanel().getRooms();
+    			foundHotel.addRooms(rooms[0], rooms[1], rooms[2]);
+    			gui_Main.getManagePanel().disposeManageDialog();
+    			updateView();
+    			updateRoomView();
+          }
+    			
+    	}catch(IllegalArgumentException e) {
+    		gui_Main.showPopup(e);
+    	}
+    	
+    	
+    	
+    }
+    
+    
+    
+    
+    
     
     private void handleModifyDatePrice() {
     	  String oldName = gui_Main.getSelectedHotel();
@@ -462,18 +531,22 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         String newName = gui_Main.getManagePanel().getNewHotelName();
 
        
-        if (!newName.trim().isEmpty() && model_HRS.findHotel(newName) == null) {
+        if (!newName.trim().isEmpty() && model_HRS.findHotel(newName.trim()) == null) {
 
             if(showConfirmation() == 0){
-                model_HRS.changeHotelName(oldName, newName);
+                model_HRS.changeHotelName(oldName, newName.trim());
                 updateView();
             }
                 gui_Main.getManagePanel().disposeManageDialog();
                  
             
         } else {
-            gui_Main.showPopup(new IllegalArgumentException("New Hotel name is not unique"));
-            
+        	
+        	if(newName.trim().isEmpty()) {
+        		gui_Main.showPopup(new IllegalArgumentException("Provide a name."));
+        	}else {
+        		gui_Main.showPopup(new IllegalArgumentException("New Hotel name is not unique"));
+        	}
         }
 
         
@@ -559,7 +632,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
             	double[] priceModifier = foundHotel.getDatePriceModifier();
             	
             	for (int i = 0; i < priceModifier.length; i++) {
-            		String priceMod = String.format("Day %02d -> Day %02d = %.0f%%", i+1, i+2, priceModifier[i] * 100);
+            		String priceMod = String.format("Day %02d -> Day %02d = %.2f%%", i+1, i+2, priceModifier[i] * 100);
                     
                     listModel.addElement(priceMod);
                     System.out.println(priceMod);
@@ -629,6 +702,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                 gui_Main.getViewPanel().showReservationInfo(selectedReservation,
                 		foundHotel.getReservationGuestName(selectedReservation),
                 		foundHotel.getReservationRoomName(selectedReservation), 
+                		foundHotel.getReservationRoomType(selectedReservation),
                 		foundHotel.getReservationCheckIn(selectedReservation),
                 		foundHotel.getReservationCheckOut(selectedReservation),
                 		foundHotel.getReservationTotalPrice(selectedReservation), 
