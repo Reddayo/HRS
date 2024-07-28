@@ -46,7 +46,11 @@ public class GUI_Simulate extends JDialog {
         deluxeButton = new JToggleButton("Deluxe");
         executiveButton = new JToggleButton("Executive");
 
-   
+        standardButton.setBackground(Color.decode("0xC0C0C0"));
+        deluxeButton.setBackground(Color.decode("0xA020F0"));
+        executiveButton.setBackground(Color.decode("0xFFD700"));
+        
+        
         roomTypeGroup = new ButtonGroup();
         roomTypeGroup.add(standardButton);
         roomTypeGroup.add(deluxeButton);
@@ -158,6 +162,9 @@ public class GUI_Simulate extends JDialog {
         checkOutSpinner.addChangeListener(e -> checkDiscountCode());
         checkOutSpinner.addChangeListener(e -> updateItemList());
     }
+    
+    
+    
     
     private void updateItemList() {
         int checkInDay = (Integer) checkInSpinner.getValue();

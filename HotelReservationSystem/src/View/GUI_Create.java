@@ -48,7 +48,7 @@ public class GUI_Create extends JDialog {
         nameField = new JTextField(20);
         JLabel nameLabel = new JLabel("Name: ");
 
-        nameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         // Create spinners
         standardSpinner = createSpinner();

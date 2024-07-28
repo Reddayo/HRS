@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
-
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -109,9 +108,21 @@ public class GUI_Main extends JFrame {
                 };
             }
         });
+        
+        
+       
+        hotelList.setFont(new Font("Tahoma", Font.PLAIN, 14));
         revalidate();
         repaint();
         
+    }
+    
+    public void setSelectedHotel(String prevSelected) {
+    	if(prevSelected != null) {
+    		hotelList.setSelectedValue(prevSelected, true);
+    	}else {
+    		hotelList.setSelectedIndex(-1);
+    	}
     }
 
     private JPanel initTitle(){
@@ -130,7 +141,7 @@ public class GUI_Main extends JFrame {
         JLabel E2 = new JLabel("As a requirement for CCPROG3 MCO2");
         E2.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        JLabel mistakeName = new JLabel("Finished as of June 25th. 2024. v4.3");
+        JLabel mistakeName = new JLabel("Finished as of June 28th. 2024. v4.4");
         mistakeName.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         titlePanel.setPreferredSize(new Dimension(getWidth() / 3, getHeight()));
@@ -268,8 +279,11 @@ public class GUI_Main extends JFrame {
     		viewmanagetitleshower.show(kronii, "View Hotel");
     		viewPanel.shownothing();
     		viewPanel.resetInfo();
+    		viewPanel.setVisibleList(true);
+    		viewPanel.clearButtonSelection();
     	}else {
     		viewmanagetitleshower.show(kronii, "Title");
+    		viewPanel.setVisibleList(false);
     	}
     		
         

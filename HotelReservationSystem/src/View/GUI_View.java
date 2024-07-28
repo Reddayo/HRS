@@ -220,6 +220,13 @@ public class GUI_View extends JPanel {
     }
     public void shownothing() {
     	viewHotelMiscInfoShower.show(viewMiscInfoPanel, "show nothing");
+    	
+    }
+    
+    
+    public void setVisibleList(boolean bool) {
+    	listScrollPane.setVisible(bool);
+    	listScrollPane2.setVisible(bool);
     }
 
     private JList<String> roomList;
@@ -638,6 +645,7 @@ public class GUI_View extends JPanel {
     public void showAvailabilityPanel() {
     	resetInfo();
         viewHotelMiscInfoShower.show(viewMiscInfoPanel, "view availability information");
+        
         splitPane.setRightComponent( null);
     }
 
@@ -697,12 +705,17 @@ public class GUI_View extends JPanel {
     }
 
     public void resetInfo() {
+    	
     	resetRoomInfo();
     	resetReservationInfo();
     	resetAvailabilityInfo();
     }
     
+    public void clearButtonSelection() {
+    	
+    	viewHotelButtonGroup.clearSelection();
     
+    }
     public void resetAvailabilityInfo() {
     	this.bookedRooms.setText("Total No. of Booked Rooms: ");
         this.bookedStandardRooms .setText("   Standard: ");

@@ -39,6 +39,8 @@ public class Controller implements ActionListener, ListSelectionListener, Change
     }
 
     private void updateView() {
+    	String shotel = gui_Main.getSelectedHotel();
+    
         DefaultListModel<String> listModel = new DefaultListModel<>();
         
         for (int i = 0; i < model_HRS.getHotelListSize(); i++) {
@@ -48,6 +50,10 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         }
        
         gui_Main.updateHotelList(listModel);
+        
+       
+        gui_Main.setSelectedHotel(shotel);
+      
     }
 
 
@@ -101,7 +107,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
     }
 
 
-
+   
 
 
     @Override
@@ -224,13 +230,13 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         }else if(event.equals("Manage Hotel")){
             gui_Main.showManagePanel();
         }else if(event.equals("view availability information")){
-            gui_Main.getViewPanel().showAvailabilityPanel(/*add a parameter regarding current selected hotel */);
+            gui_Main.getViewPanel().showAvailabilityPanel();
         }else if(event.equals("view room information")){
             
-            gui_Main.getViewPanel().showRoomPanel(/*add a parameter regarding current selected hotel */);
+            gui_Main.getViewPanel().showRoomPanel();
             updateRoomView();
         }else if(event.equals("view reservation information")){
-            gui_Main.getViewPanel().showReservationPanel(/*add a parameter regarding current selected hotel */);
+            gui_Main.getViewPanel().showReservationPanel();
             updateReservationView();
         }else {
             handleManageHotelActions(event);
@@ -272,9 +278,12 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                 break;
             case "Update Base Price":
             	foundHotel = model_HRS.findHotel(gui_Main.getSelectedHotel());
-            	
-            	gui_Main.getManagePanel().updateCurrentBasePrice(foundHotel.getBasePrice());
-                gui_Main.getManagePanel().openDialog(action);
+            	if(foundHotel.getReservationSize() == 0) {
+            		gui_Main.getManagePanel().updateCurrentBasePrice(foundHotel.getBasePrice());
+            		gui_Main.getManagePanel().openDialog(action);
+            	}else {
+            		gui_Main.showPopup(new IllegalArgumentException("No price updates allowed when there are reservations"));
+            	}
                 //System.out.println(action);
                 break;
             case "Remove Reservation":
@@ -294,8 +303,14 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                 gui_Main.getManagePanel().openDialog(action);
                 break;
             case "Modify Date Price":
+            	//foundHotel = model_HRS.findHotel(gui_Main.getSelectedHotel());
+            	//if(foundHotel.getReservationSize() == 0) {
             	updatePriceModListModifyD();
                 gui_Main.getManagePanel().openDialog(action);
+            	//}else {
+            	//	gui_Main.showPopup(new IllegalArgumentException("No price updates allowed when there are reservations"));
+            //
+            	//}
                 break;
 
 
@@ -744,7 +759,6 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                 return;
              }
              gui_Main.setSimulateEnabled(true);
-             //precondition that is always gonna be a hotel there;
              Hotel foundHotel = model_HRS.findHotel(selectedHotel);
              if(foundHotel != null) {
              //hotel name, number of rooms, we can also get it dissected, estimate earnings
@@ -773,8 +787,6 @@ public class Controller implements ActionListener, ListSelectionListener, Change
     @Override
     public void stateChanged(ChangeEvent e) {
         
-
-
        if (e.getSource() == gui_Main.getViewPanel().getAvailabilitySpinner()){
             //System.out.println("It's changing huh");
 
