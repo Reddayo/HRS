@@ -7,9 +7,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
+ * <p>
  * The <code>Hotel</code> class represents a hotel entity with rooms and reservations.
  * It manages rooms, reservations, and provides various operations related to rooms
  * and reservations within the hotel.
+ * </p>
+ * 
+ * @author Jusper Angelo Cesar
+ * @version 4.4
  */
 public class Hotel {
 
@@ -37,34 +42,20 @@ public class Hotel {
 
 	private double[] datePriceModifier;
 	
-	public void updateDatePriceModifier(int[] indices, double priceMod) {
-		
-		for (int index : indices) {
-	        if (index >= 0 && index < datePriceModifier.length) {
-	            datePriceModifier[index] = priceMod/100;
-	        } else {
-	            // Handle index out of bounds if needed
-	            System.err.println("Index " + index + " is out of bounds.");
-	        }
-	    }
-		for (Reservation reservation : reservations) {
-			reservation.recalculatePrice(datePriceModifier); // You need to implement this in the Reservation class
-        }
-	}
-
-
-	public double[] getDatePriceModifier(){
-		return datePriceModifier;
-	}
-	
 	/**
-     * Constructs a new <code>Hotel</code> object with the given name, number of rooms,
-     * and hotel room prefix.
-     *
-     * @param name            The name of the hotel.
-     * @param noOfRooms       The initial number of rooms in the hotel.
-     * @param hotelRoomPrefix The prefix for generating room IDs.
-     */
+	 * Constructs a new <code>Hotel</code> object with the specified name, room prices, 
+	 * room counts for each type, and hotel room prefix.
+	 *
+	 * @param name            The name of the hotel.
+	 * @param price           The base price for the rooms in the hotel.
+	 * @param standard        The number of standard rooms to initialize.
+	 * @param deluxe          The number of deluxe rooms to initialize.
+	 * @param executive       The number of executive rooms to initialize.
+	 * @param hotelRoomPrefix The prefix for generating room IDs.
+	 * 
+	 * @throws IllegalArgumentException if the total number of rooms (standard + deluxe + executive)
+	 *                                  is zero, less than zero, or exceeds the maximum allowed number of rooms.
+	 */
 	Hotel(String name, double price, int standard, int deluxe, int executive, String hotelRoomPrefix){
 
         if(standard + deluxe + executive == 0){
@@ -87,45 +78,8 @@ public class Hotel {
 		priceInitializer();
 	}
 	
-	private void priceInitializer(){
-		for(int i = 0; i < 30; i++){
-			datePriceModifier[i] = 1.00;
-		}
-	}
 	
-	public int getNoOfStandardRooms() {
-		int count = 0;
-	    for (Room room : rooms) {
-	        if (room instanceof StandardRoom) {
-	            count++;
-	        }
-	    }
-	    return count;
-	}
 	
-	public int getNoOfDeluxeRooms() {
-		int count = 0;
-	    for (Room room : rooms) {
-	        if (room instanceof DeluxeRoom) {
-	            count++;
-	        }
-	    }
-	    return count;
-	}
-	
-	public int getNoOfExecutiveRooms() {
-		int count = 0;
-	    for (Room room : rooms) {
-	        if (room instanceof ExecutiveRoom) {
-	            count++;
-	        }
-	    }
-	    return count;
-	}
-	
-	public int getNoOfRooms() {
-		return rooms.size();
-	}
 	/**
 	 * Sorts rooms by the room number
 	 */
@@ -161,26 +115,31 @@ public class Hotel {
     }
 	 
 	/**
-	 * Initializes rooms in the hotel with the given number.
+	 * Initializes rooms in the hotel with the specified numbers for each room type.
 	 *
-	 * @param noOfRooms The number of rooms to initialize.
+	 * @param standard The number of standard rooms to initialize.
+	 * @param deluxe The number of deluxe rooms to initialize.
+	 * @param executive The number of executive rooms to initialize.
+	 * 
+	 * This method creates and adds rooms to the hotel's list of rooms, with unique
+	 * room IDs based on the existing number of rooms and the hotel room prefix.
 	 */
 	private void roomsInitializer(int standard, int deluxe, int executive) {
-		int roomCount = rooms.size(); // Start counting from the existing number of rooms
+		int roomCount = rooms.size();
 	
 		for (int i = 1; i <= standard; i++) {
 			String roomId = String.format("%s%02d", hotelRoomPrefix, i + roomCount);
 			rooms.add(new StandardRoom(roomId, price));
 		}
 	
-		roomCount += standard; // Increment the count by the number of standard rooms added
+		roomCount += standard; 
 	
 		for (int i = 1; i <= deluxe; i++) {
 			String roomId = String.format("%s%02d", hotelRoomPrefix, i + roomCount);
 			rooms.add(new DeluxeRoom(roomId, price));
 		}
 	
-		roomCount += deluxe; // Increment the count by the number of deluxe rooms added
+		roomCount += deluxe; 
 	
 		for (int i = 1; i <= executive; i++) {
 			String roomId = String.format("%s%02d", hotelRoomPrefix, i + roomCount);
@@ -215,41 +174,20 @@ public class Hotel {
 	        return String.format("%s%02d", hotelRoomPrefix, nextNumber);
 	    }
 
-	public void addStandardRooms(int count) {
-        for (int i = 0; i < count; i++) {
-			String nextRoomId = getNextRoomId();
-            rooms.add(new StandardRoom(nextRoomId, price));
-        }
-		sortRoomsByRoomNumber();
-    }
-
-    public void addDeluxeRooms(int count) {
-        for (int i = 0; i < count; i++) {
-			String nextRoomId = getNextRoomId();
-            rooms.add(new DeluxeRoom(nextRoomId, price));
-        }
-		sortRoomsByRoomNumber();
-    }
-
-    public void addExecutiveRooms(int count) {
-        for (int i = 0; i < count; i++) {
-			String nextRoomId = getNextRoomId();
-            rooms.add(new ExecutiveRoom(nextRoomId, price));
-        }
-		sortRoomsByRoomNumber();
-    }
-    
-    public void addRooms(int scount, int dcount, int ecount) {
-    	addStandardRooms(scount);
-    	addDeluxeRooms(dcount);
-    	addExecutiveRooms(ecount);
-    }
+	
 
 	/**
-     * Adds a reservation to the hotel.
-     *
-     * @param reservation The reservation to add.
-     */
+	 * Adds a reservation to the hotel for the specified guest, room type, and dates.
+	 *
+	 * @param guestName The name of the guest making the reservation.
+	 * @param roomType  The type of room to be reserved (e.g., "Standard", "Deluxe", "Executive").
+	 * @param checkIn   The check-in date (as an integer, typically representing the day of the month).
+	 * @param checkOut  The check-out date (as an integer, typically representing the day of the month).
+	 * @param discount  The discount code to apply to the reservation, if any.
+	 * 
+	 * @throws IllegalArgumentException if there are no available rooms of the specified type
+	 *                                  for the given dates.
+	 */
 	public void addReservation(String guestName, String roomType, int checkIn, int checkOut, String discount) {
 		
 	   Room room = findAvailableRoom(checkIn, checkOut, roomType);
@@ -267,7 +205,7 @@ public class Hotel {
 	/**
 	  * Removes a reservation from the hotel, including its associated room and reservation list.
 	  *
-	  * @param someRes The reservation to remove.
+	  * @param reservationID The reservation to remove.
 	  */
 	public void removeReservation(String reservationID) {
 	
@@ -298,21 +236,7 @@ public class Hotel {
 			    }
 			    return i;
 		}
-	/**
-	 * Removes a specified number of rooms from the hotel that have no reservations.
-	 *
-	 * @param count The number of rooms to remove.
-	 */
-	public void roomRemover(int count) {
-		   for(int i = rooms.size()-1; i >= 0 && count > 0; i--) {
-			   Room room = rooms.get(i);
-			   if (room.getReservation(0) != null) {
-				   rooms.remove(i);
-				   count--;
-				   
-			   }
-		   }
-	   }
+
 	/**
 	 * Checks if a reservation ID exists in the hotel's reservations.
 	 *
@@ -336,6 +260,7 @@ public class Hotel {
 	*
 	* @param checkInDay  The check-in day.
 	* @param checkOutDay The check-out day.
+	* @param roomType    the room type of available room to find
 	* @return The available room object if found, otherwise <code>null</code>.
 	*/
    private Room findAvailableRoom(int checkInDay, int checkOutDay, String roomType) {
@@ -395,7 +320,7 @@ public class Hotel {
 	 * Retrieves the number of available rooms in the hotel on a specified day.
 	 *
 	 * @param day The day to check availability.
-	 * @return The number of available rooms.
+	 * @return The number of available rooms in an array, from standard to executive 0 to 2.
 	 */
 	public int[] getNoOfAvailableRooms(int day) {
 		int[] availableRooms = new int[3]; // Index 0: Standard, 1: Deluxe, 2: Executive
@@ -424,8 +349,8 @@ public class Hotel {
 		return availableRooms;
 	}
 	
-	/**
-	 * Calculates the total estimated revenue from all reservations in the hotel.
+   /**
+    * Calculates the total estimated revenue from all reservations in the hotel.
 	*
 	* @return The total estimated revenue.
 	*/
@@ -482,26 +407,52 @@ public class Hotel {
 			System.out.println(datePriceModifier[i]);
 		}
 	}
-
+	
+	/**
+	 * Retrieves the reservation ID at the specified index.
+	 *
+	 * @param i The index of the reservation in the list.
+	 * @return The reservation ID.
+	 */
 	public String getReservationID(int i){
 	
 		
 		return reservations.get(i).getReservationID();
 	}
-
+	
+	/**
+	 * Returns the total number of reservations.
+	 *
+	 * @return The number of reservations.
+	 */
 	public int getReservationSize(){
 		return reservations.size();
 	}
-
+	
+	/**
+	 * Returns the total number of rooms.
+	 *
+	 * @return The number of rooms.
+	 */
 	public int getRoomSize() {
 		return rooms.size();
 	}
 	
+	/**
+	 * Retrieves the name of the room at the specified index.
+	 *
+	 * @param i The index of the room in the list.
+	 * @return The room name.
+	 */
 	public String getRoomName(int i) {
 		return rooms.get(i).getRoomName();
 	}
 	
-	
+	/**
+	 * Returns a list of all room names.
+	 *
+	 * @return An ArrayList of room names.
+	 */
 	public ArrayList<String> getRoomList() {
 		ArrayList<String> roomList = new ArrayList<String>();
 		
@@ -511,6 +462,11 @@ public class Hotel {
 		return roomList;
 	}
 	
+	/**
+	 * Returns a list of all reservation IDs.
+	 *
+	 * @return An ArrayList of reservation IDs.
+	 */
 	public ArrayList<String> getReservationist() {
 		ArrayList<String> reservationList = new ArrayList<String>();
 		
@@ -519,59 +475,117 @@ public class Hotel {
 		}
 		return reservationList;
 	}
-
+	
+	/**
+	 * Retrieves the guest name associated with the specified reservation ID.
+	 *
+	 * @param reservationID The reservation ID.
+	 * @return The guest name.
+	 */
 	public String getReservationGuestName(String reservationID) {
 		Reservation res = findReservation(reservationID);
 		
 		return res.getGuestName();
 	}
-
+	
+	/**
+	 * Retrieves the room name associated with the specified reservation ID.
+	 *
+	 * @param reservationID The reservation ID.
+	 * @return The room name.
+	 */
 	public String getReservationRoomName(String reservationID) {
 		Reservation res = findReservation(reservationID);
 		
 		return res.getRoomName();
 	}
-
+	/**
+	 * Retrieves the check-in date for the specified reservation ID.
+	 *
+	 * @param reservationID The reservation ID.
+	 * @return The check-in date as an integer.
+	 */
 	public int getReservationCheckIn(String reservationID) {
 		Reservation res = findReservation(reservationID);
 		
 		return res.getCheckIn();		
 	}
-
+	
+	/**
+	 * Retrieves the check-out date for the specified reservation ID.
+	 *
+	 * @param reservationID The reservation ID.
+	 * @return The check-out date as an integer.
+	 */
 	public int getReservationCheckOut(String reservationID) {
 		Reservation res = findReservation(reservationID);
 		
 		return res.getCheckOut();		
 	}
 
+	/**
+	 * Retrieves the total price for the specified reservation ID.
+	 *
+	 * @param reservationID The reservation ID.
+	 * @return The total price.
+	 */
 	public double getReservationTotalPrice(String reservationID) {
 		Reservation res = findReservation(reservationID);
 		
 		return res.getTotalPrice();		
 	}
-
+	
+	/**
+	 * Retrieves the discount code used for the specified reservation ID.
+	 *
+	 * @param reservationID The reservation ID.
+	 * @return The discount code.
+	 */
 	public String getReservationDiscount(String reservationID) {
 		Reservation res = findReservation(reservationID);
 		
 		return res.getDiscount();		
 	}
-
+	
+	/**
+	 * Retrieves the price breakdown for the specified reservation ID.
+	 *
+	 * @param reservationID The reservation ID.
+	 * @return An array of doubles representing the price breakdown.
+	 */
 	public double[] getReservationBreakdown(String reservationID) {
 		Reservation res = findReservation(reservationID);
 		
 		return res.getBreakdown();		
 	}
-
+	
+	/**
+	 * Retrieves the base rate for the specified room.
+	 *
+	 * @param selectedRoom The room name.
+	 * @return The base rate of the room.
+	 */
 	public double getRoomBaseRate(String selectedRoom) {
 		Room room = findRoom(selectedRoom);
 		return room.getRoomBaseRate();
 	}
-
+	
+	/**
+	 * Retrieves the availability array for the specified room.
+	 *
+	 * @param selectedRoom The room name.
+	 * @return A boolean array representing availability for each day.
+	 */
 	public boolean[] getAvailability(String selectedRoom) {
 		Room room = findRoom(selectedRoom);
 		return room.getAvailability();
 	}
 	
+	/**
+	 * Returns a list of all rooms with their names and types.
+	 *
+	 * @return An ArrayList of strings containing room names and their types.
+	 */
 	public ArrayList<String> getRoomNameAndType() {
 		ArrayList<String> listOfRoomsAndType = new ArrayList<String>();
 	    for(int i = 0; i < rooms.size(); i++) {
@@ -589,7 +603,11 @@ public class Hotel {
 	    
 	}
 	
-	
+	/**
+	 * Returns a list of removable rooms with their names and types.
+	 *
+	 * @return An ArrayList of strings containing removable room names and their types.
+	 */
 	public ArrayList<String> getRemovableRoomNameAndType() {
 		ArrayList<String> listOfRoomsAndType = new ArrayList<String>();
 	    for(int i = 0; i < rooms.size(); i++) {
@@ -617,20 +635,182 @@ public class Hotel {
 	    
 	    
 	}
-
+	
+	/**
+	 * Removes the room with the specified name.
+	 *
+	 * @param roomName The name of the room to be removed.
+	 */
 	public void removeRoom(String roomName) {
 		Room room = findRoom(roomName);
 		rooms.remove(room);
 	}
 	
+	/**
+	 * Retrieves the type of the room with the specified name.
+	 *
+	 * @param roomName The room name.
+	 * @return The room type.
+	 */
 	public String getRoomRoomType(String roomName) {
 		Room room = findRoom(roomName);
 		return room.getRoomType();
 	}
 	
+	/**
+	 * Retrieves the type of the room associated with the specified reservation ID.
+	 *
+	 * @param reservationID The reservation ID.
+	 * @return The room type.
+	 */
 	public String getReservationRoomType(String roomName) {
 		Reservation reservation = findReservation(roomName);
 		return reservation.getRoom().getRoomType();
 	}
+	
+	/**
+	 * Initializes the price modifiers for each date.
+	 */
+	private void priceInitializer(){
+		for(int i = 0; i < 30; i++){
+			datePriceModifier[i] = 1.00;
+		}
+	}
+	
+	/**
+	 * Returns the number of standard rooms.
+	 *
+	 * @return The number of standard rooms.
+	 */
+	public int getNoOfStandardRooms() {
+		int count = 0;
+	    for (Room room : rooms) {
+	        if (room instanceof StandardRoom) {
+	            count++;
+	        }
+	    }
+	    return count;
+	}
+	
+	/**
+	 * Returns the number of deluxe rooms.
+	 *
+	 * @return The number of deluxe rooms.
+	 */
+	public int getNoOfDeluxeRooms() {
+		int count = 0;
+	    for (Room room : rooms) {
+	        if (room instanceof DeluxeRoom) {
+	            count++;
+	        }
+	    }
+	    return count;
+	}
+	
+	/**
+	 * Returns the number of executive rooms.
+	 *
+	 * @return The number of executive rooms.
+	 */
+	public int getNoOfExecutiveRooms() {
+		int count = 0;
+	    for (Room room : rooms) {
+	        if (room instanceof ExecutiveRoom) {
+	            count++;
+	        }
+	    }
+	    return count;
+	}
+	
+	/**
+	 * Updates the price modifiers for the specified dates.
+	 *
+	 * @param indices  The indices of the dates to update.
+	 * @param priceMod The new price modifier.
+	 */
+	public void updateDatePriceModifier(int[] indices, double priceMod) {
+		
+		for (int index : indices) {
+	        if (index >= 0 && index < datePriceModifier.length) {
+	            datePriceModifier[index] = priceMod/100;
+	        } else {
+	            // Handle index out of bounds if needed
+	            System.err.println("Index " + index + " is out of bounds.");
+	        }
+	    }
+		for (Reservation reservation : reservations) {
+			reservation.recalculatePrice(datePriceModifier); // You need to implement this in the Reservation class
+        }
+	}
+
+	/**
+	 * Retrieves the current date price modifiers.
+	 *
+	 * @return An array of doubles representing the date price modifiers.
+	 */
+	public double[] getDatePriceModifier(){
+		return datePriceModifier;
+	}
+	
+	/**
+	 * Returns the total number of rooms in the hotel.
+	 *
+	 * @return The total number of rooms.
+	 */
+	public int getNoOfRooms() {
+		return rooms.size();
+	}
+	
+	/**
+	 * Adds a specified number of standard rooms to the hotel.
+	 *
+	 * @param count The number of standard rooms to add.
+	 */
+	public void addStandardRooms(int count) {
+        for (int i = 0; i < count; i++) {
+			String nextRoomId = getNextRoomId();
+            rooms.add(new StandardRoom(nextRoomId, price));
+        }
+		sortRoomsByRoomNumber();
+    }
+	
+	/**
+	 * Adds a specified number of deluxe rooms to the hotel.
+	 *
+	 * @param count The number of deluxe rooms to add.
+	 */
+    public void addDeluxeRooms(int count) {
+        for (int i = 0; i < count; i++) {
+			String nextRoomId = getNextRoomId();
+            rooms.add(new DeluxeRoom(nextRoomId, price));
+        }
+		sortRoomsByRoomNumber();
+    }
+    
+    /**
+     * Adds a specified number of executive rooms to the hotel.
+     *
+     * @param count The number of executive rooms to add.
+     */
+    public void addExecutiveRooms(int count) {
+        for (int i = 0; i < count; i++) {
+			String nextRoomId = getNextRoomId();
+            rooms.add(new ExecutiveRoom(nextRoomId, price));
+        }
+		sortRoomsByRoomNumber();
+    }
+    
+    /**
+     * Adds rooms to the hotel based on the specified counts for each type.
+     *
+     * @param scount The number of standard rooms to add.
+     * @param dcount The number of deluxe rooms to add.
+     * @param ecount The number of executive rooms to add.
+     */
+    public void addRooms(int scount, int dcount, int ecount) {
+    	addStandardRooms(scount);
+    	addDeluxeRooms(dcount);
+    	addExecutiveRooms(ecount);
+    }
 
 }

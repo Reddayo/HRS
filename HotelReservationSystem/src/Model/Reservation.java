@@ -2,9 +2,15 @@ package Model;
 
 
 /**
+ * <p>
  * The <code>Reservation</code> class represents a reservation made by a guest
  * for a specific room in a hotel. It includes guest information, check-in and
  * check-out dates, room details, reservation ID, and pricing information.
+ * </p>
+ *
+ * @author Jusper Angelo Cesar
+ * @version 4.4
+ *
  */
 public class Reservation {
 	
@@ -68,11 +74,20 @@ public class Reservation {
 		
 	}
 
-
+	/**
+	 * Calculates and returns the duration of the reservation in days.
+	 *
+	 * @return The number of days between the check-in day and the check-out day.
+	 */
 	public int getDuration(){
 		return (checkOutDay - checkInDay);
 	}
 
+	/**
+	 * Retrieves the discount code applied to the reservation.
+	 *
+	 * @return The discount code as a string.
+	 */
 	public String getDiscount() {
 		return discount;
 	}
@@ -120,14 +135,32 @@ public class Reservation {
 	public String getRoomName() {
 		return this.room.getRoomName();
 	}
+	
+	/**
+	 * Retrieves the price for a specific day of the reservation.
+	 *
+	 * @param checkIn The check-in day for which to retrieve the price.
+	 * @return The price for the specified day.
+	 */
 	public double getPriceForDay(int checkIn) {
 		return prices[checkIn-1];
 	}
 	
+	/**
+	 * Retrieves the detailed breakdown of prices for each day of the reservation.
+	 *
+	 * @return An array of doubles representing the price for each day of the reservation.
+	 */
 	public double[] getBreakdown() {
 		return prices;
 	}
 	
+	/**
+	 * Recalculates the total price of the reservation based on the provided price modifiers and
+	 * any applicable discount code. Updates the daily prices and the total price accordingly.
+	 *
+	 * @param priceMods An array of price modifiers to adjust the base rate for each day.
+	 */
 	public void recalculatePrice(double[] priceMods) {
 		totalPrice = 0;
 		for(int i = checkInDay - 1, j = 0; i < checkOutDay - 1; i++, j++) {

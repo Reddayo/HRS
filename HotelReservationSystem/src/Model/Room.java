@@ -6,11 +6,16 @@ package Model;
 import java.util.ArrayList;
 
 /**
+ * <p>
  * The <code>Room</code> class represents a room in a hotel, containing details
  * about its name, reservations, availability status, room price, and methods
  * to manage reservations.
+ * </p>
+ * 
+ * @author Jusper Angelo Cesar
+ * @version 4.4
  */
-public class Room {
+public abstract class Room {
 	/**
 	 * The name associated with this entity.
 	 */
@@ -27,13 +32,7 @@ public class Room {
 	private double roomPrice; //THIS NEEDS TO SAY BASE PRICE 
 
 
-	private boolean[] bookingArray;
 
-	public boolean[] getCalendarAvailability(){
-		return bookingArray;
-	}
-
-	
 	
 	/**
      * Constructs a new <code>Room</code> object with the given name and room price.
@@ -49,10 +48,10 @@ public class Room {
 	
 	
 	/**
-	     * Removes a reservation from the room.
-	     *
-	     * @param reservation The reservation to be removed.
-	     */
+     * Removes a reservation from the room.
+     *
+     * @param reservation The reservation to be removed.
+     */
 	 public void removeReservation(Reservation reservation) {
 		this.reservations.remove(reservation);
 	
@@ -60,17 +59,16 @@ public class Room {
 
 
 	/**
-	     * Adds a new reservation to the room.
-	     *
-	     * @param reservation The reservation to be added.
-	     */
+     * Adds a new reservation to the room.
+     *
+     * @param reservation The reservation to be added.
+     */
 	public void addReservation(Reservation reservation) {
 		this.reservations.add(reservation);
 		
 	}
 
-
-	/**
+   /**
 	* Checks if the room is available for booking during the specified period.
 	*
 	* @param checkInDay  The day of check-in.
@@ -89,11 +87,15 @@ public class Room {
 	        }
 	        return true;
 	    }
+	
 	/**
-     * Generates a textual representation of the room's availability for the month.
-     *
-     * @return A string representing the availability of the room.
-     */
+	 * Generates an array representing the room's availability for each day of the month.
+	 *
+	 * @return A boolean array where each element indicates the availability of the room for a specific day.
+	 *         The array has 31 elements, corresponding to days 1 through 31.
+	 *         A value of <code>true</code> means the room is available on that day, and <code>false</code>
+	 *         means the room is booked.
+	 */
 	public boolean[] getAvailability() {
 		boolean[] availabilityArray = new boolean[31]; 
 		for (int day = 0; day < 31; day++) {
@@ -115,13 +117,11 @@ public class Room {
 	}
 	
 	
-	 /**
-	 * Retrieves the price per night for the room.
-	 *
-	 * @return The price per night for the room.
-	 */
-
-	
+   /**
+    * Retrieves the price per night for the room.
+    *
+    * @return The price per night for the room.
+    */
 	public double getRoomBaseRate() {
 		return this.roomPrice;
 	}
@@ -134,17 +134,24 @@ public class Room {
 	public void setRoomPrice(double roomPrice) {
 		this.roomPrice = roomPrice;
 	}
-	  /**
-     * Retrieves a specific reservation from the room based on its index.
-     *
-     * @param i The index of the reservation.
-     * @return The reservation at the specified index.
-     */
+	
+	/**
+	 * Retrieves the reservation at the specified index from the list of reservations.
+	 *
+	 * @param i The index of the reservation in the list.
+	 * @return The {@link Reservation} object at the specified index.
+	 */
 	public Reservation getReservation(int i) {
 		
 		return reservations.get(i);
 	}
 	
+	/**
+	 * Checks if the room is currently booked.
+	 *
+	 * @return <code>true</code> if there are one or more reservations for the room, 
+	 *         indicating it is booked; <code>false</code> otherwise.
+	 */
 	public boolean isBooked() {
 		return reservations.size() != 0;
 	}
@@ -167,8 +174,10 @@ public class Room {
 		return this.name;
 	}
 	
-	public String getRoomType() {
-		return "Generic";
-	}
+	/**
+	 * Returns the type of the room as a string. This is an abstract method
+	 */
+	public abstract String getRoomType();
+	
 
 }

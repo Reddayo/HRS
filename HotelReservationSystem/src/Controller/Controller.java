@@ -15,10 +15,23 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+/**
+ * Controller class that handles interactions between the GUI and the data model.
+ * 
+ * @author Jusper Angelo Cesar
+ * @version 4.4
+ */
 public class Controller implements ActionListener, ListSelectionListener, ChangeListener{
     
     GUI_Main gui_Main;
     HotelListManager model_HRS;
+    
+    /**
+     * Constructs a Controller with the specified model and view components.
+     * 
+     * @param model_HRS the model component managing hotels
+     * @param gui_Main the main GUI component
+     */
     public Controller(HotelListManager model_HRS, GUI_Main gui_Main){
 
         this.gui_Main = gui_Main;
@@ -37,7 +50,10 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         setReservationSelectionListener();
         gui_Main.setActionListener(this);
     }
-
+    
+    /**
+     * Updates the hotel list in the view.
+     */
     private void updateView() {
     	String shotel = gui_Main.getSelectedHotel();
     
@@ -57,7 +73,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
     }
 
 
-
+    /**
+     * Updates the room list in the view based on the selected hotel.
+     */
     private void updateRoomView() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         String selectedHotel = gui_Main.getSelectedHotel();
@@ -82,7 +100,11 @@ public class Controller implements ActionListener, ListSelectionListener, Change
     }
     
     
-    
+    /**
+     * Updates the availability information in the view for a given day.
+     * 
+     * @param day the day for which to update availability information
+     */
     private void updateAvailability(int day) {
         
 
@@ -108,7 +130,11 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 
 
    
-
+    /**
+     * Handles action events from the view.
+     * 
+     * @param e the action event
+     */
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -244,7 +270,11 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 
     }
 
-
+    /**
+     * Handles actions related to hotel management in the view.
+     * 
+     * @param action the action command
+     */
     private void handleManageHotelActions(String action) {
     	Hotel foundHotel;
         switch (action) {
@@ -346,6 +376,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         }
     }
     
+    /**
+     * Handles the addition of new rooms to a hotel.
+     */
     private void handleAddRoom() {
     	String oldName = gui_Main.getSelectedHotel();
     	Hotel foundHotel = model_HRS.findHotel(oldName);
@@ -376,7 +409,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
     
     
     
-    
+    /**
+     * Handles the modification of date price modifiers for a hotel.
+     */
     
     private void handleModifyDatePrice() {
     	  String oldName = gui_Main.getSelectedHotel();
@@ -424,7 +459,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
   	}
     
     
-    
+    /**
+     * Handles the removal of a reservation from a hotel.
+     */
     private void handleRemoveReservation() {
     	  String oldName = gui_Main.getSelectedHotel();
     	  String selectedReservationID = gui_Main.getManagePanel().getSelectedReservationID();
@@ -448,7 +485,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
           gui_Main.getManagePanel().disposeManageDialog();
 		
 	}
-    
+    /**
+     * Handles the removal of rooms from a hotel.
+     */
     private void handleRemoveRoom() {
   	  String oldName = gui_Main.getSelectedHotel();
   	  ArrayList<String> selectedRooms = gui_Main.getManagePanel().getSelectedRooms();
@@ -489,7 +528,12 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         gui_Main.getManagePanel().disposeManageDialog();
 		
 	}
-    
+    /**
+     * Parses the room name from a room description that includes type information.
+     * 
+     * @param roomWithType the room description including type
+     * @return the room name without type information
+     */
     private String parseRoomName(String roomWithType) {
         int endIndex = roomWithType.indexOf(" (");
         if (endIndex != -1) {
@@ -497,7 +541,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         }
         return roomWithType; 
     }
-
+    /**
+     * Handles the removal of a hotel.
+     */
 	private void handleRemoveHotel(){
         String oldName = gui_Main.getSelectedHotel();
         Hotel foundHotel = model_HRS.findHotel(oldName);
@@ -515,7 +561,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
     
     
     
-    
+	 /**
+     * Handles the update of a hotel's base price.
+     */
     private void handleUpdateBasePrice(){
         String oldName = gui_Main.getSelectedHotel();
         Hotel foundHotel = model_HRS.findHotel(oldName);
@@ -546,6 +594,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 
 
     }
+    /**
+     * Handles changing the name of a hotel.
+     */
     private void handleChangeHotelName() {
 
         String oldName = gui_Main.getSelectedHotel();
@@ -581,12 +632,18 @@ public class Controller implements ActionListener, ListSelectionListener, Change
 
         
     }
-
+    /**
+     * Displays a confirmation dialog to the user and returns the user's choice.
+     * 
+     * @return an integer representing the user's choice
+     */
     private int showConfirmation(){
       return gui_Main.showConfirmationDialog("Do you agree?");
     }
 
-
+    /**
+     * Updates the reservation list in the view.
+     */
     private void updateReservationView() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         String selectedHotel = gui_Main.getSelectedHotel();
@@ -606,7 +663,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
         gui_Main.updateReservationList(listModel);
     }
     
-    
+    /**
+     * Updates the reservation list for removal purposes.
+     */
     private void updateReservationListRemoveRes() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         String selectedHotel = gui_Main.getSelectedHotel();
@@ -625,7 +684,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
        
         gui_Main.getManagePanel().updateReservationList(listModel);
     }
-    
+    /**
+     * Updates the room list for removal purposes.
+     */
     private void updateRoomListRemoveRoom() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         String selectedHotel = gui_Main.getSelectedHotel();
@@ -648,7 +709,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
        
         gui_Main.getManagePanel().updateRoomList(listModel);
     }
-    
+    /**
+     * Updates the date price modifier list in the view for modification purposes.
+     */
     private void updatePriceModListModifyD() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         String selectedHotel = gui_Main.getSelectedHotel();
@@ -673,7 +736,9 @@ public class Controller implements ActionListener, ListSelectionListener, Change
     }
     
     
-    
+    /**
+     * Sets the listener for room selection events.
+     */
     public void setRoomSelectionListener(){
         gui_Main.getViewPanel().getRoomList().addListSelectionListener(new ListSelectionListener() {
 
@@ -709,7 +774,10 @@ public class Controller implements ActionListener, ListSelectionListener, Change
             
         });
     }
-
+    
+    /**
+     * Sets the listener for reservation selection events.
+     */
     public void setReservationSelectionListener(){
         gui_Main.getViewPanel().getReservationList().addListSelectionListener(new ListSelectionListener() {
 

@@ -10,6 +10,9 @@ import java.util.ArrayList;
  * check uniqueness of hotel names, find hotels by name, remove hotels, and display
  * a list of all hotels currently managed.
  * </p>
+ * 
+ * @author Jusper Angelo Cesar
+ * @version 4.4
  */
 public class HotelListManager {
 
@@ -180,11 +183,25 @@ public class HotelListManager {
 	    }
 	    return output.toString();
 	}
-
+	
+	/**
+	 * Retrieves the hotel at the specified index from the list of hotels.
+	 *
+	 * @param i The index of the hotel in the list.
+	 * @return The {@link Hotel} object at the specified index.
+	 */
 	public Hotel getHotel(int i) {
 		return hotels.get(i);
 	}
-
+	
+	/**
+	 * Changes the name of a hotel from the old name to the new name, ensuring the new name is unique.
+	 *
+	 * @param oldName The current name of the hotel.
+	 * @param newName The new name to be assigned to the hotel.
+	 * 
+	 * @throws IllegalArgumentException if the hotel with the old name is not found or if a hotel with the new name already exists.
+	 */
 	public void changeHotelName(String oldName, String newName){
 		Hotel hotel = this.findHotel(oldName);
 
