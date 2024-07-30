@@ -21,7 +21,7 @@ public class PlainButton extends JButton{
 
    
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 6921500074995276156L;
 	/**

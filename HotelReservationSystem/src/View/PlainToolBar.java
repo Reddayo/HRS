@@ -17,7 +17,7 @@ public class PlainToolBar extends JToolBar
 {
     
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = -5513026088158535020L;
 	/**

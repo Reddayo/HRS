@@ -10,7 +10,10 @@ package Model;
  * @version 4.4
  */
 public class StandardRoom extends Room {
-    
+	/**
+	 * A constant multiplier used to calculate base rates. 
+	 * Standard Room multiplier is 1.00 meaning it's the same as the base rate.
+	 */
  
     private static final double BASE_RATE_MULTIPLIER = 1.00;
     

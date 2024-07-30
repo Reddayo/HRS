@@ -37,7 +37,7 @@ public class GUI_Main extends JFrame {
 
     
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = -772240044098015686L;
 	/**
@@ -201,7 +201,7 @@ public class GUI_Main extends JFrame {
         JLabel E2 = new JLabel("As a requirement for CCPROG3 MCO2");
         E2.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        JLabel mistakeName = new JLabel("Finished as of June 28th. 2024. v4.4");
+        JLabel mistakeName = new JLabel("Finished as of June 31st. 2024. v4.4");
         mistakeName.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         titlePanel.setPreferredSize(new Dimension(getWidth() / 3, getHeight()));

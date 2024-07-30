@@ -19,7 +19,7 @@ public class GUI_toolBar extends JPanel {
 
     
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 5178967000993076846L;
 	/**

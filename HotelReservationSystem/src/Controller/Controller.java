@@ -23,8 +23,17 @@ import javax.swing.event.ListSelectionListener;
  */
 public class Controller implements ActionListener, ListSelectionListener, ChangeListener{
     
-    GUI_Main gui_Main;
-    HotelListManager model_HRS;
+	/**
+	 * The main GUI controller for the application, responsible for managing
+	 * the overall user interface and interactions.
+	 */
+	private GUI_Main gui_Main;
+
+	/**
+	 * Manages the list of hotels within the application, including operations
+	 * related to hotel data and interactions.
+	 */
+	private HotelListManager model_HRS;
     
     /**
      * Constructs a Controller with the specified model and view components.
@@ -335,14 +344,13 @@ public class Controller implements ActionListener, ListSelectionListener, Change
                 gui_Main.getManagePanel().openDialog(action);
                 break;
             case "Modify Date Price":
-            	//foundHotel = model_HRS.findHotel(gui_Main.getSelectedHotel());
-            	//if(foundHotel.getReservationSize() == 0) {
-            	updatePriceModListModifyD();
-                gui_Main.getManagePanel().openDialog(action);
-            	//}else {
-            	//	gui_Main.showPopup(new IllegalArgumentException("No price updates allowed when there are reservations"));
-            //
-            	//}
+            	foundHotel = model_HRS.findHotel(gui_Main.getSelectedHotel());
+            	if(foundHotel.getReservationSize() == 0) {
+            		updatePriceModListModifyD();
+            		gui_Main.getManagePanel().openDialog(action);
+            	}else {
+            		gui_Main.showPopup(new IllegalArgumentException("No price updates allowed when there are reservations"));
+            	}
                 break;
 
 

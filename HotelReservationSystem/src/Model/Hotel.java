@@ -17,7 +17,11 @@ import java.util.Collections;
  * @version 4.4
  */
 public class Hotel {
-
+	
+	
+	/**
+	 * The maximum number of rooms allowed in the system.
+	 */
     private final static int MAXNOOFROOMS = 50;
 	/**
 	 * The name of the hotel.
@@ -39,7 +43,9 @@ public class Hotel {
 	 * The reservation list for all rooms
 	 */
 	private ArrayList<Reservation> reservations;
-
+	/**
+	 * An array of doubles representing the price modifiers for different dates.
+	 */
 	private double[] datePriceModifier;
 	
 	/**

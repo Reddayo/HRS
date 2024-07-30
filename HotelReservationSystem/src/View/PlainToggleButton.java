@@ -21,7 +21,7 @@ public class PlainToggleButton extends JToggleButton{
 
     
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 839727447148226577L;
 	/**

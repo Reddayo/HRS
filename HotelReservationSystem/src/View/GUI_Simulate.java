@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class GUI_Simulate extends JDialog {
 	/**
-	 * 
+	 * Serial Version UID
 	 */
     private static final long serialVersionUID = 7007581124621903960L;
     /**

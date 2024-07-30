@@ -12,7 +12,10 @@ package Model;
  */
 public class DeluxeRoom extends Room {
 
-    
+	/**
+	 * A constant multiplier used to calculate base rates. 
+	 * Deluxe Room multiplier is 1.20, meaning 20% more than the base rate.
+	 */
     private static final double BASE_RATE_MULTIPLIER = 1.20;
     
     /**

@@ -12,7 +12,11 @@ package Model;
  */
 public class ExecutiveRoom extends Room {
 
-
+	
+	/**
+	 * A constant multiplier used to calculate base rates. 
+	 * Exclusive Room multiplier is 1.35, meaning 35% more than the base rate.
+	 */
     private static final double BASE_RATE_MULTIPLIER = 1.35;
 
     /**

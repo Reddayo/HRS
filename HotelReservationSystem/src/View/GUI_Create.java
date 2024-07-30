@@ -19,7 +19,7 @@ public class GUI_Create extends JDialog {
 
     
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = -5466791194797092670L;
 	/**

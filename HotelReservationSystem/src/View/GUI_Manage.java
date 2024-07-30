@@ -24,7 +24,7 @@ public class GUI_Manage extends JPanel {
 
     
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = -2466504295136985156L;
 	/**

@@ -40,18 +40,33 @@ public class Reservation {
 	 */
 	private String reservationID;
 
-	private String discount;
-	private double[] prices;
-	private double totalPrice;
 	/**
-     * Constructs a new <code>Reservation</code> object with the given guest name,
-     * check-in day, check-out day, and room.
-     *
-     * @param guestName   The name of the guest making the reservation.
-     * @param checkInDay  The day when the guest checks in.
-     * @param checkOutDay The day when the guest checks out.
-     * @param room        The room reserved for the guest.
-     */
+	 * A string representing the discount applied to a reservation or purchase.
+	 */
+	private String discount;
+
+	/**
+	 * An array of doubles representing the prices associated with different items or services.
+	 * Each element in the array corresponds to a specific price.
+	 */
+	private double[] prices;
+
+	/**
+	 * A double representing the total price after applying discounts and other adjustments.
+	 */
+	private double totalPrice;
+	
+	/**
+	 * Constructs a new <code>Reservation</code> object with the specified guest name,
+	 * check-in day, check-out day, room, discount, and price modifications.
+	 *
+	 * @param guestName   The name of the guest making the reservation.
+	 * @param checkInDay  The day when the guest checks in.
+	 * @param checkOutDay The day when the guest checks out.
+	 * @param room        The room reserved for the guest.
+	 * @param discount    A string representing the discount applied to the reservation.
+	 * @param priceMods   An array of doubles representing price modifications to be applied.
+	 */
 	Reservation (String guestName, int checkInDay, int checkOutDay, Room room, String discount, double[]priceMods){
 		this.guestName = guestName;
 		this.checkInDay = checkInDay;
