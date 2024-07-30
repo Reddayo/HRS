@@ -176,6 +176,8 @@ public abstract class Room {
 	
 	/**
 	 * Returns the type of the room as a string. This is an abstract method
+	 * 
+	 * @return the room type
 	 */
 	public abstract String getRoomType();
 	

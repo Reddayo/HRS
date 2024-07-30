@@ -51,54 +51,261 @@ public class GUI_View extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 940514140031279123L;
+	/**
+	 * Panel displaying information about the hotel.
+	 */
 	private JPanel viewHotelInfoPanel;
-    private JPanel viewMiscInfoPanel;
-    private JPanel viewButtonsPanel;
-    private JLabel hotelName;
-    private JLabel roomSize;
-    private JLabel standardRoomSize;
-    private JLabel deluxeRoomSize;
-    private JLabel executiveRoomSize;
-    private JLabel estimateEarnings;
 
-    private JToggleButton hotelAvailabilityButton;
-    private JToggleButton roomInformationButton;
-    private JToggleButton reservationInformationButton;
-    private ButtonGroup viewHotelButtonGroup;
-    private JPanel viewHotelTopPanel;
-    private JPanel hotelAvailabilityPanel;
+	/**
+	 * Panel displaying miscellaneous hotel information.
+	 */
+	private JPanel viewMiscInfoPanel;
 
-    private JLabel bookedRooms;
-    private JLabel bookedStandardRooms;
-    private JLabel bookedDeluxeRooms;
-    private JLabel bookedExecutiveRooms;
-    private JLabel availableRooms;
-    private JLabel availableStandardRooms;
-    private JLabel availableDeluxeRooms;
-    private JLabel availableExecutiveRooms;
+	/**
+	 * Panel containing buttons for different hotel views.
+	 */
+	private JPanel viewButtonsPanel;
 
-    private JPanel roomInformationPanel;
-    private JLabel roomNameRoI;
-    private JLabel roomPriceRoI;
-    private JLabel availabilityCalendarRoI;
+	/**
+	 * Label displaying the hotel's name.
+	 */
+	private JLabel hotelName;
 
-    private JPanel reservationInformationPanel;
-    private JLabel reservationIDReI;
-    private JLabel guestNameReI;
-    private JLabel roomNameReI;
-    private JLabel checkInReI;
-    private JLabel checkOutReI;
-    private JLabel totalPriceReI;
-    private JLabel breakDownPriceNightReI;
-    private JLabel discountReI;
-    private CardLayout viewHotelMiscInfoShower;
-    private JSpinner dateSpinner;
+	/**
+	 * Label displaying the room size.
+	 */
+	private JLabel roomSize;
 
-    private JPanel selectSomething;
-    private JSplitPane splitPane;
-    private JPanel calendarPanel;
-    private JPanel breakdownPanel;
-    private CardLayout showInfo;
+	/**
+	 * Label displaying the size of standard rooms.
+	 */
+	private JLabel standardRoomSize;
+
+	/**
+	 * Label displaying the size of deluxe rooms.
+	 */
+	private JLabel deluxeRoomSize;
+
+	/**
+	 * Label displaying the size of executive rooms.
+	 */
+	private JLabel executiveRoomSize;
+
+	/**
+	 * Label displaying estimated earnings from bookings.
+	 */
+	private JLabel estimateEarnings;
+
+	/**
+	 * Toggle button for viewing hotel availability.
+	 */
+	private JToggleButton hotelAvailabilityButton;
+
+	/**
+	 * Toggle button for viewing room information.
+	 */
+	private JToggleButton roomInformationButton;
+
+	/**
+	 * Toggle button for viewing reservation information.
+	 */
+	private JToggleButton reservationInformationButton;
+
+	/**
+	 * Button group for managing the selection of hotel view options.
+	 */
+	private ButtonGroup viewHotelButtonGroup;
+
+	/**
+	 * Panel at the top of the hotel view section.
+	 */
+	private JPanel viewHotelTopPanel;
+
+	/**
+	 * Panel displaying hotel availability information.
+	 */
+	private JPanel hotelAvailabilityPanel;
+
+	/**
+	 * Label displaying the total number of booked rooms.
+	 */
+	private JLabel bookedRooms;
+
+	/**
+	 * Label displaying the number of booked standard rooms.
+	 */
+	private JLabel bookedStandardRooms;
+
+	/**
+	 * Label displaying the number of booked deluxe rooms.
+	 */
+	private JLabel bookedDeluxeRooms;
+
+	/**
+	 * Label displaying the number of booked executive rooms.
+	 */
+	private JLabel bookedExecutiveRooms;
+
+	/**
+	 * Label displaying the total number of available rooms.
+	 */
+	private JLabel availableRooms;
+
+	/**
+	 * Label displaying the number of available standard rooms.
+	 */
+	private JLabel availableStandardRooms;
+
+	/**
+	 * Label displaying the number of available deluxe rooms.
+	 */
+	private JLabel availableDeluxeRooms;
+
+	/**
+	 * Label displaying the number of available executive rooms.
+	 */
+	private JLabel availableExecutiveRooms;
+
+	/**
+	 * Panel displaying information about rooms.
+	 */
+	private JPanel roomInformationPanel;
+
+	/**
+	 * Label displaying the name of the room.
+	 */
+	private JLabel roomNameRoI;
+
+	/**
+	 * Label displaying the price of the room.
+	 */
+	private JLabel roomPriceRoI;
+
+	/**
+	 * Label displaying the availability calendar of the room.
+	 */
+	private JLabel availabilityCalendarRoI;
+
+	/**
+	 * Panel displaying information about reservations.
+	 */
+	private JPanel reservationInformationPanel;
+
+	/**
+	 * Label displaying the reservation ID.
+	 */
+	private JLabel reservationIDReI;
+
+	/**
+	 * Label displaying the guest's name.
+	 */
+	private JLabel guestNameReI;
+
+	/**
+	 * Label displaying the name of the room associated with the reservation.
+	 */
+	private JLabel roomNameReI;
+
+	/**
+	 * Label displaying the check-in date.
+	 */
+	private JLabel checkInReI;
+
+	/**
+	 * Label displaying the check-out date.
+	 */
+	private JLabel checkOutReI;
+
+	/**
+	 * Label displaying the total price for the reservation.
+	 */
+	private JLabel totalPriceReI;
+
+	/**
+	 * Label displaying the breakdown of the price per night.
+	 */
+	private JLabel breakDownPriceNightReI;
+
+	/**
+	 * Label displaying the discount code used for the reservation.
+	 */
+	private JLabel discountReI;
+
+	/**
+	 * Card layout for showing miscellaneous hotel information.
+	 */
+	private CardLayout viewHotelMiscInfoShower;
+
+	/**
+	 * Spinner for selecting a date.
+	 */
+	private JSpinner dateSpinner;
+
+	/**
+	 * Panel for selecting an option.
+	 */
+	private JPanel selectSomething;
+
+	/**
+	 * Split pane for separating different views or panels.
+	 */
+	private JSplitPane splitPane;
+
+	/**
+	 * Panel displaying the calendar.
+	 */
+	private JPanel calendarPanel;
+
+	/**
+	 * Panel displaying the breakdown of prices.
+	 */
+	private JPanel breakdownPanel;
+
+	/**
+	 * Card layout for showing information in various views.
+	 */
+	private CardLayout showInfo;
+
+	/**
+	 * List displaying available rooms.
+	 */
+	private JList<String> roomList;
+
+	/**
+	 * List displaying reservations.
+	 */
+	private JList<String> reservationList;
+
+	/**
+	 * Scroll pane for scrolling through the room list.
+	 */
+	private JScrollPane listScrollPane;
+
+	/**
+	 * Scroll pane for scrolling through the reservation list.
+	 */
+	private JScrollPane listScrollPane2;
+
+	/**
+	 * Panel displaying the availability calendar of a room.
+	 */
+	private JPanel availabilityCalendarPanelRoI;
+
+	/**
+	 * Panel displaying the breakdown of the price per night.
+	 */
+	private JPanel breakDownPriceNightListReI;
+
+	/**
+	 * Label displaying the type of the room.
+	 */
+	private JLabel roomTypeRoI;
+
+	/**
+	 * Label displaying the type of the room in the reservation information.
+	 */
+	private JLabel roomTypeReI;
+
     
     /**
      * Constructs a new GUI_View instance, initializing the layout and components for the GUI.
@@ -256,14 +463,7 @@ public class GUI_View extends JPanel {
     	listScrollPane2.setVisible(bool);
     }
 
-    private JList<String> roomList;
-    private JList<String> reservationList;
-    private JScrollPane listScrollPane;
-    private JScrollPane listScrollPane2 ;
-    private JPanel availabilityCalendarPanelRoI;
-    private JPanel breakDownPriceNightListReI;
-	private JLabel roomTypeRoI;
-	private JLabel roomTypeReI;
+  
 
 	
 	 /**

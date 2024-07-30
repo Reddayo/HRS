@@ -18,27 +18,105 @@ import java.util.ArrayList;
  * 
  */
 public class GUI_Simulate extends JDialog {
-
+	/**
+	 * 
+	 */
     private static final long serialVersionUID = 7007581124621903960L;
+    /**
+     * Label displaying the name field for the guest.
+     */
     private JLabel nameLabel;
+
+    /**
+     * Text field for entering the guest's name.
+     */
     private JTextField guestNameField;
+
+    /**
+     * Label displaying the room type selection options.
+     */
     private JLabel roomTypeLabel;
+
+    /**
+     * Toggle button for selecting the standard room type.
+     */
     private JToggleButton standardButton;
+
+    /**
+     * Toggle button for selecting the deluxe room type.
+     */
     private JToggleButton deluxeButton;
+
+    /**
+     * Toggle button for selecting the executive room type.
+     */
     private JToggleButton executiveButton;
+
+    /**
+     * Label displaying the check-in date field.
+     */
     private JLabel checkInLabel;
+
+    /**
+     * Spinner for selecting the check-in date.
+     */
     private JSpinner checkInSpinner;
+
+    /**
+     * Label displaying the check-out date field.
+     */
     private JLabel checkOutLabel;
+
+    /**
+     * Spinner for selecting the check-out date.
+     */
     private JSpinner checkOutSpinner;
+
+    /**
+     * Label displaying the discount code field.
+     */
     private JLabel discountLabel;
+
+    /**
+     * Text field for entering a discount code.
+     */
     private JTextField discountField;
+
+    /**
+     * Button for booking a reservation.
+     */
     private JButton bookButton;
+
+    /**
+     * Label for displaying error messages.
+     */
     private JLabel errorLabel;
+
+    /**
+     * Flag indicating whether the current input is valid.
+     */
     private boolean isValid;
-    private  ButtonGroup roomTypeGroup;
-	private DefaultListModel<String> listModel;
-	private JList<String> priceList;
-	private ArrayList<String> externalPriceList;
+
+    /**
+     * Button group for managing the selection of room types.
+     */
+    private ButtonGroup roomTypeGroup;
+
+    /**
+     * Default list model for managing the list of prices.
+     */
+    private DefaultListModel<String> listModel;
+
+    /**
+     * List displaying various breakdowns
+     */
+    private JList<String> priceList;
+
+    /**
+     * List of "immutable" breakdowns. used for referring what to put in priceList.
+     */
+    private ArrayList<String> externalPriceList;
+
 	
 	/**
 	 * Constructs a GUI_Simulate dialog.

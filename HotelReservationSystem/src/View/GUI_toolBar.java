@@ -22,10 +22,26 @@ public class GUI_toolBar extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 5178967000993076846L;
+	/**
+	 * Button for creating new items or actions in the GUI.
+	 */
 	private PlainButton createButton;
-    private PlainToggleButton viewButton;
-    private PlainToggleButton manageButton;
-    private PlainButton simulateButton;
+
+	/**
+	 * Toggle button for switching to the view mode in the GUI.
+	 */
+	private PlainToggleButton viewButton;
+
+	/**
+	 * Toggle button for switching to the manage mode in the GUI.
+	 */
+	private PlainToggleButton manageButton;
+
+	/**
+	 * Button for initiating simulation actions or dialogs in the GUI.
+	 */
+	private PlainButton simulateButton;
+
     /**
      * Constructs a {@code GUI_toolBar} and initializes the layout and buttons.
      * Sets the layout to {@link FlowLayout} with left alignment and sets the background color to a light gray.

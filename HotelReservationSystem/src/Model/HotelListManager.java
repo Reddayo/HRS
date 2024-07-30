@@ -31,7 +31,9 @@ public class HotelListManager {
 	 */
 	public static final double defaultPrice = 1299;
 
-
+	/**
+	 * Minimum price that can be set for hotels.
+	 */
     public static final double minimumPrice = 100;
 
 
@@ -90,7 +92,11 @@ public class HotelListManager {
 	        }
 	    }
 	 
-	 
+	 /**
+	  * Returns the number of hotels currently in the list.
+	  * 
+	  * @return the size of the hotel list.
+	  */
 	 public int getHotelListSize() {
 		 return hotels.size();
 	 }
@@ -106,13 +112,16 @@ public class HotelListManager {
 		public boolean contains(Hotel hotel){
 			return hotels.contains(hotel);
 		}
-	/**
-     * Creates a new hotel and add it to the list
-     * 
-	 * @param name the name of the room
-	 * @param noOfRooms the number of rooms
-	 * @throws Exception 
-     */
+		/**
+		 * Creates a new hotel and adds it to the list of hotels.
+		 * 
+		 * @param name     the name of the hotel.
+		 * @param price    the base price for rooms in the hotel.
+		 * @param standard the number of standard rooms in the hotel.
+		 * @param deluxe   the number of deluxe rooms in the hotel.
+		 * @param executive the number of executive rooms in the hotel.
+		 * @throws Exception if a hotel with the same name already exists.
+		 */
 	public void createHotel(String name,double price,  int standard, int deluxe, int executive) throws Exception{
 		if(isHotelNameUnique(name)) {
 		hotels.add(new Hotel(name, price, standard, deluxe, executive, prefixGenerator()));	

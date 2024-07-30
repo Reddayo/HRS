@@ -362,27 +362,37 @@ public class Hotel {
         return totalEstimate;
     }
 	
-	/**
-	 * @return the prefix of rooms
-	 */
+	 /**
+	  * Gets the prefix used for room identifiers in the hotel.
+	  *
+	  * @return the prefix of rooms.
+	  */
    public String getRoomPrefix() {
 		return this.hotelRoomPrefix;
 	}
 
-	/**
-	 * @return the name
-	 */
+   /**
+    * Gets the name of the hotel.
+    *
+    * @return the name.
+    */
 	public String getName() {
 		return name;
 	}
+	
 	/**
-	 * @return the price
+	 * Gets the base price associated with the hotel.
+	 *
+	 * @return the base price
 	 */
 	public double getBasePrice() {
 		return price;
 	}
+	
 	/**
-	 * @param name the name to set
+	 * Sets the name of the hotel.
+	 *
+	 * @param name the name to set.
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -390,7 +400,9 @@ public class Hotel {
 	
 	
 	/**
-	 * @param price the price to set
+	 * Sets the base price for rooms and updates all room prices and reservation costs accordingly.
+	 *
+	 * @param price the price to set.
 	 */
 	public void setPrice(double price) {
 		this.price = price;
@@ -658,8 +670,8 @@ public class Hotel {
 	 * @param reservationID The reservation ID.
 	 * @return The room type.
 	 */
-	public String getReservationRoomType(String roomName) {
-		Reservation reservation = findReservation(roomName);
+	public String getReservationRoomType(String reservationID) {
+		Reservation reservation = findReservation(reservationID);
 		return reservation.getRoom().getRoomType();
 	}
 	

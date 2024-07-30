@@ -22,17 +22,60 @@ public class GUI_Create extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = -5466791194797092670L;
+	/**
+	 * Text field for entering the name of the hotel.
+	 */
 	private JTextField nameField;
-    private JSpinner standardSpinner;
-    private JSpinner deluxeSpinner;
-    private JSpinner executiveSpinner;
-    private JCheckBox defaultPriceCheckBox;
-    private JTextField priceField;
-    private JLabel priceLabel;
-    private JButton createHotelButton;
-    private int max_rooms;
-    private double default_price;
-    private double min_price;
+
+	/**
+	 * Spinner for selecting the number of standard rooms.
+	 */
+	private JSpinner standardSpinner;
+
+	/**
+	 * Spinner for selecting the number of deluxe rooms.
+	 */
+	private JSpinner deluxeSpinner;
+
+	/**
+	 * Spinner for selecting the number of executive rooms.
+	 */
+	private JSpinner executiveSpinner;
+
+	/**
+	 * Check box for setting the default price for rooms.
+	 */
+	private JCheckBox defaultPriceCheckBox;
+
+	/**
+	 * Text field for entering the price of the rooms.
+	 */
+	private JTextField priceField;
+
+	/**
+	 * Label for displaying price information.
+	 */
+	private JLabel priceLabel;
+
+	/**
+	 * Button for creating a new hotel.
+	 */
+	private JButton createHotelButton;
+
+	/**
+	 * Maximum number of rooms allowed.
+	 */
+	private int max_rooms;
+
+	/**
+	 * Default price for rooms.
+	 */
+	private double default_price;
+
+	/**
+	 * Minimum price for rooms.
+	 */
+	private double min_price;
 
     
     /**

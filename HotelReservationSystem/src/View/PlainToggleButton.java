@@ -24,9 +24,20 @@ public class PlainToggleButton extends JToggleButton{
 	 * 
 	 */
 	private static final long serialVersionUID = 839727447148226577L;
+	/**
+	 * The background color of the button when the mouse hovers over it.
+	 */
 	private Color hoverBackgroundColor;
-    private Color pressedBackgroundColor;
-    private Color normalBackgroundColor;
+
+	/**
+	 * The background color of the button when it is pressed.
+	 */
+	private Color pressedBackgroundColor;
+
+	/**
+	 * The default background color of the button when it is not interacted with.
+	 */
+	private Color normalBackgroundColor;
     
     /**
      * Constructs a {@code PlainToggleButton} with the specified name.

@@ -27,25 +27,96 @@ public class GUI_Manage extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -2466504295136985156L;
+	/**
+	 * List of custom buttons used in the GUI.
+	 */
 	private ArrayList<PlainButton> buttons;
-    private JFrame parentFrame;
-    private PlainToolBar toolBar;
-    private JButton confirmation;
-    private JDialog dialog;
-    private ListSelectionListener lsl; //more for just managing the names and stuff
-    private JTextField newHotelNameField;
-    private JTextField newBasePriceField;
-    private JTextField newPriceModifierField;
-  
-    private JLabel newBasePrice;
-    private String selected;
-    private JList<String> reservationList;
-    private JList<String> roomList;
-    private JList<String> priceModsList;
-    private JSpinner standardSpinner;
-    private JSpinner deluxeSpinner;
-    private JSpinner executiveSpinner;
-    private int maxrooms;
+
+	/**
+	 * The parent frame for the GUI, serving as the main window.
+	 */
+	private JFrame parentFrame;
+
+	/**
+	 * Tool bar component for the GUI, providing various tool options.
+	 */
+	private PlainToolBar toolBar;
+
+	/**
+	 * Button for confirming actions or inputs.
+	 */
+	private JButton confirmation;
+
+	/**
+	 * Dialog window for additional user interactions.
+	 */
+	private JDialog dialog;
+
+	/**
+	 * Listener for managing list selections, used for handling names and other data.
+	 */
+	private ListSelectionListener lsl;
+
+	/**
+	 * Text field for entering the name of a new hotel.
+	 */
+	private JTextField newHotelNameField;
+
+	/**
+	 * Text field for entering the base price of a new hotel.
+	 */
+	private JTextField newBasePriceField;
+
+	/**
+	 * Text field for entering the price modifier for a new hotel.
+	 */
+	private JTextField newPriceModifierField;
+
+	/**
+	 * Label for displaying or indicating the new base price.
+	 */
+	private JLabel newBasePrice;
+
+	/**
+	 * The currently selected item in the GUI.
+	 */
+	private String selected;
+
+	/**
+	 * List component for displaying a list of reservations.
+	 */
+	private JList<String> reservationList;
+
+	/**
+	 * List component for displaying a list of rooms.
+	 */
+	private JList<String> roomList;
+
+	/**
+	 * List component for displaying a list of price modifiers.
+	 */
+	private JList<String> priceModsList;
+
+	/**
+	 * Spinner for selecting the number of standard rooms.
+	 */
+	private JSpinner standardSpinner;
+
+	/**
+	 * Spinner for selecting the number of deluxe rooms.
+	 */
+	private JSpinner deluxeSpinner;
+
+	/**
+	 * Spinner for selecting the number of executive rooms.
+	 */
+	private JSpinner executiveSpinner;
+
+	/**
+	 * Maximum number of rooms allowed.
+	 */
+	private int maxrooms;
+
     
     
     /**

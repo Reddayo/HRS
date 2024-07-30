@@ -24,9 +24,20 @@ public class PlainButton extends JButton{
 	 * 
 	 */
 	private static final long serialVersionUID = 6921500074995276156L;
+	/**
+	 * The background color of the button when the mouse hovers over it.
+	 */
 	private Color hoverBackgroundColor;
-    private Color pressedBackgroundColor;
-    private Color normalBackgroundColor;
+
+	/**
+	 * The background color of the button when it is pressed.
+	 */
+	private Color pressedBackgroundColor;
+
+	/**
+	 * The default background color of the button when it is not interacted with.
+	 */
+	private Color normalBackgroundColor;
     
     /**
      * Constructs a {@code PlainButton} with the specified text.

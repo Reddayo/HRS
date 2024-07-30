@@ -102,25 +102,37 @@ public class Reservation {
 	}
 	
 	/**
-	 * @return the guestName
+	 * Gets the name of the guest associated with this reservation.
+	 * 
+	 * @return the guest's name.
 	 */
 	public String getGuestName() {
 		return this.guestName;
 	}
+	
 	/**
-	 * @return the checkIn
+	 * Gets the check-in day for this reservation.
+	 * 
+	 * @return the check-in day as an integer.
 	 */
 	public int getCheckIn() {
 		return this.checkInDay;
 	}
+	
 	/**
-	 * @return the checkOut
+	 * Gets the check-out day for this reservation.
+	 * 
+	 * @return the check-out day as an integer.
 	 */
 	public int getCheckOut() {
 		return this.checkOutDay;
 	}
+	
+	
 	/**
-	 * @return the room
+	 * Gets the room associated with this reservation.
+	 * 
+	 * @return the Room object for this reservation.
 	 */
 	public Room getRoom() {
 		return this.room;
@@ -129,7 +141,9 @@ public class Reservation {
 
 	
 	/**
-	 * @return the roomName
+	 * Gets the name of the room associated with this reservation.
+	 * 
+	 * @return the room name as a string.
 	 */
 	
 	public String getRoomName() {

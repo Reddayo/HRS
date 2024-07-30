@@ -25,7 +25,7 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 /**
  * <p>
- * The </code>GUI_Main</code> class represents the main graphical user interface for the hotel reservation system.
+ * The <code>GUI_Main</code> class represents the main graphical user interface for the hotel reservation system.
  * It extends JFrame and provides a layout for various components including a tool bar, panels for
  * creating, viewing, managing, and simulating reservations, and a list for displaying hotels.
  * </p>
@@ -40,15 +40,51 @@ public class GUI_Main extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -772240044098015686L;
+	/**
+	 * Tool bar component for the GUI, providing various tool options.
+	 */
 	private GUI_toolBar toolBar;
-    private GUI_Create createDialog;
-    private GUI_View viewPanel;
-    private GUI_Manage managePanel;
-    private GUI_Simulate simulateDialog;
-    private JList<String> hotelList; 
+
+	/**
+	 * Dialog for creating new entries in the GUI.
+	 */
+	private GUI_Create createDialog;
+
+	/**
+	 * Panel for viewing information in the GUI.
+	 */
+	private GUI_View viewPanel;
+
+	/**
+	 * Panel for managing elements within the GUI.
+	 */
+	private GUI_Manage managePanel;
+
+	/**
+	 * Dialog for simulating actions or scenarios in the GUI.
+	 */
+	private GUI_Simulate simulateDialog;
+
+	/**
+	 * List component for displaying a list of hotels.
+	 */
+	private JList<String> hotelList;
+
+	/**
+	 * Scroll pane for the hotel list, allowing for scrolling through the list items.
+	 */
 	private JScrollPane listScrollPane;
-    private CardLayout viewmanagetitleshower;
-    private JPanel kronii;
+
+	/**
+	 * Layout manager for switching between the view and manage panels.
+	 */
+	private CardLayout viewmanagetitleshower;
+
+	/**
+	 * view panel container.
+	 */
+	private JPanel kronii;
+
     
     /**
      * Constructs a new GUI_Main frame with the specified title.

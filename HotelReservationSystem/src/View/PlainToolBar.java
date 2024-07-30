@@ -20,6 +20,10 @@ public class PlainToolBar extends JToolBar
 	 * 
 	 */
 	private static final long serialVersionUID = -5513026088158535020L;
+	/**
+	 * Background color used for the component.
+	 */
+	
 	Color bgColor = new Color(236, 236, 236);
 	
 	 /**
