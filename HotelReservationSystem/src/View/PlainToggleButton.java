@@ -9,6 +9,14 @@ import javax.swing.event.ChangeListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * A custom toggle button that extends {@link JToggleButton}.
+ * This button has different background colors for different states: normal, hover, and pressed.
+ * It also includes custom font and color settings.
+ * 
+ * @author Jusper Angelo Cesar
+ * @version 4.4
+ */
 public class PlainToggleButton extends JToggleButton{
 
     
@@ -19,6 +27,13 @@ public class PlainToggleButton extends JToggleButton{
 	private Color hoverBackgroundColor;
     private Color pressedBackgroundColor;
     private Color normalBackgroundColor;
+    
+    /**
+     * Constructs a {@code PlainToggleButton} with the specified name.
+     * The button is initialized with custom colors for different states, a custom font, and certain visual properties.
+     *
+     * @param name the text to be displayed on the button
+     */
     PlainToggleButton(String name){
         super(name);
         setContentAreaFilled(false);

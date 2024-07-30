@@ -10,6 +10,16 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+
+/**
+ * The GUI_Manage class is responsible for managing the user interface components 
+ * related to hotel management functionalities such as adding, removing, and modifying 
+ * hotels, rooms, reservations, and prices.
+ * 
+ * @author Jusper Angelo Cesar
+ * @version 4.4
+ * 
+ */
 public class GUI_Manage extends JPanel {
 
     
@@ -37,6 +47,12 @@ public class GUI_Manage extends JPanel {
     private JSpinner executiveSpinner;
     private int maxrooms;
     
+    
+    /**
+     * Constructs a GUI_Manage instance with the specified parent frame.
+     * 
+     * @param parentFrame the parent JFrame
+     */
     public GUI_Manage(JFrame parentFrame) {
         this.parentFrame = parentFrame;
         confirmation = new JButton();
@@ -69,6 +85,12 @@ public class GUI_Manage extends JPanel {
     
         
     }
+    
+    /**
+     * Sets the ListSelectionListener for reservationList, roomList, and priceModsList.
+     * 
+     * @param listener the ListSelectionListener to set
+     */
     public void setListSelectionListener(ListSelectionListener listener) {
     	reservationList.addListSelectionListener(listener);
     	roomList.addListSelectionListener(listener);
@@ -76,45 +98,86 @@ public class GUI_Manage extends JPanel {
     
     }
     
+    /**
+     * Updates the reservation list with the specified list model.
+     * 
+     * @param listModel the list model to update with
+     */
+    
     public void updateReservationList(DefaultListModel<String> listModel) {
     	
     	reservationList.setModel(listModel);
     	
     }
     
+    
+    /**
+     * Updates the room list with the specified list model.
+     * 
+     * @param listModel the list model to update with
+     */
     public void updateRoomList(DefaultListModel<String> listModel) {
     	
 	 	roomList.setModel(listModel);
     	
     }
     
+    /**
+     * Updates the date price modifier list with the specified list model.
+     * 
+     * @param listModel the list model to update with
+     */
     public void updateDatePriceModifierList(DefaultListModel<String> listModel) {
     	
 	 	priceModsList.setModel(listModel);
     	
     }
     
-    
-    public String getSelectedReservationID() {
-    	return reservationList.getSelectedValue();
+    /**
+     * Returns the selected reservation IDs.
+     * 
+     * @return the selected reservation IDs
+     */
+    public ArrayList<String>  getSelectedReservationID() {
+    	java.util.List<String> selectedValuesList = reservationList.getSelectedValuesList();
+    	
+    	return new ArrayList<>(selectedValuesList);
     }
     
+    /**
+     * Returns the selected rooms.
+     * 
+     * @return the selected rooms
+     */
     public ArrayList<String> getSelectedRooms() {
-        // Retrieve the selected values from the JList
+    	
         java.util.List<String> selectedValuesList = roomList.getSelectedValuesList();
-        
-        // Convert the list to an ArrayList and return
         return new ArrayList<>(selectedValuesList);
     }
     
+    /**
+     * Updates the current base price displayed.
+     * 
+     * @param basePriceToShow the base price to show
+     */
     public void updateCurrentBasePrice(double basePriceToShow) {
     	newBasePrice = new JLabel(String.format("Current Base Price: %s", basePriceToShow));
     }
     
+    /**
+     * Returns the ListSelectionListener.
+     * 
+     * @return the ListSelectionListener
+     */
     public ListSelectionListener getLSL(){
         return lsl;
     }
-
+    
+    /**
+     * Sets the ActionListener for the confirmation button and other buttons.
+     * 
+     * @param listener the ActionListener to set
+     */
     public void setActionListener(ActionListener listener){
         confirmation.addActionListener(listener);
         for(int i = 0; i < buttons.size(); i++){
@@ -125,7 +188,10 @@ public class GUI_Manage extends JPanel {
         revalidate();
         repaint();
     }
-
+    
+    /**
+     * Disables the buttons in the toolbar.
+     */
     private void disableButtons(){
         
            
@@ -136,7 +202,10 @@ public class GUI_Manage extends JPanel {
             revalidate();
             repaint();
     }
-
+    
+    /**
+     * Enables the buttons in the toolbar.
+     */
     private void enableButtons(){
         
            
@@ -146,12 +215,20 @@ public class GUI_Manage extends JPanel {
         revalidate();
         repaint();
 }
+    
+    /**
+     * Initializes the toolbar.
+     */
 
     private void initializeToolBar() {
         toolBar = new PlainToolBar();
         toolBar.setFloatable(false); // Makes sure the toolbar cannot be moved
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT)); // Set the layout to FlowLayout aligned to the left
     }
+    
+    /**
+     * Initializes the buttons in the toolbar.
+     */
 
     private void initializeButtons() {
         buttons = new ArrayList<PlainButton>();
@@ -173,6 +250,11 @@ public class GUI_Manage extends JPanel {
         
     }
 
+    /**
+     * Opens a dialog with the specified type.
+     * 
+     * @param dialogType the type of dialog to open
+     */
     public void openDialog(String dialogType) {
         JPanel panel = createPanel(dialogType);
 
@@ -193,6 +275,9 @@ public class GUI_Manage extends JPanel {
 
     }
 
+    /**
+     * Disposes the manage dialog.
+     */
     public void disposeManageDialog(){
         if(dialog!= null){  
             dialog.dispose();
@@ -200,7 +285,12 @@ public class GUI_Manage extends JPanel {
        
     }
     
-    
+    /**
+     * Creates a panel based on the specified dialog type.
+     * 
+     * @param dialogType the type of dialog
+     * @return the created panel
+     */
 
     private JPanel createPanel(String dialogType) {
         switch (dialogType) {
@@ -223,6 +313,11 @@ public class GUI_Manage extends JPanel {
         }
     }
 
+    /**
+     * Creates a panel for changing the hotel name.
+     * 
+     * @return the created panel
+     */
     private JPanel createChangeHotelNamePanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
@@ -248,17 +343,38 @@ public class GUI_Manage extends JPanel {
         return panel;
     }
 
+    /**
+     * Returns the new hotel name from the text field.
+     * 
+     * @return the new hotel name
+     */
     public String getNewHotelName(){
         return newHotelNameField.getText();
     }
-
+    
+    /**
+     * Returns the new price from the text field.
+     * 
+     * @return the new price
+     */
     public String getNewPrice(){
         return newBasePriceField.getText();
     }
     
+    /**
+     * Returns the base price from the text field.
+     * 
+     * @return the base price
+     */
     public String getBasePriceField(){
         return newBasePriceField.getText();
     }
+    
+    /**
+     * Creates a panel for adding rooms.
+     * 
+     * @return the created panel
+     */
     private JPanel createAddRoomPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -299,10 +415,19 @@ public class GUI_Manage extends JPanel {
 
         return panel;
     }
-
+    
+    /**
+     * Sets the maximum number of rooms.
+     * 
+     * @param maxrooms the maximum number of rooms
+     */
     public void setMaxRooms(int maxrooms) {
     	this.maxrooms = maxrooms;
     }
+    
+    /**
+     * Adds listeners to the spinners.
+     */
     private void addSpinnerListeners() {
         ChangeListener listener = new ChangeListener() {
             @Override
@@ -317,7 +442,9 @@ public class GUI_Manage extends JPanel {
 
        
     }
-
+    /**
+     * Updates the models of the spinners based on their values.
+     */
     private void updateSpinnerModels() {
         int standard = (Integer) standardSpinner.getValue();
         int deluxe = (Integer) deluxeSpinner.getValue();
@@ -338,7 +465,13 @@ public class GUI_Manage extends JPanel {
             executiveSpinner.setValue(maxrooms - standard - deluxe);
         }
     }
-
+    
+    /**
+     * Returns the number of rooms from the spinners.
+     * 
+     * @return an array of room counts
+     * @throws IllegalArgumentException if the total number of rooms is zero
+     */
     public int[] getRooms() throws IllegalArgumentException {
         Integer standardRooms = (Integer) standardSpinner.getValue();
         Integer deluxeRooms = (Integer) deluxeSpinner.getValue();
@@ -352,6 +485,11 @@ public class GUI_Manage extends JPanel {
         return new int[]{standardRooms, deluxeRooms, executiveRooms};
     }
 
+    /**
+     * Creates a panel for removing rooms.
+     * 
+     * @return the created panel
+     */
     private JPanel createRemoveRoomPanel() {
     
         
@@ -374,6 +512,11 @@ public class GUI_Manage extends JPanel {
     }
     
    
+    /**
+     * Creates a panel for updating the base price.
+     * 
+     * @return the created panel
+     */
     private JPanel createUpdateBasePricePanel() {
  
         JPanel panel = new JPanel(new BorderLayout());
@@ -400,7 +543,12 @@ public class GUI_Manage extends JPanel {
         panel.add(panel2, BorderLayout.SOUTH);
         return panel;
     }
-
+    
+    /**
+     * Creates a panel for removing reservations.
+     * 
+     * @return the created panel
+     */
     private JPanel createRemoveReservationPanel() {
     	
     	JScrollPane scrollPane = new JScrollPane(reservationList);
@@ -421,6 +569,12 @@ public class GUI_Manage extends JPanel {
         return panel1;
     }
 
+    
+    /**
+     * Creates a panel for removing hotels.
+     * 
+     * @return the created panel
+     */
     private JPanel createRemoveHotelPanel() {
         JPanel panel = new JPanel(new GridLayout(0, 1));
       //  JTextField hotelRemove = new JTextField();
@@ -435,14 +589,32 @@ public class GUI_Manage extends JPanel {
         return panel;
     }
     
+    /**
+     * Returns the selected date indices from the list.
+     * 
+     * @return the selected date indices
+     */
+    
     public int[] getSelectedDateIndices(){
     	return priceModsList.getSelectedIndices();
     	
     }
     
+    /**
+     * Returns the price modifier from the text field.
+     * 
+     * @return the price modifier
+     */
+    
     public String getPriceModifier() {
     	return newPriceModifierField.getText();
     }
+    
+    /**
+     * Creates a panel for modifying date prices.
+     * 
+     * @return the created panel
+     */
 
     private JPanel createModifyDatePricePanel() {
     	//no i wont size them, ill let them handle their size

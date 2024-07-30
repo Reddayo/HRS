@@ -395,17 +395,14 @@ public class Hotel {
 	public void setPrice(double price) {
 		this.price = price;
 		for(Room room: rooms){
-			System.out.println("New Price: " + price);
+			//System.out.println("New Price: " + price);
 			room.setRoomPrice(price);
 		}
 		for(Reservation res: reservations) {
 			res.recalculatePrice(datePriceModifier);
-			System.out.println("New Price: " + price);
+			//System.out.println("New Price: " + price);
 		}
 		
-		for(int i = 0; i < datePriceModifier.length; i++) {
-			System.out.println(datePriceModifier[i]);
-		}
 	}
 	
 	/**
@@ -627,9 +624,7 @@ public class Hotel {
 	    }
 	    
 	    
-	    for(int i = 0; i < listOfRoomsAndType.size(); i++) {
-	    	System.out.println(listOfRoomsAndType.get(i));
-	    }
+	   
 	    
 	    return listOfRoomsAndType;
 	    

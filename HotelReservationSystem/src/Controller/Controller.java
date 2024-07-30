@@ -257,6 +257,8 @@ public class Controller implements ActionListener, ListSelectionListener, Change
             gui_Main.showManagePanel();
         }else if(event.equals("view availability information")){
             gui_Main.getViewPanel().showAvailabilityPanel();
+            gui_Main.getViewPanel().resetAvailabilityInfo();
+            updateAvailability(1);
         }else if(event.equals("view room information")){
             
             gui_Main.getViewPanel().showRoomPanel();
@@ -464,7 +466,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
      */
     private void handleRemoveReservation() {
     	  String oldName = gui_Main.getSelectedHotel();
-    	  String selectedReservationID = gui_Main.getManagePanel().getSelectedReservationID();
+    	  ArrayList<String> selectedReservationIDs = gui_Main.getManagePanel().getSelectedReservationID();
           Hotel foundHotel = model_HRS.findHotel(oldName);
 
           if(foundHotel == null){
@@ -472,11 +474,19 @@ public class Controller implements ActionListener, ListSelectionListener, Change
               gui_Main.getManagePanel().disposeManageDialog();
               return;
           }
+          
+          if (selectedReservationIDs.isEmpty()) {
+              gui_Main.showPopup(new IllegalArgumentException("Select at least one reservation to remove"));
+              return;
+          }
          // System.out.println(selectedReservationID);
           if(showConfirmation() == 0){
-        	  foundHotel.removeReservation(selectedReservationID);
+        	  for (String reservationID : selectedReservationIDs) {
+                  foundHotel.removeReservation(reservationID);
+              }
               updateView();
               updateReservationView();
+              updateRoomView();
             
           }
           
@@ -522,7 +532,7 @@ public class Controller implements ActionListener, ListSelectionListener, Change
             }
             updateView();
             updateReservationView();
-          
+            updateRoomView();
         }
   
         gui_Main.getManagePanel().disposeManageDialog();

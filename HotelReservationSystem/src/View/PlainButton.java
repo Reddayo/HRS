@@ -8,6 +8,15 @@ import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * A custom button component that extends {@link JButton}.
+ * This button has different background colors for different states: normal, hover, and pressed.
+ * It also includes custom font and color settings.
+ * 
+ * @author Jusper Angelo Cesar
+ * @version 4.4
+ * 
+ */
 public class PlainButton extends JButton{
 
    
@@ -18,6 +27,13 @@ public class PlainButton extends JButton{
 	private Color hoverBackgroundColor;
     private Color pressedBackgroundColor;
     private Color normalBackgroundColor;
+    
+    /**
+     * Constructs a {@code PlainButton} with the specified text.
+     * Initializes the button with custom colors for different states, a custom font, and certain visual properties.
+     * 
+     * @param name the text to be displayed on the button
+     */
     PlainButton(String name){
         super(name);
         setContentAreaFilled(false);

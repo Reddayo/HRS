@@ -37,6 +37,13 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
+/**
+ * GUI_View class is responsible for displaying the GUI components for viewing hotel information,
+ * room details, and reservation information. 
+ * 
+ * @author Jusper Angelo Cesar
+ * @version 4.4
+ */
 public class GUI_View extends JPanel {
 
    
@@ -92,6 +99,10 @@ public class GUI_View extends JPanel {
     private JPanel calendarPanel;
     private JPanel breakdownPanel;
     private CardLayout showInfo;
+    
+    /**
+     * Constructs a new GUI_View instance, initializing the layout and components for the GUI.
+     */
     public GUI_View() {
     	showInfo = new CardLayout();
         setLayout(showInfo);
@@ -211,19 +222,35 @@ public class GUI_View extends JPanel {
         //listScrollPane.setVisible(false);
     }
     
+    
+    
+    /**
+     * Displays the hotel information panel.
+     */
     public void showInfo() {
     	showInfo.show(this, "hotel info");
     }
     
+    /**
+     * Displays a blank panel when no information is available.
+     */
     public void noInfo() {
     	showInfo.show(this, "blank");
     }
+    
+    /**
+     * Shows nothing in the view panel.
+     */
     public void shownothing() {
     	viewHotelMiscInfoShower.show(viewMiscInfoPanel, "show nothing");
     	
     }
     
-    
+    /**
+     * Sets the visibility of the list components.
+     * 
+     * @param bool the visibility state to set for the lists
+     */
     public void setVisibleList(boolean bool) {
     	listScrollPane.setVisible(bool);
     	listScrollPane2.setVisible(bool);
@@ -238,6 +265,10 @@ public class GUI_View extends JPanel {
 	private JLabel roomTypeRoI;
 	private JLabel roomTypeReI;
 
+	
+	 /**
+     * Initializes the room list component.
+     */
     public void roomListInit() {
         roomList = new JList<String>();
 		listScrollPane = new JScrollPane(roomList);
@@ -254,6 +285,10 @@ public class GUI_View extends JPanel {
 		listScrollPane.setViewportView(roomList);
 	}
 
+    
+    /**
+     * Initializes the reservation list component.
+     */
     public void reservationListInit() {
         reservationList = new JList<String>();
 		listScrollPane2 = new JScrollPane(reservationList);
@@ -270,14 +305,32 @@ public class GUI_View extends JPanel {
 		listScrollPane2.setViewportView(reservationList);
 	}
 
+    
+    /**
+     * Checks if the reservation information button is selected.
+     * 
+     * @return true if the reservation information button is selected, false otherwise
+     */
     public boolean isReservationInformationSelected(){
         return reservationInformationButton.isSelected();
     }
 
+    
+    /**
+     * Updates the room list with a new model.
+     * 
+     * @param listModel the model containing room data
+     */
     public void updateRoomList(DefaultListModel<String> listModel) {
 	    roomList.setModel(listModel); 
 	    listScrollPane.setViewportView(roomList); 
 	}
+    
+    /**
+     * Creates and returns a JPanel with hotel information components.
+     * 
+     * @return the JPanel with hotel information
+     */
 
     private JPanel createHotelInfoPanel() {
         JPanel panel = new JPanel();
@@ -307,6 +360,11 @@ public class GUI_View extends JPanel {
         return panel;
     }
 
+    /**
+     * Creates and returns a JPanel with buttons for selecting different views.
+     * 
+     * @return the JPanel with view selection buttons
+     */
     private JPanel createButtonsPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -333,6 +391,14 @@ public class GUI_View extends JPanel {
         return panel;
     }
 
+    
+    /**
+     * Creates and returns a JToggleButton with specified text and action command.
+     * 
+     * @param text the text to display on the button
+     * @param actionCommand the action command for the button
+     * @return the created JToggleButton
+     */
     private JToggleButton createToggleButton(String text, String actionCommand) {
         JToggleButton button = new JToggleButton(text);
         button.setActionCommand(actionCommand);
@@ -343,6 +409,13 @@ public class GUI_View extends JPanel {
         button.setForeground(Color.decode("0xFFFFFF"));
         return button;
     }
+    
+    
+    /**
+     * Creates and returns a JPanel with hotel availability information components.
+     * 
+     * @return the JPanel with hotel availability information
+     */
 
     private JPanel createHotelAvailabilityPanel() {
         JPanel underPanel = new JPanel();
@@ -361,7 +434,7 @@ public class GUI_View extends JPanel {
         availableDeluxeRooms = new JLabel("      Deluxe: ");
         availableExecutiveRooms = new JLabel("  Executive:  ");
 
-        SpinnerModel model = new SpinnerNumberModel(1, 1, 31, 1); // initial value, min, max, step
+        SpinnerModel model = new SpinnerNumberModel(1, 1, 30, 1); // initial value, min, max, step
         dateSpinner = new JSpinner(model);
 
         panel.add(bookedRooms);
@@ -389,16 +462,27 @@ public class GUI_View extends JPanel {
 
 
         underPanel.add(someButtonPanel, BorderLayout.NORTH);
-       
+        underPanel.add(new JLabel("Note: The 31st is unavailable for check-in."), BorderLayout.SOUTH);
+        underPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 20, 10));
         return underPanel;
     }
 
+    
+    /**
+     * Sets the change listener for the date spinner.
+     * 
+     * @param listener the ChangeListener to be set
+     */
 
     public void setChangeListener(ChangeListener listener){
         dateSpinner.addChangeListener(listener);
     }
 
-
+    /**
+     * Creates and returns a JPanel with room information components.
+     * 
+     * @return the JPanel with room information
+     */
     private JPanel createRoomInformationPanel() {
         JPanel mainPanel = new JPanel();
         JPanel roomDetailsPanel = new JPanel();
@@ -422,7 +506,7 @@ public class GUI_View extends JPanel {
         
         availabilityPanel.add(availabilityCalendarRoI, BorderLayout.NORTH);
         availabilityPanel.add(availabilityCalendarPanelRoI, BorderLayout.CENTER);
-        notePanel.add(new JLabel("Note: Day 31 cannot be booked thereby blacked out"), BorderLayout.SOUTH);
+        notePanel.add(new JLabel("Note: Day 31 cannot be checked-in thereby blacked out"), BorderLayout.SOUTH);
         
         mainPanel.add(roomDetailsPanel, BorderLayout.NORTH);
         mainPanel.add(availabilityPanel, BorderLayout.CENTER);
@@ -432,6 +516,11 @@ public class GUI_View extends JPanel {
         return mainPanel;
     }
 
+    /**
+     * Creates and returns a JPanel with reservation information components.
+     * 
+     * @return the JPanel with reservation information
+     */
     private JPanel createReservationInformationPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -460,6 +549,16 @@ public class GUI_View extends JPanel {
         return panel;
     }
 
+    /**
+     * Displays hotel information.
+     * 
+     * @param name the hotel name
+     * @param roomSize2 the total number of rooms
+     * @param noOfStandardRooms the number of standard rooms
+     * @param noOfDeluxeRooms the number of deluxe rooms
+     * @param noOfExecutiveRooms the number of executive rooms
+     * @param estimate the estimated earnings
+     */
     public void showHotelInfo(String name, int roomSize2, int noOfStandardRooms, int noOfDeluxeRooms,
                               int noOfExecutiveRooms, double estimate) {
         hotelName.setText(name);
@@ -470,6 +569,14 @@ public class GUI_View extends JPanel {
         estimateEarnings.setText(String.format("Estimate Earnings: %.2f", estimate));
     }
 
+    /**
+     * Displays room information.
+     * 
+     * @param name the room name
+     * @param roomType the type of the room
+     * @param roomPrice the base price of the room
+     * @param availabilityCalendar an array indicating the availability of the room
+     */
     public void showRoomInfo(String name, String roomType, double roomPrice, boolean[] availabilityCalendar) {
         roomNameRoI.setText("Room Name: " + name);
         roomTypeRoI.setText("Room Type: " + roomType);
@@ -482,6 +589,20 @@ public class GUI_View extends JPanel {
     
     
     }
+    
+    /**
+     * Displays reservation information.
+     * 
+     * @param reservationID the reservation ID
+     * @param guestName the guest's name
+     * @param roomName the room name
+     * @param roomType the room type
+     * @param checkIn the check-in date
+     * @param checkOut the check-out date
+     * @param totalPrice the total price of the reservation
+     * @param discount the discount code used
+     * @param breakDownPriceNight the breakdown of the price per night
+     */
     public void showReservationInfo(String reservationID, 
                                      String guestName,
                                      String roomName, 
@@ -502,6 +623,14 @@ public class GUI_View extends JPanel {
         updateBreakdownPriceNight(breakDownPriceNight, checkIn, checkOut);
     }
 
+    
+    /**
+     * Updates the breakdown price per night in the reservation panel.
+     * 
+     * @param breakDownPriceNight an array of price breakdowns per night
+     * @param checkIn the check-in date
+     * @param checkOut the check-out date
+     */
     private void updateBreakdownPriceNight(double[] breakDownPriceNight, int checkIn, int checkOut ) {
         // Remove the old panel
         breakdownPanel.remove(breakDownPriceNightListReI);
@@ -517,7 +646,11 @@ public class GUI_View extends JPanel {
 
 
 
-
+    /**
+     * Updates the availability calendar panel with new data.
+     * 
+     * @param availabilityCalendar an array indicating the availability of rooms
+     */
 
     private void updateCalendarPanel(boolean[] availabilityCalendar) {
         // Remove the old panel
@@ -529,7 +662,14 @@ public class GUI_View extends JPanel {
         calendarPanel.revalidate();
         calendarPanel.repaint();
     }
-
+    
+    
+    /**
+     * Creates and returns a JPanel representing a calendar view of room availability.
+     * 
+     * @param availabilityArray an array indicating the availability of rooms
+     * @return the JPanel representing the calendar view
+     */
     private JPanel createCalendarPanel(boolean[] availabilityArray) {
         int SQUARE_SIZE = 50;
         return new JPanel() {
@@ -585,7 +725,18 @@ public class GUI_View extends JPanel {
             }
         };
     }
-
+    /**
+     * Updates the hotel availability information displayed in the panel.
+     * 
+     * @param bookedRooms the total number of booked rooms
+     * @param bookedStandardRooms the number of booked standard rooms
+     * @param bookedDeluxeRooms the number of booked deluxe rooms
+     * @param bookedExecutiveRooms the number of booked executive rooms
+     * @param availableRooms the total number of available rooms
+     * @param availableStandardRooms the number of available standard rooms
+     * @param availableDeluxeRooms the number of available deluxe rooms
+     * @param availableExecutiveRooms the number of available executive rooms
+     */
 
     public void updateAvailability(int bookedRooms,
                                    int bookedStandardRooms, 
@@ -605,7 +756,14 @@ public class GUI_View extends JPanel {
         this.availableDeluxeRooms.setText("      Deluxe: "+availableDeluxeRooms);
         this.availableExecutiveRooms.setText("  Executive:  "+availableExecutiveRooms);
     }
-
+    /**
+     * Creates and returns a JPanel representing the breakdown of prices per night.
+     * 
+     * @param percentages an array of percentages representing the breakdown of prices
+     * @param checkIn the check-in date
+     * @param checkOut the check-out date
+     * @return the JPanel representing the price breakdown
+     */
     public JPanel createBreakdownPanel(double[] percentages, int checkIn, int checkOut) {
         JPanel priceModPanel = new JPanel();
 
@@ -632,23 +790,30 @@ public class GUI_View extends JPanel {
     }
 
 
-
-
-
+    /**
+     * Sets the action listener for the view toggle buttons.
+     * 
+     * @param listener the ActionListener to be set
+     */
     
     public void setActionListener(ActionListener listener) {
         hotelAvailabilityButton.addActionListener(listener);
         roomInformationButton.addActionListener(listener);
         reservationInformationButton.addActionListener(listener);
     }
-
+    
+    /**
+     * Displays the hotel availability panel.
+     */
     public void showAvailabilityPanel() {
     	resetInfo();
         viewHotelMiscInfoShower.show(viewMiscInfoPanel, "view availability information");
         
         splitPane.setRightComponent( null);
     }
-
+    /**
+     * Displays the room information panel.
+     */
     public void showRoomPanel() {
     	resetInfo();
     		viewHotelMiscInfoShower.show(viewMiscInfoPanel, "view room information");
@@ -656,30 +821,57 @@ public class GUI_View extends JPanel {
     	   splitPane.setRightComponent(listScrollPane);
     }
 	
+    /**
+     * Clears the information displayed in the room, reservation, and availability panels,
+     * and display reservation panel in miscinfopanel
+     * 
+     */
     public void showReservationPanel() {
     	resetInfo();
     	viewHotelMiscInfoShower.show(viewMiscInfoPanel, "view reservation information");
         splitPane.setRightComponent(listScrollPane2);
     }
 
+    /**
+     * Gets the availability spinner used to select dates.
+     * 
+     * @return the JSpinner component used for date selection.
+     */
     public JSpinner getAvailabilitySpinner() {
         return dateSpinner;
     }
-
+    
+    /**
+     * Checks if the room information button is selected.
+     * 
+     * @return true if the room information button is selected, false otherwise.
+     */
     public boolean isRoomInformationSelected() {
        return roomInformationButton.isSelected();
     }
 
-
+    /**
+     * Gets the currently selected room from the room list.
+     * 
+     * @return the selected room name, or null if no room is selected.
+     */
     public String getSelectedRoom() {
         return roomList.getSelectedValue();
     }
 
+    /**
+     * Gets the list of rooms available in the UI.
+     * 
+     * @return the JList component displaying room names.
+     */
     public JList<String> getRoomList() {
         return roomList;
     }
 
-
+    /**
+     * Resets the room information displayed in the UI to default values.
+     * Clears the room name, type, price, and availability calendar.
+     */
     public void resetRoomInfo() {
         roomNameRoI.setText("Room Name: ");
         roomTypeRoI.setText("Room Type: ");
@@ -690,7 +882,12 @@ public class GUI_View extends JPanel {
             blah[i] = true;
         updateCalendarPanel(blah);
     }
-
+    
+    /**
+     * Resets the reservation information displayed in the UI to default values.
+     * Clears the reservation ID, guest name, room details, check-in/check-out dates, 
+     * total price, and discount code.
+     */
 
     public void resetReservationInfo() {
         reservationIDReI.setText("Reservation ID: ");
@@ -704,6 +901,10 @@ public class GUI_View extends JPanel {
         updateBreakdownPriceNight(new double[31], 0, -1);
     }
 
+    /**
+     * Resets the information displayed for room, reservation, and availability panels.
+     * Calls the specific reset methods for each type of information.
+     */
     public void resetInfo() {
     	
     	resetRoomInfo();
@@ -711,11 +912,18 @@ public class GUI_View extends JPanel {
     	resetAvailabilityInfo();
     }
     
+    /**
+     * Clears the selection of any buttons in the view hotel button group.
+     */
     public void clearButtonSelection() {
     	
     	viewHotelButtonGroup.clearSelection();
     
     }
+    
+    /**
+     * Resets the availability information displayed.
+     */
     public void resetAvailabilityInfo() {
     	this.bookedRooms.setText("Total No. of Booked Rooms: ");
         this.bookedStandardRooms .setText("   Standard: ");
@@ -725,17 +933,33 @@ public class GUI_View extends JPanel {
         this.availableStandardRooms.setText("   Standard: ");
         this.availableDeluxeRooms.setText("      Deluxe: ");
         this.availableExecutiveRooms.setText("  Executive:  ");
+        this.dateSpinner.setValue(1);
     }
-    	
+    
+    /**
+     * Gets the currently selected reservation from the reservation list.
+     * 
+     * @return the selected reservation ID or description, or null if no reservation is selected.
+     */	
     
     public String getSelectedReservation() {
         return reservationList.getSelectedValue();
     }
 
-
+    /**
+     * Gets the list of reservations available in the UI.
+     * 
+     * @return the JList component displaying reservation IDs or descriptions.
+     */
     public JList<String> getReservationList() {
         return reservationList;
     }
+    
+    /**
+     * updates the list model to the reservation list component and updates the view.
+     * 
+     * @param listModel the new DefaultListModel to set for the reservation list.
+     */
 
     public void updateReservationList(DefaultListModel<String> listModel) {
         reservationList.setModel(listModel); 

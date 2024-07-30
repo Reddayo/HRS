@@ -6,6 +6,15 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+
+/**
+ * The GUI_Create class is responsible for creating the dialog for adding new hotels,
+ * allowing the user to specify the hotel name, room types, and price.
+ * 
+ * @author Jusper Angelo Cesar
+ * @version 4.4
+ * 
+ */
 public class GUI_Create extends JDialog {
 
     
@@ -25,6 +34,12 @@ public class GUI_Create extends JDialog {
     private double default_price;
     private double min_price;
 
+    
+    /**
+     * Constructs a new GUI_Create dialog with the specified owner frame.
+     * 
+     * @param owner the owner frame
+     */
     public GUI_Create(Frame owner) {
 
         super(owner, "Create Hotel", true);
@@ -106,11 +121,25 @@ public class GUI_Create extends JDialog {
         addPriceCheckBoxListener();
     }
   
+    
+    /**
+     * Updates the parameters for maximum rooms, default price, and minimum price.
+     * 
+     * @param max_rooms the maximum number of rooms
+     * @param default_price the default price for the hotel
+     * @param min_price the minimum price for the hotel
+     */
     public void updateParameters(int max_rooms, double default_price, double min_price){
         this.max_rooms = max_rooms;
         this.default_price = default_price;
         this.min_price = min_price;
     }
+    
+    /**
+     * Creates a spinner for room selection.
+     * 
+     * @return the created JSpinner
+     */
 
     private JSpinner createSpinner() {
         SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 50, 1);
@@ -118,6 +147,10 @@ public class GUI_Create extends JDialog {
         return spinner;
     }
 
+    
+    /**
+     * Adds listeners to the spinners to update their models based on changes.
+     */
     private void addSpinnerListeners() {
         ChangeListener listener = new ChangeListener() {
             @Override
@@ -133,6 +166,10 @@ public class GUI_Create extends JDialog {
        
     }
 
+    
+    /**
+     * Adds a listener to the price checkbox to show or hide the price input field.
+     */
     private void addPriceCheckBoxListener() {
         defaultPriceCheckBox.addChangeListener(new ChangeListener() {
             @Override
@@ -149,6 +186,10 @@ public class GUI_Create extends JDialog {
         });
     }
 
+    
+    /**
+     * Updates the models of the spinners to ensure valid room counts.
+     */
     private void updateSpinnerModels() {
         int standard = (Integer) standardSpinner.getValue();
         int deluxe = (Integer) deluxeSpinner.getValue();
@@ -171,10 +212,22 @@ public class GUI_Create extends JDialog {
         }
     }
 
+    /**
+     * Adds an ActionListener to the create button.
+     * 
+     * @param listener the ActionListener to add
+     */
     public void addCreateButtonListener(ActionListener listener) {
         createHotelButton.addActionListener(listener);
     }
 
+    
+    /**
+     * Gets the hotel name from the input field.
+     * 
+     * @return the hotel name
+     * @throws IllegalArgumentException if the hotel name is empty
+     */
     public String getHotelName() throws IllegalArgumentException {
         String name = nameField.getText();
         if (name.isEmpty()) {
@@ -183,6 +236,13 @@ public class GUI_Create extends JDialog {
         return name;
     }
 
+    
+    /**
+     * Gets the room counts from the spinners.
+     * 
+     * @return an array with the counts of standard, deluxe, and executive rooms
+     * @throws IllegalArgumentException if the total number of rooms is zero
+     */
     public int[] getRooms() throws IllegalArgumentException {
         Integer standardRooms = (Integer) standardSpinner.getValue();
         Integer deluxeRooms = (Integer) deluxeSpinner.getValue();
@@ -195,6 +255,13 @@ public class GUI_Create extends JDialog {
         
         return new int[]{standardRooms, deluxeRooms, executiveRooms};
     }
+    
+    /**
+     * Gets the price from the input field or the default price if the checkbox is selected.
+     * 
+     * @return the price
+     * @throws NumberFormatException if the price is invalid
+     */
     public double getPrice() throws NumberFormatException {
         try {
             if (defaultPriceCheckBox.isSelected()) {
@@ -214,10 +281,20 @@ public class GUI_Create extends JDialog {
             throw e;
         }
     }
+    
+    /**
+     * Checks if the default price checkbox is selected.
+     * 
+     * @return true if the default price checkbox is selected, false otherwise
+     */
 
     public boolean isDefaultPriceSelected() {
         return defaultPriceCheckBox.isSelected();
     }
+    
+    /**
+     * Resets the input fields to their default states.
+     */
 
     public void reset(){
         nameField.setText("");

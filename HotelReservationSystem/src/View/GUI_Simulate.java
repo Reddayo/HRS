@@ -7,6 +7,16 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+
+/**
+ * The GUI_Simulate class is a JDialog that allows users to simulate a hotel booking.
+ * It contains fields for guest name, room type selection, check-in and check-out dates,
+ * discount code input, and a list of prices for selected dates.
+ * 
+ * @author Jusper Angelo Cesar
+ * @version 4.4
+ * 
+ */
 public class GUI_Simulate extends JDialog {
 
     private static final long serialVersionUID = 7007581124621903960L;
@@ -29,6 +39,12 @@ public class GUI_Simulate extends JDialog {
 	private DefaultListModel<String> listModel;
 	private JList<String> priceList;
 	private ArrayList<String> externalPriceList;
+	
+	/**
+	 * Constructs a GUI_Simulate dialog.
+	 *
+	 * @param owner the parent frame of the dialog
+	 */
     GUI_Simulate(JFrame owner) {
         super(owner, "Simulate Booking", true);
     
@@ -164,7 +180,9 @@ public class GUI_Simulate extends JDialog {
     }
     
     
-    
+    /**
+     * Updates the price list based on the selected check-in and check-out dates.
+     */
     
     private void updateItemList() {
         int checkInDay = (Integer) checkInSpinner.getValue();
@@ -178,7 +196,11 @@ public class GUI_Simulate extends JDialog {
        
     }
     
-    
+    /**
+     * Updates the external price list and the displayed list model.
+     *
+     * @param lis the new list of prices to be displayed
+     */
     public void updateDatePriceList(ArrayList<String> lis) {
     	externalPriceList = lis;
     	listModel.clear();
@@ -192,6 +214,10 @@ public class GUI_Simulate extends JDialog {
     	
     
     }
+    
+    /**
+     * Updates the check-out date spinner to ensure it is always after the check-in date.
+     */
     private void updateCheckOutSpinner() {
         int checkInDay = (Integer) checkInSpinner.getValue();
         checkOutSpinner.setModel(new SpinnerNumberModel(checkInDay + 1, checkInDay + 1, 31, 1));
@@ -199,7 +225,10 @@ public class GUI_Simulate extends JDialog {
         checkDiscountCode();
         updateItemList();
     }
-
+    
+    /**
+     * Validates the discount code entered by the user.
+     */
     private void checkDiscountCode() {
     	 String text = discountField.getText().trim();
 
@@ -245,23 +274,50 @@ public class GUI_Simulate extends JDialog {
     	        isValid = false;
     	    }
     }
-
+    
+    /**
+     * Returns the selected check-in day.
+     *
+     * @return the check-in day
+     */
     public int getCheckInDay() {
         return (Integer) checkInSpinner.getValue();
     }
-
+    
+    /**
+     * Returns the selected check-out day.
+     *
+     * @return the check-out day
+     */
     public int getCheckOutDay() {
         return (Integer) checkOutSpinner.getValue();
     }
-
+    
+    /**
+     * Returns the entered discount code.
+     *
+     * @return the discount code
+     */
     public String getDiscountCode() {
         return discountField.getText().trim();
     }
-
+    
+    /**
+     * Returns the entered guest name.
+     *
+     * @return the guest name
+     */
     public String getGuestName() {
         return guestNameField.getText().trim();
     }
 
+    /**
+     * Returns the selected room type.
+     *
+     * @return the room type, or null if no room type is selected
+     */
+    
+    
     public String getRoomType() {
         if (standardButton.isSelected()) {
             return "Standard";
@@ -273,15 +329,28 @@ public class GUI_Simulate extends JDialog {
             return null;
         }
     }
-
+    
+    /**
+     * Sets the action listener for the book button.
+     *
+     * @param listener the action listener to be set
+     */
     public void setActionListener(ActionListener listener) {
         bookButton.addActionListener(listener);
     }
-
+    
+    /**
+     * Returns whether the current booking is valid.
+     *
+     * @return true if the booking is valid, false otherwise
+     */
     public boolean isValidBooking() {
         return isValid;
     }
 
+    /**
+     * Clears the dialog fields and disposes of the dialog if it is visible.
+     */
     public void disposeDialog() {
     	roomTypeGroup.clearSelection();
         errorLabel.setText("");

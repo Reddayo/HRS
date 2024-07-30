@@ -69,7 +69,7 @@ public class Reservation {
      * @return The total price for the reservation.
      */
 	public double getTotalPrice() {
-		System.out.println(totalPrice + "Total Price");
+		//System.out.println(totalPrice + "Total Price");
 		return totalPrice;
 		
 	}
